@@ -1,0 +1,336 @@
+0		if · A Certain Mystery in Kyoto Chapter
+1	Kyousuke	What are you saying we'll find by exploring?
+2	Akagi	It might be that we find something, or nothing at all.
+3	Kyousuke	You keep stating the incredibly obvious.
+4	Akagi	Shut up. We have nothing to do right now, so why not?
+5	Kyousuke	Well, I can't argue against that. Whatever, I'll tag along.
+6	Akagi	Alright! Let's explore the inn then!
+7		What are we two guys doing together...?
+8	Akagi	Now then, let's start from this corridor!
+9	Kyousuke	Well, it's standard to start off from a corner.
+10	Akagi	That's right! It's already a well-established fact that corridor corners of buildings hold nasty secrets!
+11	Kyousuke	...Oh really?
+12	Akagi	Come on, let's go!
+13	Kyousuke	Alright, alright...
+14		It was supposed to be a short walk in the inn for a bit with Akagi, but...
+15		The inn exploration ended rather quickly.
+16		The building wasn't very large itself, and neither did it have any particularly strange places.
+17		Of course, this was pretty much expected.
+18		There won't be any weird stuff in such a normal inn... Right?
+19		And as expected-
+20	Akagi	There's nothing...
+21	Kyousuke	The one who suggested to explore this place was you, wasn't it?
+22	Akagi	Well, that's true, but it's Kyoto isn't it? I expected to find something here...
+23	Kyousuke	It's precisely because it's Kyoto, that's why river spirits would have trouble spawning here!
+24	Kyousuke	Well, that was killing time. Although it was really unproductive.
+25	Akagi	No, not yet!
+26	Kyousuke	You're still planning something...?
+27	Akagi	We haven't gone through everything, have we?
+28	Kyousuke	Does that matter?
+29	Akagi	Yeah! We haven't opened that door yet, have we?
+30	Kyousuke	Door?
+31		I looked in the direction of said door, to which Akagi was pointing at.
+32		True, it was there - the door we hadn't opened yet.
+33		...But was that door even there before?
+34	Akagi	We haven't looked in there, have we?
+35	Kyousuke	It's an unusually old door.
+36	Akagi	Yeah. Plain strange.
+37	Kyousuke	Yeah...
+38		The door gave off a feeling of antiquity I had never ever experienced with anything else before.
+39		The doorknob was super old and rusty, and the door itself seems to have become almost black from how dirty it was.
+40		Strange... Very strange...!
+41	Kyousuke	...Are we really opening it?
+42	Akagi	Huh? What are you saying, of course we are.
+43	Kyousuke	Have you even spared a thought as to what might happen if we open it?
+44	Akagi	Nothing will happen. It's just a door.
+45	Kyousuke	Oh right. You were always that stupid, huh.
+46	Akagi	Whatever, let's just open the door.
+47	Kyousuke	Yeah.
+48	Kyousuke	...
+49	Kyousuke	Nothing in this room...
+50	Kyousuke	Rather, it's just a room without lights on, and it's nothing different from a normal room.
+51	Kyousuke	Nothing here, eh?
+52	Akagi	Yeah.
+53	Kyousuke	...Wait, what's with you? Talk properly.
+54	Akagi	You too, you sound like the 8-bit games of yesteryear.
+55	Kyousuke	Huh?! But I'm speaking properly, you-
+56		...Eh? Hold on... Something seems... off.
+57		I can understand what Akagi says, but I hear him going "Pupupu"...
+58		And when I looked at Akagi...
+59	Kyousuke	Y-You, you somehow turned into a bunch of pixels, all of a sudden!
+60	Akagi	Hahaha. That's a strange coincidence. I see you in the same way too.
+61	Kyousuke	Why are you so calm about this?!
+62	Akagi	Ahah. I see... I get it now.
+63	Kyousuke	W-What is it?
+64	Akagi	Perchance, this is the judgment wrought upon our souls for daring disturb an ancient power in Kyoto.
+65	Kyousuke	HUH?!
+66	Akagi	Don't you get it? Basically, this mystery will be solved once we get the treasure inside.
+67		...What kind of delusion is this?!?!
+68	Akagi	Anyway, we can't start if you don't move. Let's search this room!
+69	Kyousuke	H-Hey!
+70		And so, prompted by Akagi again, I started to search the entire room again, but...
+71	Kyousuke	Isn't this just a normal room...?
+72	Akagi	Yeah. That's right. What is this, some trickery!?
+73	Kyousuke	This has all been your wild interpretation!
+74	Akagi	Let's go to the next room. I'm closing this room's door.
+75	Kyousuke	Yeah.
+76	Akagi	...Hm?
+77	Kyousuke	What now?
+78	Akagi	Something dropped.
+79	Kyousuke	Eh ?
+80		Akagi was about to close the door, but his hands stopped as he stared at something in the room.
+81	Kyousuke	What's that?
+82	Akagi	Who knows. I'll go take a look.
+83		Akagi went into the room and picked up that little something that dropped.
+84		Looks like it's...
+85	Akagi	A pamphlet...? It's written "Fushimi Inari Shrine" on there.
+86	Kyousuke	Fushimi Inari Shrine, huh...
+87	Akagi	Hold on a second, this isn't exactly Fushimi Inari, is it?!
+88	Kyousuke	Then what is it?
+89	Akagi	It's the Underground Fushimi Inari...!
+90	Kyousuke	Underground Fushimi Inari?!
+91	Akagi	Yeah, this is getting interesting, isn't it?
+92	Kyousuke	Sounds suspicious to me.
+93	Akagi	Well, don't put it that way. Uh... the legendary Underground Fushimi Inari Shrine that can grant any wish...
+94	Kyousuke	This whole affair is becoming more and more suspicious...
+95	Akagi	Hold on. There's more. The Underground Fushimi Inari Shrine is sleeping underneath Kyoto.
+96	Kyousuke	Isn't that even more suspicious!? Also, where did all the talk about the treasure go?
+97	Akagi	The legendary Underground Fushimi Inari Shrine that can grant any wish...!
+98	Kyousuke	Hey, Akagi... Are you listening?
+99	Akagi	That's incredible! Any wish can be granted!
+100	Kyousuke	Get a grip on yourself man! Be realistic! It's too good to be true!
+101	Akagi	What are you saying? Any wish can be granted, you know!
+102	Kyousuke	NO! STOP!
+103		What is this Underground Fushimi Inari?! It's way too suspicious!
+104		It's called Fushimi Inari because it's in the Fushimi area! And we're in Sanjyou, Higashiyama right now!
+105		Don't believe everything that you read!
+106	Akagi	Okay, I've decided!
+107	Kyousuke	I'm having a reaaaaally bad feeling about this...
+108	Akagi	I'm going to this Underground Fushimi Inari!
+109	Kyousuke	I knew it...
+110	Akagi	Of course. You're coming too, right?
+111	Kyousuke	Why would I? It's suspicious, no matter how I look at it.
+112	Akagi	What are you saying!? It's for the thrill!
+113	Kyousuke	I don't need that kind of thrill in my life!
+114	Akagi	Any wish can be granted, you know.
+115	Kyousuke	Doesn't it sound too good to be true?
+116	Akagi	You idiot! You gotta dream!!
+117	Kyousuke	How can I have a dream with such a pamphlet that you simply picked up!!
+118	Akagi	But your wishes can be granted!
+119	Kyousuke	I bet your wish is about your relationship with your sister anyway.
+120	Akagi	Can there be anything else?
+121	Kyousuke	Don't answer with such a straight face...
+122	Akagi	Okay, I've decided. Let's do it and change Japan's laws.
+123	Kyousuke	Hey, I haven't said that I'll go...
+124	Akagi	Hey, Kousaka, look there.
+125	Kyousuke	Eh?
+126	Akagi	The corner of the room. The trapdoor on the floor.
+127	Kyousuke	How can there be a... wait, there it is.
+128		Indeed, there's a door on the floor in the corner of the room.
+129		I hate this kind of blatant deus-ex-machina.
+130		It feels like I'm in a game or anime again...
+131		No, this scene would probably be too cheesy for even an 8-bit game.
+132	Akagi	The Underground Fushimi Inari, which rests beneath Kyoto...
+133	Kyousuke	No matter how you look at it, it seems far too convenient.
+134	Akagi	We'll think about that if nothing does happen.
+135	Kyousuke	Hey, Akagi.
+136	Akagi	Okay, I'll try opening it.
+137	Kyousuke	Can you be a little more cautious?!
+138	Akagi	It's fine, just help me!
+139	Kyousuke	Argh really...!
+140		The door on the floor opened with the same sound as before.
+141	Akagi	It's stairs...
+142	Kyousuke	Yeah, stairs...
+143		There were a continuing flight of stairs below the opened door.
+144		This is... This is way too convenient!
+145		This is nothing but suspicious!!!
+146		...but I'm the only one who thought this way.
+147	Akagi	Whoa, Kousaka, it's awesome! It's really here! The Underground Fushimi Inari Shrine!
+148	Kyousuke	This is way too convenient.
+149	Akagi	Okay, let's go take a look!
+150	Kyousuke	You're not listening at all... Hey! Are you seriously going!? Akagi!!
+151		Akagi started going down the stairs without listening to a word that I've said.
+152		I can't just let him go alone...
+153		Argh, damn! I don't have any other choice!
+154	Kyousuke	Wait up, Akagi! It's dangerous to go alone!
+155		After going down the stairs, there was an area with a very high ceiling.
+156		Akagi walked ahead, while I hurriedly chased after him.
+157	Kyousuke	Akagi!
+158	Akagi	Oh, you came along after all.
+159	Kyousuke	You idiot. It's because you went all by yourself.
+160	Akagi	There you go again. Although you say that, but you're actually curious about the Underground Fushimi Inari.
+161	Kyousuke	Who cares about that...
+162	Akagi	Well, since you're here, let's look for it together!
+163	Kyousuke	Yeah, yeah.
+164		We steadily forged ahead.
+165		Before we noticed, we had walked quite a distance, but have not found anything of interest.
+166		Was it really a good idea to continue forward...?
+167		I glanced back, but the stairs from earlier were not longer visible.
+168		What trailed behind us was nothing but darkness.
+169		We've probably come a pretty long way already.
+170	Kyousuke	Hey, is it really okay to continue walking so far?
+171	Akagi	I wouldn't know about that.
+172	Kyousuke	That's true, but..
+173	Akagi	Oh?
+174	Kyousuke	What is it.
+175	Akagi	It's a Shinto shrine gate?
+176	Kyousuke	...!
+177		Why is there a shrine gate underground...!?
+178	Kyousuke	This is it, isn't it.
+179	Akagi	It's the shrine gate of Fushimi Inari.
+180	Kyousuke	It can't be...
+181	Akagi	Awesome! So it actually exists?!
+182	Kyousuke	Lo-Looks like it.
+183		With this scene in front of me, I can no longer deny the existence of Underground Fushimi Inari.
+184		Akagi is all fired up, and I am getting a little excited as well...
+185	Akagi	Alright! In we go!
+186	Kyousuke	Yeah!
+187		The meandering road of gates continued on forever.
+188		I no longer had any sense of direction; nor did I have any idea where I was.
+189	Kyousuke	Oh? I see something.
+190	Akagi	It's true... It looks like something from a shrine.
+191	Kyousuke	It does seem like a small shrine.
+192	Akagi	Oh-! Awesome! I'm so glad we came here.
+193	Kyousuke	But this is the thing that can grant wishes? It looks shabby.
+194	Akagi	Don't say such things! Our wishes can be granted.
+195	Kyousuke	But...
+196		A small shrine stood beyond the gates.
+197		But... it looks a little dirty and useless.
+198		But Akagi looked really confident that our wishes can be granted.
+199	Akagi	Now! Let's get to fulfilling my wishes!
+200	Kyousuke	*sigh*... Do whatever you want. We're heading back when you're done.
+201	Akagi	I got it.
+202		Akagi stood in front of the small shrine. With a serious look on his face, he placed his hands together and bowed his head.
+203	Akagi	May my sister and I be close together for life--!
+204	Kyousuke	Wha?!
+205	Akagi	Whoa! It's too bright...!!!
+206		Wha-!? Wh-Wh-What on earth!?
+207		I could feel the light pierce through my eyelids and into my eyes!
+208		What in the world is happening?!
+209	Kyousuke	...
+210	Akagi	...H-Hey, Kousaka...
+211	Kyousuke	...U-Urgh, Akagi...?
+212	Kyousuke	Hm? No more "pupupupu"'s?
+213		What is this... We were at the suspicious underground place up till this moment...
+214		But this is... a familiar scenery...
+215	Akagi	...We were on the school trip, right?
+216	Kyousuke	Y-Yeah.
+217	Akagi	Why are we... standing in front of the school?
+218	Kyousuke	Don't ask me...
+219		For some reason, when we came to, Akagi and I were standing in front of the school.
+220		But we were indeed in front of the small shrine of the Underground Fushimi Inari a short while ago.
+221		What the heck happened to us...?
+222	???	Onii-chan～!
+223	Kyousuke	Wha?!
+224	Kirino	Onii-chan～!
+225	Akagi	Onii-chan? Hey, is that kid perhaps your little sister?
+226	Kyousuke	......
+227	Akagi	She's quite cute. But she definitely loses out to my sister!
+228		Indeed, the out-of-breath person running over is Kirino.
+229		But... Why would she call me "Onii-chan"?
+230		My body filled with a strange uncomfortable feeling.
+231	Kirino	Onii-chan, what's wrong? Weren't you on your school trip?
+232	Kyousuke	K-Kirino...?
+233	Kirino	Yep, it's me. So, what about it?
+234		The Kirino that appeared in front of me called me "Onii-chan," and on top of that, a big and glittering smile floated on her face.
+235	Kyousuke	W-What's wrong with you...?
+236	Kirino	What do you mean?
+237	Kyousuke	W-Well, uh...
+238	Kirino	Could it be... that you felt lonely because you couldn't get to see me, so you came back earlier before the rest?
+239	Kyousuke	Th-That's impossib-
+240	Kirino	If that's the case, I'm happy. I feel lonely when Onii-chan's not here too!
+241	Kyousuke	...Eh?
+242		What? What kind of trap is this!? Actually, who is this I'm talking to!?
+243		Kirino is more like, bang, wham, gyah! Something like that!
+244	Akagi	...It's the effect of the Underground Fushimi Inari.
+245	Kyousuke	What?
+246	Akagi	Our wish went through to Underground Fushimi Inari! This means, my sister too!?
+247		By your logic, what you're saying is that your wish also affected me, and this changed Kirino's personality?
+248		Her personality is a complete 180! It's completely different!?
+249		The heck is this!? In the first place, I didn't wish for anything!!
+250	Kyousuke	Hey, Akagi...
+251	Akagi	Oooohhh!! Where's my sister-!!
+252	Kyousuke	Hey～?
+253		Without listening to a word I said, Akagi dashed off.
+254		Did Akagi's sister really become like this too?
+255		I can't even imagine...
+256	Kirino	......
+257	Kyousuke	Kirino? Something wrong?
+258	Kirino	Onii-chan, were you with that guy on the entire trip?
+259	Kyousuke	That guy... You're referring to Akagi? Well, that's right.
+260	Kirino	Why?
+261	Kyousuke	Why... because we're friends... pretty much.
+262	Kirino	No way. Don't do that sort of thing again.
+263	Kyousuke	Huh?
+264	Kirino	It would be all right if Onii-chan is only with me.
+265	Kyousuke	What's with you?
+266	Kirino	Onii-chan just needs to only be with me!
+267	Kyousuke	Hey, Kirino...
+268	Kirino	And, that person! That girl!!
+269	Kyousuke	Who's that girl?
+270	Kirino	That person! Plain Girl!!!
+271	Kyousuke	Plain girl... What about Manami?
+272	Kirino	Don't say her name! Don't let anything about her touch your lips!
+273	Kyousuke	H-Hey...
+274	Kirino	Please look only at me, call only my name.
+275	Kyousuke	You say that, but she's a childhood friend.
+276	Kirino	I don't care! I'm your little sister! I'm closer to you! I'm closer to you than that person will ever be!
+277		The moment I mentioned Manami's name, Kirino's expression changed completely.
+278		It's like she's jealous beyond measure... Wait, jealous?
+279		Why is she jealous of Manami?
+280	Kirino	That's right... not just Plain Girl. Kuroneko, and Saori, and Ayase...
+281	Kyousuke	Kirino?
+282	Kirino	Each and every one of them are gunning for Onii-chan. Why didn't I realize until now?
+283	Kyousuke	Wh-What are you talking about...
+284	Kirino	No problem. I won't let anyone lay a finger on you, and I'm the only one allowed to do that.
+285	Kyousuke	Hey, Kirino...
+286	Kirino	I won't let you get close to those female cats.
+287	Kyousuke	How can you say that about your friends?!
+288	Kirino	I don't need friends who are aiming for Onii-chan!
+289	Kyousuke	Kirino! Calm down!
+290	Kirino	I'm very calm! I just love Onii-chan a lot.
+291	Kyousuke	H-Hold on a moment, hey...
+292		What the heck is she talking about?!
+293		She loves me? That's strange!
+294		I don't need this plot development in my life!
+295	Kyousuke	Honestly, what's with you?
+296	Kirino	Onii-chan is really kind. But this kindness will mislead others, so it's better for you to stop.
+297	Kyousuke	No, I'm not trying to mislead anyone.
+298	Kirino	Subconsciously affecting them, huh...
+299	Kyousuke	Hey, are you even listening?
+300	Kirino	If it's done subconsciously, then it can't be helped...
+301	Kyousuke	Kirino. Heyyyyy.
+302	Kirino	I see. If Onii-chan can't go out alone, then it will all be fine.
+303	Kyousuke	...Eh?
+304	Kirino	It's okay, Onii-chan. I will al～ways be by your side.
+305	Kyousuke	No, no. It's fine. It's fine just by myself.
+306	Kirino	That won't do!
+307	Kyousuke	Hiee!!!
+308		I have a hunch that I should escape or else...
+309		When I was just about to move my body, Kirino grabbed my arm.
+310	Kirino	It's all right...
+311	Kyousuke	K-Kirino, let go.
+312	Kirino	Why?
+313	Kyousuke	My arm, it hurts...
+314	Kirino	I'm only holding onto it lightly.
+315		Without dropping her smile, Kirino held my arm strongly with her hands.
+316		At this moment, I heard a grinding noise.
+317		What kind of strength is this...!
+318	Kyousuke	Ou-Ouch! It really hurts!
+319	Kirino	It's just for a short while.
+320	Kyousuke	H-Hey! Kirino!
+321	Kirino	Arms, legs... and later, fingers too...
+322	Kyousuke	Kirino! Kirino!!
+323	Kirino	It's all right, Onii-chan. This is for the sake of us being together forever.
+324		What Akagi wished for at the shrine just now came to mind.
+325		"May my sister and I be close together for life"
+326		No... This isn't what it meant!
+327		Definitely not!
+328	Kirino	Let's get along from now on.
+329		As I look at Kirino saying that with a sweet smile, my body chilled to the bone.
+330		If I don't escape, something unthinkable will happen.
+331		It's the only thing I could make of the whole situation.
+332	Kirino	My Onii-chan～ Just for me～
+333		Kirino said that with a smile and an adorable voice.
+334		In an instant, my arm was forcibly bent in the opposite direction.
+335	Kirino	Onii-chan, we'll be together forever!

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Shim to run the cygwin mkisofs.exe from WSL, converting /mnt/<drive>/... paths
+# to Windows drive paths so the Windows binary can find its files.
+EXE="$(dirname "$(readlink -f "$0")")/mkisofs.exe"
+args=()
+for a in "$@"; do
+    if [[ "$a" =~ ^/mnt/([a-zA-Z])(/.*)?$ ]]; then
+        d="${BASH_REMATCH[1]}"
+        rest="${BASH_REMATCH[2]:-/}"
+        rest="${rest//\//\\}"
+        args+=("${d^^}:${rest}")
+    else
+        args+=("$a")
+    fi
+done
+exec "$EXE" "${args[@]}"

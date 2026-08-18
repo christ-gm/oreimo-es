@@ -1,0 +1,83 @@
+0		Kuroneko Route · Kuroneko's Assistant
+1	Kuroneko	Hmph...
+2		I might be imagining it, but Kuroneko seems to be staring at me coldly.
+3		Am I supposed to say something here...?
+4	Kuroneko	*sigh*... I am disappointed by you, but getting angry at you now is pointless.
+5	Kuroneko	I don't want to waste any time. I'll explain the details of this task.
+6	Kyousuke	Y-Yes, I'll leave that to you.
+7		....Somehow, it seems her good mood has returned.
+8	Kyousuke	Kuroneko, I'm sorry. I only came to help you.
+9	Kyousuke	So please cheer up a little, okay?
+10	Kuroneko	You're really hopeless...
+11	Kuroneko	But it's fine. It's only wasting time if we were to chat idly here, so let's forget about what just happened.
+12	Kuroneko	Well then, since you said you're going to help out, let's hurry and get some work done.
+13	Kuroneko	However, there isn't anything you, a complete novice, can help out with.
+14	Kyousuke	...Eh, is that so?
+15	Kuroneko	How much do you know about the creation of manga?
+16	Kyousuke	Honestly, pretty much nothing at all.
+17	Kuroneko	I see... If so, I'll start from the basics.
+18		And like that, my total beginner lecture on being a doujin assistant began.
+19	Kuroneko	There are three phases during the creation of manga if we were to divide it accordingly.
+20	Kuroneko	First, the plot. This refers to creating a type of story, whatever the genre or category. It's the same for a novel and movie as well.
+21	Kuroneko	Even the same goes for manga. We just need to write down the outline of the story. Even among professionals, there are people who only work on
+22	Kuroneko	this to bring out original works.
+23	Kuroneko	Up next is the storyboard. From this phase onwards, it's something only manga has. In simpler terms, it means to draw a rough copy.
+24	Kuroneko	Deciding the panel layout and character positions for example. There are also people who only work specifically on this phase of the creation.
+25	Kuroneko	Well, even though I said quite a bit, it doesn't matter if you don't get it. These things have no relation to an assistant's job.
+26	Kyousuke	Is that so...
+27	Kuroneko	However, this is essential for the process of creating a manga. That's why it's required of you to know this.
+28	Kuroneko	Finally, the last phase is the manuscript. Your work, is to do the final touching up on it.
+29	Kuroneko	Even if it's you, I believe you should at least know what 'fill in the colors' means, right?
+30	Kyousuke	Yeah. That means inking, right? For the hair and clothing...
+31	Kuroneko	That's it. This is basically the work that you'll be doing.
+32	Kyousuke	However, I never used a pen to draw before... is that all right?
+33	Kuroneko	Hehe... If this were the past, that would certainly be a big problem.
+34	Kuroneko	But nowadays, it's possible to use the computer to draw manga. Even with your lack of skill, completing this won't be a problem.
+35	Kyousuke	I-Is that so... Incredible...
+36	Kuroneko	Speaking of which, I'll be counting on you for the things you can do.
+37	Kuroneko	First you must understand the basics of using it. We should be able to complete that by today if it goes according to plan.
+38	Kyousuke	Huh? Is it okay doing just that?
+39	Kuroneko	Compared to failing immediately by working on impossible tasks, it's better to grasp the basics and avoid errors. Understand?
+40	Kyousuke	T-That's true...
+41	Kuroneko	That said, there are two types of errors that one can make while working on the computer.
+42	Kuroneko	Deleting the wrong files, as well as overwriting the original backup copy. These are the two.
+43	Kyousuke	I get it. Although they are simple errors, it would be very troublesome if they occur.
+44	Kuroneko	That's right. Furthermore, all kinds of mistakes will appear if one isn't used to it.
+45	Kuroneko	For the sake of avoiding that, one must have the habit of frequently making backups. That's why before you do anything else, please get used to it.
+46	Kyousuke	...Understood.
+47	Kyousuke	But... even though I said I was going to help you... Wouldn't I just drag you down?
+48	Kuroneko	It's within my calculations that there are bound to be some accidents, so rest assured.
+49	Kuroneko	Working alone and working with someone are two completely different things...
+50	Kyousuke	...Kuroneko?
+51	Kuroneko	Solitude eats at one's spirit... But if someone manage to draw someone close to them, then together, their power grows exponentially!
+52	Kuroneko	This power exceeds the boundaries of this world and becomes a legend! You should be aware of it too, the many legends born by connected hearts...
+53	Kyousuke	H-Hey～, Kuroneko～. Snap out of it～.
+54	Kuroneko	What a pity, it seems like you couldn't comprehend that.
+55	Kyousuke	Y-Yeah, sorry about that.
+56	Kuroneko	Heh, that's fine. I've been learning a lot lately too. All kinds of things after joining the club...
+57	Kyousuke	Oh really... all kinds of things, huh.
+58	Kuroneko	Yes, all kinds.
+59		I've been seeing Kuroneko at school, but now I can see her obstinacy when it comes to creation...
+60		Maybe it's something she plans on showing Kirino... I learned a lot today.
+61	Kyousuke	By the way, what are you going to do if I were to borrow your computer?
+62	Kuroneko	Of course I'll be doing work that doesn't require a computer. Things like plot and storyboarding can be done on paper.
+63	Kyousuke	But, when those are done...
+64	Kuroneko	Let's see... I guess I'll fire you when we get to that point?
+65	Kyousuke	Hey hey, it's meaningless if I'm not helping out when you're busy.
+66		I've seen this crunch time while you were working before once. Could it be that it's like this when you're really busy?
+67	Kyousuke	Ah, guess there's no helping it. In that case...
+68	Kuroneko	You're thinking of borrowing from your sister?
+69	Kyousuke	...How did you know that?
+70	Kuroneko	I can easily see through your train of thought.
+71	Kyousuke	Is that so.
+72	Kuroneko	I'll warn you first, you better not divulge too much information to that woman.
+73	Kyousuke	Divulge what information?
+74	Kuroneko	About you coming to my house.
+75	Kyousuke	Is there a problem telling that to Kirino?
+76	Kuroneko	...You're really an idiot, senpai.
+77	Kyousuke	Hey, what do you mean by that?
+78	Kuroneko	Anyway, no means no. If you were to tell your sister about this ongoing "ceremony" that we're performing, I'll send you along the road to hell.
+79		Ah I see. That Kirino would surely be jealous when she sees that I took her beloved Kuroneko away.
+80	Kyousuke	...I get it. I'll think of a good reason to borrow a laptop from Kirino.
+81	Kuroneko	What's the chances of success?
+82	Kyousuke	Leave it to me. I have a secret plan.
