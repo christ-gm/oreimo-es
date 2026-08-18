@@ -49,6 +49,8 @@ Los **nombres** de personajes (38) ya están traducidos y aplicados en todas las
 ![Captura 1](assets/image.png)
 
 
+https://github.com/user-attachments/assets/1b84e83f-0518-4cc1-aacf-313c4c6cff9c
+
 ## Herramientas usadas
 
 - [FastAsyncOreimoTranslateTool](https://github.com/zapan/FastAsyncOreimoTranslateTool) — toolchain base de extracción/reempacado.
