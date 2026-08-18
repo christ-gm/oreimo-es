@@ -1,6 +1,7 @@
 # Oreimo Portable — Traducción al Español (ES)
 
 [![Progreso Disco 1](https://img.shields.io/badge/Progreso%20Disco%201-100%25-green)](translation/Translation.json)
+[![Progreso Disco 2](https://img.shields.io/badge/Progreso%20Disco%201-0%25-red)](translation/Translation.json)
 [![Estado](https://img.shields.io/badge/Estado-Traducci%C3%B3n%20100%25%20%7C%20Falta%20pruebas-yellow)]()
 [![Licencia](https://img.shields.io/badge/Licencia-CC%20BY--NC--SA%204.0-lightgrey)](LICENSE)
 
