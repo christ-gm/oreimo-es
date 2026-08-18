@@ -1,7 +1,7 @@
 # Oreimo Portable — Traducción al Español (ES)
 
-[![Progreso Disco 1](https://img.shields.io/badge/Progreso%20Disco%201-2.95%25-blue)](translation/Translation.json)
-[![Estado](https://img.shields.io/badge/Estado-En%20progreso-yellow)]()
+[![Progreso Disco 1](https://img.shields.io/badge/Progreso%20Disco%201-100%25-green)](translation/Translation.json)
+[![Estado](https://img.shields.io/badge/Estado-Traducci%C3%B3n%20100%25%20%7C%20Falta%20pruebas-yellow)]()
 [![Licencia](https://img.shields.io/badge/Licencia-CC%20BY--NC--SA%204.0-lightgrey)](LICENSE)
 
 Traducción **no oficial** al español latinoamericano de la novela visual PSP **_Oreimo Portable ga Tsuzuku Wake ga Nai_** (Discos 1 y 2), partiendo de la versión en inglés v1.
@@ -14,7 +14,7 @@ Traducción **no oficial** al español latinoamericano de la novela visual PSP *
 
 | Disco | Progreso |
 |---|---|
-| **Disco 1** (historia) | 554 / 18.805 líneas — **2.95%** |
+| **Disco 1** (historia) | 18.805 / 18.805 líneas — **100%** (299 escenas, revisado) |
 | Disco 2 (historia) | pendiente |
 | envpsp.dat (texto del sistema) | pendiente |
 

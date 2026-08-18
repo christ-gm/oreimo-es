@@ -1,0 +1,258 @@
+import json
+
+PATH = "/mnt/c/Users/christ-gm/Desktop/code/oreimo/work/disc1/Data/Translation.json"
+
+def build(narration: dict, speech: dict) -> dict:
+    out = {}
+    for i, t in narration.items():
+        out[str(i)] = t
+    for i, t in speech.items():
+        out[str(i)] = "「" + t[0] + "」"
+    return out
+
+a8_n = {
+    0: "Ruta de Kirino · Es Imposible Que Mi Hermanita No Acepte Un Recuerdo",
+    2: "Es raro tener un viaje escolar para revitalizarme, ¡así que haré feliz a mi hermanita en esta rara ocasión! Aunque así era como me sentía,",
+    3: "su actitud era simplemente...",
+    4: "¿No sabe lo vergonzoso que fue solo comprarlos?",
+    5: "...¿Crees que llegué tan lejos porque quería ver la cara feliz de Kirino?",
+    6: "Ja, no bromees conmigo. En realidad odio a esa chica, y ella debería sentir lo mismo.",
+    7: "Bueno, parece que está ligeramente más agradecida conmigo, pero su actitud ciertamente no ha cambiado.",
+    8: "...Aunque nos entendemos un poco mejor ahora, la relación entre mi hermanita y yo siempre será así al final.",
+    10: "Por primera vez en unos días, me quedé dormido en casa.",
+}
+a8_s = {
+    1: ("Ahh, de todos modos, hoy fue ciertamente un día agotador.", "Kyousuke"),
+    9: ("*bostezo*... Nada bien, ya estoy en mi límite. Me iré a dormir ahora...", "Kyousuke"),
+}
+
+a10_n = {
+    0: "Ruta de Kirino · Es Imposible Que Tenga Déjà Vú En Mi Habitación",
+    4: "¿Eh? Este desarrollo...",
+    17: "Sí, sí. Sin decir la razón. Ni cediendo en su insistencia. ¿Qué tan egoísta es esta chica?",
+    18: "...Siento que tuvimos este mismo intercambio exacto hace un año también.",
+    20: "¿Qué pasa con esa Kirino...? Parece que está revelando su colección secreta...",
+    21: "No lo sabía el año pasado, pero ¿qué quiere con ella ahora?",
+    22: "...¿Podría ser que quiere mostrar artículos aún más atrevidos que los de hasta ahora?",
+    24: "«Estas cosas»... ¿no son sus cosas otaku de siempre?",
+    25: "Además, ¿qué es esa mirada en sus ojos? Es como si estuviera mirando a un criminal.",
+    32: "Podemos ser hermanos, pero es sentido común permitirse un poco de privacidad al menos.",
+    33: "Sin embargo, no tengo muchas oportunidades de echar un vistazo a la habitación de mi hermana. Así que estoy un po-co interesado, ¿ves...",
+    34: "...Solo un poco. Tengo el presentimiento de que podría toparme con algún escondite oculto si husmeo.",
+}
+a10_s = {
+    1: ("¡¿Qué-!?", "Kyousuke"),
+    2: ("...Quédate callado.", "Kirino"),
+    3: ("...¿Ah?", "Kyousuke"),
+    5: ("T-Tú...", "Kyousuke"),
+    6: ("¿No te dije que te callaras...? ¿Qué crees que hora es?", "Kirino"),
+    7: ("D-De todos modos, primero sal de la cama...", "Kyousuke"),
+    8: ("Tch.", "Kirino"),
+    9: ("Entonces, ¿qué intentas hacer?", "Kyousuke"),
+    10: ("...Tengo algo que decirte, así que ven aquí.", "Kirino"),
+    11: ("¿Algo que decirme? ¿A esta hora?", "Kyousuke"),
+    12: ("Sí.", "Kirino"),
+    13: ("Estoy realmente cansado, aunque... ¿No puede esperar hasta mañana?", "Kyousuke"),
+    14: ("Mañana no sirve. Tiene que ser ahora mismo.", "Kirino"),
+    15: ("¿Por qué?", "Kyousuke"),
+    16: ("...Tiene que ser, sin importar qué.", "Kirino"),
+    19: ("Espera un momento.", "Kirino"),
+    23: ("En realidad... sobre estas cosas...", "Kirino"),
+    26: ("Ah, el teléfono.", "Kirino"),
+    27: ("O-Okay.", "Kyousuke"),
+    28: ("......", "Kirino"),
+    29: ("...¿Qué?", "Kyousuke"),
+    30: ("...No toques libremente las cosas de mi habitación.", "Kirino"),
+    31: ("¿Soy realmente tan poco confiable...?", "Kyousuke"),
+    35: ("......Está bien.", "Kyousuke"),
+    36: ("Ah...", "Kyousuke"),
+    37: ("¿Hiciste algo mientras no estaba?", "Kirino"),
+    38: ("¡Nada en absoluto!", "Kyousuke"),
+    39: ("Sería bueno que así fuera.", "Kirino"),
+}
+
+a13_n = {
+    0: "Ruta de Kirino · Es Imposible Que Tenga Déjà Vú En Mi Habitación",
+    1: "Es justo como dijo Mamá.",
+    2: "Parece diferente de lo usual...",
+    23: "¿Esta chica habla en serio? ¡¿Qué tan egoísta va a llegar a ser?!",
+    30: "Supongo que no hay remedio... Seguiré esta farsa aquí.",
+    42: "Tch, esta chica... ¿cuánto tiempo piensa burlarse de mí?",
+    43: "Tuvimos una larga y tediosa conversación, pero al final sigue siendo una farsa.",
+    50: "Esta chica.... ¿Cuánto piensa ridiculizarme?",
+}
+a13_s = {
+    3: ("Explícame. ¿Qué rayos son estas cosas?", "Kirino"),
+    4: ("Deja de bromear. Esta montaña de artículos otaku te pertenece toda a ti.", "Kyousuke"),
+    5: ("...¿Huh? No entiendo lo que dices. Por favor habla en japonés.", "Kirino"),
+    6: ("O, si de verdad lo estás diciendo en serio, ¿no deberías ir al hospital?", "Kirino"),
+    7: ("¿Ah? ¿Qué... estás diciendo?", "Kyousuke"),
+    8: ("...Eso es lo que te estoy preguntando.", "Kirino"),
+    9: ("Como dije, ¿no son estos los tesoros que has coleccionado?", "Kyousuke"),
+    10: ("Dios, ¿todavía estás medio dormida?", "Kyousuke"),
+    11: ("¡¿Crees que tales mentiras funcionarán conmigo?!", "Kirino"),
+    12: ("No te estoy mintiendo. Todo esto es tuyo.", "Kyousuke"),
+    13: ("¿Huh? Esto ya se está volviendo viejo, así que ¿podrías dejar de mentir?", "Kirino"),
+    14: ("Eso es suficiente de tu parte también. ¿Qué razón tendría para mentirte?", "Kyousuke"),
+    15: ("E-Eso es... pero...", "Kirino"),
+    16: ("...Tú, ¿qué estás intentando hacer?", "Kyousuke"),
+    17: ("Incluso yo no haría un escándalo tan aburrido en medio de la noche.", "Kyousuke"),
+    18: ("¡Por eso quiero que me des una respuesta clara!", "Kirino"),
+    19: ("¿Clara? ¿Qué quieres que se aclare?", "Kyousuke"),
+    20: ("¡Una prueba clara de que estas cosas asquerosas no son mías!", "Kirino"),
+    21: ("No, el 100% es todo tuyo.", "Kyousuke"),
+    22: ("¡C-Cállate! ¡En cualquier caso, no son tuyas todas esas!? ¡Apúrate y llévatelas!", "Kirino"),
+    24: ("¡¿Es muy posible que, ya que tu habitación no tiene espacio para esconderlas, viniste a mi habitación a esconderlas, verdad?!", "Kirino"),
+    25: ("Como dije, ¡no es así! Más bien, ¿qué te pasa?", "Kyousuke"),
+    26: ("De algún modo... siento que eres diferente de lo usual.", "Kyousuke"),
+    27: ("¿H-Huh? ¿Qué estás diciendo...? Estoy siendo yo misma.", "Kirino"),
+    28: ("*suspiro*...¿En serio crees que lo eres?", "Kyousuke"),
+    29: ("¿Q-Qué...? ¿Todavía te estás haciendo el tonto?", "Kirino"),
+    31: ("...Además, ¿son estas cosas las que esconderías en la habitación de tu hermana? Debería haber lugares mucho mejores, ¿no?", "Kyousuke"),
+    32: ("¿Cómo lo sabría? Por eso te llamé aquí de esta manera.", "Kirino"),
+    33: ("También, el recuerdo de Kioto es similar a estas...", "Kirino"),
+    34: ("¿Similar a estas...? ¿Estás hablando de la Meruru Edición Regional?", "Kyousuke"),
+    35: ("Sí, por eso pensé que todas estas son tuyas.", "Kirino"),
+    36: ("*suspiro* ¡Eres simplemente incomprensible!", "Kirino"),
+    37: ("¡He estado escuchando tus tonterías en silencio desde el principio! ¡La incomprensible eres tú!", "Kyousuke"),
+    38: ("¡¿Q-Qué es eso?!", "Kirino"),
+    39: ("Qué... rayos te pasa...", "Kyousuke"),
+    40: ("Hmph, ¿cuánto tiempo vas a hacerte el tonto?", "Kirino"),
+    41: ("No tengo nada más que decirte. Vete, ahora.", "Kirino"),
+    44: ("No tengo nada que decirte.", "Kyousuke"),
+    45: ("¡Cállate! De todos modos, ¡todo esto es tu culpa!", "Kirino"),
+    46: ("¿Qué es eso?", "Kyousuke"),
+    47: ("E-Eso es porque, después de que regresaste de Kioto, no han pasado más que cosas extrañas...", "Kirino"),
+    48: ("¿Huh? Eso es algo que no tengo por qué saber.", "Kyousuke"),
+    49: ("Tch... Basta. Fue estúpido de mi parte preguntarte sobre eso de todos modos.", "Kirino"),
+}
+
+a15_n = {
+    0: "Ruta de Kirino · Es Imposible Que Mi Hermanita Niega Su Afición Otaku",
+    1: "Esa Kirino... ¿está intentando negar por completo sus aficiones otaku... las aficiones que declaró ser tan importantes para ella como su mejor amiga?",
+    7: "Gracias a ti, todavía estoy siendo tratado como un criminal por Ayase.",
+    10: "¿Cuánto daño crees que sufrí cuando quedé atrapado entre tú y Kuroneko en ese entonces?",
+    12: "Mirando hacia atrás, todos fueron malos recuerdos...",
+    28: "Después de todo, nadie creería normalmente que en realidad mi hermanita está bien informada en el moe de hermanitas.",
+    29: "Sin embargo, después de pasar tiempo con ustedes, Kuroneko y Saori, mi prejuicio desapareció inmediatamente.",
+    30: "Todo es gracias a ti. ¡Es todo tu culpa!",
+    32: "¡No, ERES tú!",
+    36: "Ah, ¡¿qué debería hacer para que me crea?!",
+}
+a15_s = {
+    2: ("Si eso es lo que intentas hacer, entonces déjame informarte cuidadosamente.", "Kyousuke"),
+    3: ("Primero, «Amor con Hermana ♪» y «Stardust ☆ Witch Meruru». Todo empezó después de que descubrí estos.", "Kyousuke"),
+    4: ("...", "Kirino"),
+    5: ("Este es «Shin Imouto Taisen Siscalypse» (Duelo de las Verdaderas Hermanitas). Fui forzado a jugar esto contra ti porque siempre pierdes en línea.", "Kyousuke"),
+    6: ("Tuviste una pelea con Ayase por esto. ¿No es cierto?", "Kyousuke"),
+    8: ("Aquí está el libro de referencia absurdamente grueso junto con la novela delirante que conseguiste de Kuroneko.", "Kyousuke"),
+    9: ("¿No te volviste loca de ira porque el personaje basado en ti fue tratado mal?", "Kyousuke"),
+    11: ("«Custom Imouto» y «Onii-pantsu». Porque dijiste que querías comprarlos, hice fila por ellos y perdí el tren de medianoche de vuelta a casa.", "Kyousuke"),
+    13: ("¿C...Crees que tales historias inventadas podrán engañarme...", "Kirino"),
+    14: ("¿Engañarte...? ¿Qué estás diciendo?", "Kyousuke"),
+    15: ("Escucha, lo seguiré diciendo tantas veces como sea necesario. Te gustan los artículos de hermanitas al punto de acercártelos a la cara para olerlos...", "Kyousuke"),
+    16: ("¡¡Amas tanto a las «hermanitas» que no puedes evitarlo!!", "Kyousuke"),
+    17: ("¡Todas esas son cosas que te describen a ti! ¡Pervertido! ¡Muere!", "Kirino"),
+    18: ("¡Uwah! ¡¿H-Hey?! ¡Deja de lanzar los DVDs y las figuras! ¡Se romperán!", "Kyousuke"),
+    19: ("¡No me importan esas cosas!", "Kirino"),
+    20: ("¡¿Ouch?!", "Kyousuke"),
+    21: ("¿P-Por qué no los evitas?", "Kirino"),
+    22: ("¡Se romperán si no los atrapo! ¡Para!! ¡Incluso si estás jugando, te estás pasando!", "Kyousuke"),
+    23: ("¡Todos estos son tus preciosos tesoros! ¡¿Olvidaste tu «Stardust ☆ Witch Meruru»?!", "Kyousuke"),
+    24: ("La escena donde la protagonista Meruru usa su Meteor Impact para hacer añicos a sus amigas en pedazos diminutos, ¡¿no dijiste que era tu favorita?!", "Kyousuke"),
+    25: ("¡¿Qué es ese desarrollo sin sentido?! ¡Eso es imposible de creer!", "Kirino"),
+    26: ("¡¿Cómo podría posiblemente gustarme esas cosas?!", "Kirino"),
+    27: ("¡Eso es lo que pensé al principio también!", "Kyousuke"),
+    31: ("¿Estás diciendo que soy yo? ¡Eso es imposible!", "Kirino"),
+    33: ("¡Estás mintiendo absolutamente! Son tuyas, ¿no?", "Kirino"),
+    34: ("¿De verdad crees que son mías?", "Kyousuke"),
+    35: ("¡Por supuesto!", "Kirino"),
+    37: ("Para empezar, no hay forma de que cosas como estas existieran en mi dormitorio.", "Kirino"),
+    38: ("H-Hey, ¿qué estás haciendo con los artículos otaku que cargas?", "Kyousuke"),
+    39: ("¿Huh? Obviamente voy a lanzarlos por la ventana.", "Kirino"),
+    40: ("¡I-Idiota!", "Kyousuke"),
+    41: ("¡Eso duele! ¡No me toques, pervertido!!", "Kirino"),
+    42: ("Tú.... ¿Acaso sabes lo que intentas hacer!?", "Kyousuke"),
+    43: ("¿Huh? Si estas cosas son mías, puedo hacer lo que quiera con ellas, ¡¿verdad?!", "Kirino"),
+    44: ("¡Mira! ¡¿No es esta tu Meruru favorita?! ¡Todavía tengo el mensaje que me enviaste pidiéndola como prueba!", "Kyousuke"),
+    45: ("...Eres bastante persistente.", "Kirino"),
+    46: ("¡Tú! ¿Qué estás...", "Kyousuke"),
+    47: ("Hmph, ¡tales cosas! ¡Por supuesto que irán directo a la basura!", "Kirino"),
+    48: ("¡¿Q-Q-Qué estás haciendo?!", "Kyousuke"),
+    49: ("Ya que es un recuerdo que conseguiste para mí, puedo hacer lo que quiera con él, ¿verdad?", "Kirino"),
+    50: ("Además, fabricar un correo que te envié, eso es inconcebible incluso para ti.", "Kirino"),
+    51: ("Tú... ¡siscon!", "Kirino"),
+    52: ("¡?! ¡Por qué tú...!", "Kyousuke"),
+    53: ("Finalmente, tuve que montar una bicicleta decorada con anime de vuelta a casa desde Akihabara. Además, fui forzado por mi hermanita a jugar el juego juntos", "Kyousuke"),
+    54: ("¡con ella hasta la mañana!", "Kyousuke"),
+}
+
+a20_n = {
+    0: "Ruta de Kirino · Es Imposible Que Mi Hermanita Niega Su Afición Otaku",
+    15: "Como si no quisieras reconocer lo que digo...",
+    43: "¡Si le cuentas a Papá sobre esas cosas otaku, sus venas explotarán de ira y morirá!",
+}
+a20_s = {
+    1: ("¡¿D-Dónde me estás tocando?! ¡Quita tus manos de mi brazo!", "Kirino"),
+    2: ("Tú... ¿entiendes lo que significa tirar estas cosas?", "Kyousuke"),
+    3: ("¡Cállate! ¡No puedo tolerar la presencia de estos DVDs y juegos en mi habitación ni un segundo más!", "Kirino"),
+    4: ("¡¿Si no quieres que sean lanzadas, qué tal si las escondes en tu propia habitación?!", "Kirino"),
+    5: ("Shh, ¡tu voz es demasiado fuerte! Mamá y Papá nos oirán, ¿sabes?", "Kyousuke"),
+    6: ("Guh... E-Es tu culpa, ¿no?", "Kirino"),
+    7: (".........", "Kyousuke"),
+    8: ("Déjame preguntar una vez más... ¿Qué estás tratando de insinuar exactamente?", "Kyousuke"),
+    9: ("Tch...", "Kirino"),
+    10: ("¿Qué... estás diciendo?", "Kyousuke"),
+    11: ("¡～～?! ¡Estoy realmente harta de escuchar esa frase!", "Kirino"),
+    12: ("¡Eres seriamente molesto! ¡Muérete ya!!", "Kirino"),
+    13: ("...¿Sabes qué?", "Kyousuke"),
+    14: ("Has estado realmente frenética desde hace rato, ¿no?", "Kyousuke"),
+    16: ("Tú también. Sigues diciendo estúpidamente 'qué estás diciendo, qué estás diciendo' como si fuera la única frase que conoces.", "Kirino"),
+    17: ("Es porque sigues diciendo cosas incomprensibles.", "Kyousuke"),
+    18: ("Esa es mi frase.", "Kirino"),
+    19: ("*suspiro*... Si hubiera sabido que eras un siscon mucho antes, habría roto nuestros lazos fraternales hace mucho.", "Kirino"),
+    20: ("¡De verdad te gusta sacar ese tema, eh!", "Kyousuke"),
+    21: ("No... ¿estás seriamente bien?", "Kyousuke"),
+    22: ("Hmph, tu vocabulario es realmente deficiente.", "Kirino"),
+    23: ("Tener que preocuparme por tu negligencia solo me irrita más.", "Kirino"),
+    24: ("Más bien, eres realmente molesto. ¡Súper molesto! ¡Molesto al máximo!", "Kirino"),
+    25: ("Te lo ruego, ¿no puedes llevarte estas cosas asquerosas y desaparecer?", "Kirino"),
+    26: ("T-Tú... ¡sigues diciendo lo que quieras!", "Kyousuke"),
+    27: ("¡Pero ERES molesto!", "Kirino"),
+    28: ("Desde el principio, ¿por qué estás tan preocupado por los asuntos de tu hermanita?", "Kirino"),
+    29: ("......", "Kyousuke"),
+    30: ("¿Q-Qué...? Habla si tienes algo que decir.", "Kirino"),
+    31: ("¿Te sientes ofendido por mí?", "Kirino"),
+    32: ("...No estoy particularmente ofendido.", "Kyousuke"),
+    33: ("...¿Eh?", "Kirino"),
+    34: ("Oye, Kirino. ¿Por qué tienes tanta prisa? Si todo lo que digo son mentiras, ¿no estaría bien si solo las ignoras y me echas de la habitación?", "Kyousuke"),
+    35: ("De todos modos, eso es suficiente. No pretendo seguir tus delirios siscon. Haré que mamá se deshaga de estas.", "Kirino"),
+    36: ("¡¿E-Estás loca?! Es realmente increíble que... vayas a tirar todos los artículos de hermanitas!", "Kyousuke"),
+    37: ("¿Huh? También seriamente no puedo creer que en realidad estoy viviendo bajo el mismo techo con un pervertido así, ¿sabes?", "Kirino"),
+    38: ("¡Co～mo～di～je... ¡Esa es mi fraseee!!", "Kyousuke"),
+    39: ("Eh... No, perdón. Hay algo mal con mis oídos justo ahora. ¿Podrías repetir eso una vez más?", "Kyousuke"),
+    40: ("Como he dicho, ¡voy a tirarlos todos! Está bien, ¿no? ¡Ya que no son tuyos!", "Kirino"),
+    41: ("De todos modos, les contaré a Mamá y Papá sobre estas cosas.", "Kirino"),
+    42: ("Tú... Incluso si es una broma, déjalo.", "Kyousuke"),
+    44: ("¿Huh? No hay forma de que sea una broma. ¿O quieres que llame a la policía?", "Kirino"),
+    45: ("¡No estoy hablando de eso!", "Kyousuke"),
+}
+
+data = {
+    "000scriptBKIR_0008A.obj": build(a8_n, a8_s),
+    "000scriptBKIR_0010A.obj": build(a10_n, a10_s),
+    "000scriptBKIR_0013T.obj": build(a13_n, a13_s),
+    "000scriptBKIR_0015A.obj": build(a15_n, a15_s),
+    "000scriptBKIR_0020T.obj": build(a20_n, a20_s),
+}
+
+with open(PATH, "r", encoding="utf-8") as f:
+    current = json.load(f)
+for file, entry in data.items():
+    if file not in current:
+        current[file] = entry
+    else:
+        current[file].update(entry)
+with open(PATH, "w", encoding="utf-8") as f:
+    json.dump(current, f, ensure_ascii=False)
+print("updated:", list(data.keys()))
