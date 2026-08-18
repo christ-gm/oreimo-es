@@ -20,17 +20,6 @@ Traducción **no oficial** al español latinoamericano de la novela visual PSP *
 
 Los **nombres** de personajes (38) ya están traducidos y aplicados en todas las escenas.
 
-### Lotes del Disco 1
-
-| Lote | Prefijo | Escenas | Líneas | Estado |
-|---|---|---|---|---|
-| 1 | AKYO | 51 | 2.838 | 🚧 en progreso (10 escenas hechas) |
-| 2 | BKIR | 53 | 2.424 | ⏳ pendiente |
-| 3 | CKUR | 53 | 2.699 | ⏳ pendiente |
-| 4 | DSAO | 41 | 3.102 | ⏳ pendiente |
-| 5 | EMAN | 38 | 2.397 | ⏳ pendiente |
-| 6 | FAYA | 29 | 2.183 | ⏳ pendiente |
-| 7 | GIFG/KIFK/otras | 25+ | 3.162 | ⏳ pendiente |
 
 ## Estructura del repositorio
 
@@ -52,6 +41,14 @@ Los **nombres** de personajes (38) ya están traducidos y aplicados en todas las
 4. **Rempacado**: las traducciones se inyectan, se reinsertan los saltos de línea automáticos y se reconstruye la ISO con la fuente latina (soporta acentos).
 
 > Los `Translation.json` y el corpus contienen únicamente **texto**, nunca assets ni código del juego.
+
+## Demo
+
+![Captura 1](assets/image.png)
+
+![Captura 2](assets/image2.png)
+
+<video src="https://github.com/christ-gm/oreimo-es/raw/main/assets/gameplay.mp4" controls width="640"></video>
 
 ## Herramientas usadas
 
