@@ -44,11 +44,10 @@ Los **nombres** de personajes (38) ya están traducidos y aplicados en todas las
 
 ## Demo
 
-![Captura 1](assets/image.png)
-
 ![Captura 2](assets/image2.png)
 
-<video src="https://github.com/christ-gm/oreimo-es/raw/main/assets/gameplay.mp4" controls width="640"></video>
+![Captura 1](assets/image.png)
+
 
 ## Herramientas usadas
 
