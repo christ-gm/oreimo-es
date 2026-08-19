@@ -34,6 +34,8 @@ Quiero ser transparente desde el principio para que no te lleves sorpresas: simp
 
 ![Captura 1](assets/image.png)
 
+https://github.com/user-attachments/assets/89a1ea8c-f36d-41dd-9895-dd198a5309c8
+
 ## Créditos
 
 - **[dizzyziddy — Oreimo Tsuzuku PSP Disc 1 Full English Patch](https://dizzyziddy.xyz/2015/02/14/oreimo-tsuzuku-psp-disc-1-full-english-patch-release/)** — este proyecto se construyó **sobre su parche en inglés v1**, que sirvió como base del texto. ¡Muchas gracias por ese trabajo!
