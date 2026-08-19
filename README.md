@@ -2,7 +2,7 @@
 
 [![Progreso Disco 1](https://img.shields.io/badge/Progreso%20Disco%201-100%25-green)](translation/Translation.json)
 [![Progreso Disco 2](https://img.shields.io/badge/Progreso%20Disco%202-0%25-red)](translation/Translation.json)
-[![Estado](https://img.shields.io/badge/Estado-Traducci%C3%B3n%20100%25%20%7C%20Falta%20pruebas-yellow)]()
+[![Estado](https://img.shields.io/badge/Estado-Traducci%C3%B3n%2050%25%20%7C%20Falta%20pruebas-yellow)]()
 [![Licencia](https://img.shields.io/badge/Licencia-CC%20BY--NC--SA%204.0-lightgrey)](LICENSE)
 
 Traducción **no oficial** al español latinoamericano de la novela visual PSP **_Oreimo Portable ga Tsuzuku Wake ga Nai_** (Discos 1 y 2), partiendo de la versión en inglés v1.
