@@ -44,16 +44,31 @@ https://github.com/user-attachments/assets/89a1ea8c-f36d-41dd-9895-dd198a5309c8
 
 ## Cómo parchar tu ISO
 
-Este repositorio **no incluye ISOs ni el código de la toolchain original** (ver [Herramientas usadas](#herramientas-usadas)). Incluye un **script** que hace todo por ti: `build_iso.sh`.
+Este repositorio **no incluye ISOs ni el código de la toolchain original** (ver [Herramientas usadas](#herramientas-usadas)). Incluye dos asistentes que hacen todo por ti: **`build_iso.bat`** (Windows) y **`build_iso.sh`** (Linux/WSL).
 
-### Prerrequisitos
+> El único requisito de entrada es tu **ISO con el parche EN v1 de dizzyziddy ya aplicado** (link en [Créditos](#créditos)).
+
+### Windows (fácil) — `build_iso.bat`
+
+1. Descarga este repositorio como **ZIP** (botón verde *Code* → *Download ZIP*) y descomprímelo.
+2. Coloca tu ISO (ya con el parche EN aplicado) donde quieras, por ejemplo en la misma carpeta.
+3. **Arrastra el archivo `.iso` sobre `build_iso.bat`** y suéltalo. (También puedes abrir `build_iso.bat` y escribir la ruta.)
+4. Si te falta el .NET SDK, el propio asistente lo instalará automáticamente o te dará el enlace.
+5. Al terminar tendrás tu ISO en español con el sufijo `_ES` y se abrirá la carpeta donde se guardó.
+
+> La primera vez descarga la toolchain base de zapan (necesita internet); las siguientes reutilizan la copia local.
+> Windows puede mostrar "Editor desconocido" al ejecutar el `.bat` (no está firmado): pulsa *Más información → Ejecutar de todas formas*.
+
+### Linux / WSL — `build_iso.sh`
+
+#### Prerrequisitos
 
 1. Una **copia legal** \*guiño guiño\* del juego (ISO de PSP de *Oreimo Portable ga Tsuzuku Wake ga Nai*) Recomendablemente la de **[dizzyziddy — Oreimo Tsuzuku PSP Disc 1 Full English Patch](https://dizzyziddy.xyz/2015/02/14/oreimo-tsuzuku-psp-disc-1-full-english-patch-release/)**.
 2. **.NET SDK** (10 o superior), **git** y **mkisofs** (de cdrtools) en tu `PATH`.
 3. Linux / WSL (Windows Subsystem for Linux).
 4. Windows -> Estoy Cansado Jefe... (Trabajando en ello)
 
-### Pasos
+#### Pasos
 
 ```bash
 git clone https://github.com/christ-gm/oreimo-es.git
@@ -66,7 +81,7 @@ Opciones del script:
 - `--out <archivo.iso>`: nombre de la ISO resultante (por defecto: `<tu_iso>_ES.iso`).
 - Variables de entorno `TOOLCHAIN_DIR` y `WORK_DIR` para reutilizar un clon existente de la toolchain y elegir el directorio de trabajo.
 
-### Pasos manuales (equivalente al script)
+#### Pasos manuales (equivalente al script)
 
 ```bash
 git clone https://github.com/christ-gm/oreimo-es.git
@@ -110,7 +125,10 @@ Los iré revisando **a mi ritmo** (este es un proyecto personal). Además, confo
 │   └── review/               # Hojas XLSX de revisión (EN → ES)
 ├── scripts/                  # Scripts de traducción por lotes
 ├── tool/OreimoAutomation/    # Driver de automatización (C#, propio)
-└── tool-bin/                 # Utilidades para el repaqueado de la ISO
+├── tool-bin/                 # Utilidades para el repaqueado de la ISO (mkisofs)
+├── toolchain-patches/        # Parches propios para la toolchain de zapan
+├── build_iso.bat             # Asistente para Windows (arrastra tu ISO)
+└── build_iso.sh              # Asistente para Linux / WSL
 ```
 
 ### ¿Cómo funciona el flujo?
