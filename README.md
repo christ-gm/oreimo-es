@@ -40,20 +40,17 @@ Este repositorio **no incluye ISOs ni el código de la toolchain original** (ver
 
 ### Prerrequisitos
 
-1. Una **copia legal** del juego (ISO de PSP de *Oreimo Portable ga Tsuzuku Wake ga Nai*).
-2. Aplicar el **parche EN v1 de dizzyziddy** a tu ISO (link en [Créditos](#créditos)), ya que el corpus de este proyecto parte del texto en inglés.
-3. **.NET SDK** (10 o superior), **git** y **mkisofs** (de cdrtools) en tu `PATH`.
-4. Linux / WSL (Windows Subsystem for Linux).
+1. Una **copia legal** \*guiño guiño\* del juego (ISO de PSP de *Oreimo Portable ga Tsuzuku Wake ga Nai*) Recomendablemente la de **[dizzyziddy — Oreimo Tsuzuku PSP Disc 1 Full English Patch](https://dizzyziddy.xyz/2015/02/14/oreimo-tsuzuku-psp-disc-1-full-english-patch-release/)**.
+2. **.NET SDK** (10 o superior), **git** y **mkisofs** (de cdrtools) en tu `PATH`.
+3. Linux / WSL (Windows Subsystem for Linux).
 
 ### Pasos
 
 ```bash
-git clone https://github.com/TU_USUARIO/oreimo-es.git
+git clone https://github.com/christ-gm/oreimo-es.git
 cd oreimo-es
 ./build_iso.sh /ruta/a/tu.iso          # genera /ruta/a/tu.iso con el sufijo _ES
 ```
-
-> El script clona la toolchain base de zapan (no se redistribuye aquí), compila el driver `OreimoAutomation` del repo y ejecuta el pipeline completo: extraer ISO → extraer datos → aplicar `translation/Translation.json` → insertar saltos de línea → reempaquetar datos e ISO.
 
 Opciones del script:
 
@@ -63,7 +60,7 @@ Opciones del script:
 ### Pasos manuales (equivalente al script)
 
 ```bash
-git clone https://github.com/TU_USUARIO/oreimo-es.git
+git clone https://github.com/christ-gm/oreimo-es.git
 git clone https://github.com/zapan/FastAsyncOreimoTranslateTool.git
 
 # Compila el driver (resuelve las librerías de la toolchain automáticamente)
@@ -89,7 +86,7 @@ dotnet "$DLL" repack-iso "$BASE"/oreimo_es.iso --base "$BASE"  # 5) Reempaqueta 
 
 ## Correcciones y reportes
 
-¿Encontraste un error de traducción, una frase mal contextualizada o un detalle en los subtítulos? **Eres libre de abrir un [issue](https://github.com/TU_USUARIO/oreimo-es/issues)** con la escena, el texto original y tu sugerencia de corrección.
+¿Encontraste un error de traducción, una frase mal contextualizada o un detalle en los subtítulos? **Eres libre de abrir un [issue](https://github.com/christ-gm/oreimo-es/issues)** con la escena, el texto original y tu sugerencia de corrección.
 
 Los iré revisando **a mi ritmo** (este es un proyecto personal). Además, conforme vaya jugando e identifique detalles, los iré corrigiendo yo mismo en futuras actualizaciones.
 
@@ -134,4 +131,4 @@ El trabajo de **traducción y los scripts propios** de este repositorio están b
 
 El contenido del juego (código, imágenes, audio y texto original) pertenece a sus respectivos titulares de derechos (**Aniplex / ASCII Media Works**). Este proyecto es una traducción de fans, sin fines comerciales, y no está afiliado ni respaldado por los titulares de derechos.
 
-Para jugar necesitas una **copia legal** del juego. Este repositorio no incluye las ISOs.
+Para jugar necesitas una **copia legal** \*guiño guiño\* del juego. Este repositorio no incluye las ISOs.
