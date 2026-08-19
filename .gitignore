@@ -10,5 +10,6 @@ obj/
 # Builds/artifacts grandes
 *.iso
 work/
+toolchain/
 EN/
 JP/

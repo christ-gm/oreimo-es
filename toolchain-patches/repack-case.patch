@@ -1,0 +1,39 @@
+--- a/RyuujiApi/RyuujiApi.cs	2026-08-18 20:58:24.407218168 -0400
++++ b/RyuujiApi/RyuujiApi.cs	2026-08-18 20:58:32.500961275 -0400
+@@ -55,13 +55,13 @@
+         await Task.Run(() => ObjTools.RepackObjs(startUpPath, debugMode));
+         await Task.Run(() => ObjTools.RepackTxts(startUpPath));
+         await Task.Run(() => DatTools.RepackDat(startUpPath, Path.Combine(dataDir, "Extracted", resourceFile + "-LstOrder.lst")));
+-        await Task.Run(() => ObjTools.RepackSeekmap(startUpPath, Path.Combine(dataDir, "Extracted", resourceFile), Path.Combine(dataDir, "Extracted", "first")));
++        await Task.Run(() => ObjTools.RepackSeekmap(startUpPath, ResolveResourcePath(dataDir, resourceFile), Path.Combine(dataDir, "Extracted", "first")));
+         if (File.Exists(Path.Combine(dataDir, "Extracted", "first", "seekmap", "res.map.gz"))) {
+             File.Move(Path.Combine(dataDir, "Extracted", "first", "seekmap.dat"), Path.Combine(dataDir, "Extracted", "first", "seekmap", "res.map.gz"), true);
+         }
+         await Task.Run(() => DatTools.RepackDat(startUpPath, Path.Combine(dataDir, "Extracted", "first.dat-LstOrder.lst")));
+         await File.Create(Path.Combine(dataDir, "Extracted", "-")).DisposeAsync();
+-        await Task.Run(() => File.Copy(Path.Combine(dataDir, "Extracted", resourceFile), Path.Combine(dataDir, "Iso", "PSP_GAME", resourceFolder, resourceFile), true));
++        await Task.Run(() => File.Copy(ResolveResourcePath(dataDir, resourceFile), Path.Combine(dataDir, "Iso", "PSP_GAME", resourceFolder, resourceFile), true));
+         await Task.Run(() => File.Copy(Path.Combine(dataDir, "Extracted", "first.dat"), Path.Combine(dataDir, "Iso", "PSP_GAME", "USRDIR", "first.dat"), true));
+     }
+ 
+@@ -100,4 +100,20 @@
+         "Example:\r\n" +
+         "{executable}\r\n" +
+         "{arguments}";
++
++
++    // The repacker writes the resource using "name" + ".dat" (e.g. RES.dat). On case-sensitive
++    // filesystems that differs from the ISO name (RES.DAT), so resolve the actual file.
++    private static string ResolveResourcePath(string dataDir, string resourceFile) {
++        string extractedDir = Path.Combine(dataDir, "Extracted");
++        string expected = Path.Combine(extractedDir, resourceFile);
++        if (File.Exists(expected))
++            return expected;
++
++        string candidate = Path.Combine(extractedDir, Path.GetFileNameWithoutExtension(resourceFile) + ".dat");
++        if (File.Exists(candidate))
++            return candidate;
++
++        return expected;
++    }
+ }
