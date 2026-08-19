@@ -28,6 +28,12 @@ Esta traducción es **MTL (Machine Translation)**: fue generada con traducción 
 
 Quiero ser transparente desde el principio para que no te lleves sorpresas: simplemente quería una opción para jugar este juego en español y no me gustaban las alternativas que existían, así que me dediqué a crear la mía propia y compartirla para quien quiera usarla.
 
+## Demo
+
+![Captura 2](assets/image2.png)
+
+![Captura 1](assets/image.png)
+
 ## Créditos
 
 - **[dizzyziddy — Oreimo Tsuzuku PSP Disc 1 Full English Patch](https://dizzyziddy.xyz/2015/02/14/oreimo-tsuzuku-psp-disc-1-full-english-patch-release/)** — este proyecto se construyó **sobre su parche en inglés v1**, que sirvió como base del texto. ¡Muchas gracias por ese trabajo!
@@ -112,12 +118,6 @@ Los iré revisando **a mi ritmo** (este es un proyecto personal). Además, confo
 4. **Rempacado**: las traducciones se inyectan, se reinsertan los saltos de línea automáticos y se reconstruye la ISO con la fuente latina (soporta acentos).
 
 > Los `Translation.json` y el corpus contienen únicamente **texto**, nunca assets ni código del juego.
-
-## Demo
-
-![Captura 2](assets/image2.png)
-
-![Captura 1](assets/image.png)
 
 ## Herramientas usadas
 
