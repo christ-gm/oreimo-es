@@ -1,7 +1,7 @@
 # Oreimo Portable — Traducción al Español (ES)
 
 [![Progreso Disco 1](https://img.shields.io/badge/Progreso%20Disco%201-100%25-green)](translation/Translation.json)
-[![Progreso Disco 2](https://img.shields.io/badge/Progreso%20Disco%201-0%25-red)](translation/Translation.json)
+[![Progreso Disco 2](https://img.shields.io/badge/Progreso%20Disco%202-0%25-red)](translation/Translation.json)
 [![Estado](https://img.shields.io/badge/Estado-Traducci%C3%B3n%20100%25%20%7C%20Falta%20pruebas-yellow)]()
 [![Licencia](https://img.shields.io/badge/Licencia-CC%20BY--NC--SA%204.0-lightgrey)](LICENSE)
 
@@ -151,6 +151,6 @@ Los iré revisando **a mi ritmo** (este es un proyecto personal). Además, confo
 
 El trabajo de **traducción y los scripts propios** de este repositorio están bajo **CC BY-NC-SA 4.0**.
 
-El contenido del juego (código, imágenes, audio y texto original) pertenece a sus respectivos titulares de derechos (**Aniplex / ASCII Media Works**). Este proyecto es una traducción de fans, sin fines comerciales, y no está afiliado ni respaldado por los titulares de derechos.
+El contenido del juego (código, imágenes, audio y texto original) pertenece a sus respectivos titulares de derechos (**Aniplex / ASCII Media Works**). Este proyecto es una traducción porque me dio la gana, sin fines comerciales, y no está afiliado ni respaldado por los titulares de derechos.
 
 Para jugar necesitas una **copia legal** \*guiño guiño\* del juego. Este repositorio no incluye las ISOs.
