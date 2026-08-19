@@ -15,7 +15,7 @@ Traducción **no oficial** al español latinoamericano de la novela visual PSP *
 
 | Disco | Progreso |
 |---|---|
-| **Disco 1** (historia) | 18.805 / 18.805 líneas — **100%** (299 escenas, revisado) |
+| **Disco 1** (historia) | 18.805 / 18.805 líneas — **100%** (299 escenas) |
 | Disco 2 (historia) | pendiente |
 | envpsp.dat (texto del sistema) | pendiente |
 
@@ -113,7 +113,7 @@ dotnet "$DLL" repack-iso "$BASE"/oreimo_es.iso --base "$BASE"  # 5) Reempaqueta 
 
 ¿Encontraste un error de traducción, una frase mal contextualizada o un detalle en los subtítulos? **Eres libre de abrir un [issue](https://github.com/christ-gm/oreimo-es/issues)** con la escena, el texto original y tu sugerencia de corrección.
 
-Los iré revisando **a mi ritmo** (este es un proyecto personal). Además, conforme vaya jugando e identifique detalles, los iré corrigiendo yo mismo en futuras actualizaciones.
+Los iré revisando **a mi ritmo** (después de todo esto es un proyecto personal pipipi ;-;). Además, conforme vaya jugando e identifique detalles, los iré corrigiendo yo mismo en futuras actualizaciones.
 
 ---
 
