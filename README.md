@@ -15,7 +15,7 @@ Traducción **no oficial** al español latinoamericano de la novela visual PSP *
 
 | Disco | Progreso |
 |---|---|
-| **Disco 1** (historia) | 18.805 / 18.805 líneas — **100%** (299 escenas) |
+| **Disco 1** (historia) | 18.805 / 18.805 líneas — **100%** (299 escenas) (faltan las desiciones)|
 | Disco 2 (historia) | pendiente |
 | envpsp.dat (texto del sistema) | pendiente |
 
