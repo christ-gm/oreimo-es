@@ -15,7 +15,7 @@ Traducción **no oficial** al español latinoamericano de la novela visual PSP *
 
 | Disco | Progreso |
 |---|---|
-| **Disco 1** (historia) | 18.805 / 18.805 líneas — **100%** (299 escenas) |
+| **Disco 1** (historia) | 18.805 / 18.805 líneas — **100%** (299 escenas) (faltan las desiciones)|
 | Disco 2 (historia) | pendiente |
 | envpsp.dat (texto del sistema) | pendiente |
 
@@ -67,7 +67,6 @@ Este repositorio **no incluye ISOs ni el código de la toolchain original** (ver
 1. Una **copia legal** \*guiño guiño\* del juego (ISO de PSP de *Oreimo Portable ga Tsuzuku Wake ga Nai*) Recomendablemente la de **[dizzyziddy — Oreimo Tsuzuku PSP Disc 1 Full English Patch](https://dizzyziddy.xyz/2015/02/14/oreimo-tsuzuku-psp-disc-1-full-english-patch-release/)**.
 2. **.NET SDK** (10 o superior), **git** y **mkisofs** (de cdrtools) en tu `PATH`.
 3. Linux / WSL (Windows Subsystem for Linux).
-4. Windows -> Estoy Cansado Jefe... (Trabajando en ello)
 
 #### Pasos
 
