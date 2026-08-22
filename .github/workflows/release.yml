@@ -84,6 +84,9 @@ jobs:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           NOTES=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=${{ github.ref_name }}" --jq .body)
+          if [ -z "$(echo "$NOTES" | grep -E '^\* ')" ]; then
+            NOTES="_No merged pull requests since the previous release._"
+          fi
           {
             echo "notes<<CHANGELOG_EOF"
             echo "$NOTES"
@@ -97,6 +100,9 @@ jobs:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           NOTES=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=${{ steps.nextver.outputs.version }}" -f "target_commitish=main" --jq .body)
+          if [ -z "$(echo "$NOTES" | grep -E '^\* ')" ]; then
+            NOTES="_No merged pull requests since the previous release._"
+          fi
           {
             echo "notes<<CHANGELOG_EOF"
             echo "$NOTES"
