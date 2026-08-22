@@ -1,29 +1,63 @@
-# Oreimo Translator GUI
+# Oreimo Translator
 
-Interfaz gráfica de escritorio (PySide6) para traducir el guion de
-*Ore no Imouto ga Konna ni Kawaii Wake ga Nai Portable* (PSP) al español.
+A desktop GUI (PySide6) for translating the script of *Ore no Imouto ga
+Konna ni Kawaii Wake ga Nai Portable* (PSP) — built so anyone can produce
+their own fan translation of the game, in any language, without touching
+a hex editor.
 
-Es la "productización" del motor de reingeniería inversa desarrollado en el
-proyecto hermano (carpeta padre de este repo) — reutiliza exactamente la
-misma lógica de formato ya probada en el juego real (contenedor `GPDA`,
-bloques `.obj` con `blockLen`, parcheo binario del ISO), empaquetada aquí
-como un paquete Python propio (`src/oreimo_translator/core/`) para que esta
-app funcione de forma independiente.
+It is the "productized" form of the reverse-engineering work carried out
+in the sibling research project (the parent folder of this repo): the
+`GPDA` container format, the `.obj` script bytecode with its `blockLen`
+block structure, and the binary ISO-patching approach are all proven
+against the real game. This app vendors that same logic into a
+self-contained Python package (`src/oreimo_translator/core/`), so it runs
+on its own — no need to clone the research project or run any other
+tooling first.
 
-## Qué hace
+## How it works
 
-- Abre el ISO del juego y **extrae automáticamente los ~19,000 diálogos**
-  de las 300 escenas.
-- Lista las escenas y permite **buscar** texto en todos los diálogos a la
-  vez (original o traducción).
-- Editar la traducción de una línea es instantáneo y **no toca el ISO** —
-  todo vive en memoria hasta que decides compilar.
-- **Compilar**: genera un ISO nuevo y jugable con los cambios aplicados
-  (nunca sobreescribe el original).
-- **Exportar/Importar tabla** (CSV o TSV): para traducir en Excel/Sheets o
-  con otra herramienta, y traer los cambios de vuelta.
+The game stores its ~19,000 dialogue lines inside `RES.DAT`, a nested
+archive format with strings encoded as UTF-16LE inside self-describing
+binary blocks. The app automates the full round trip:
 
-## Cómo correrlo
+```
+ISO  →  extract RES.DAT  →  decompress every scene  →  parse blocks
+  →  edit strings in memory  →  rebuild blocks + archives
+  →  patch a copy of the ISO  →  playable, translated ISO
+```
+
+1. **Open ISO** — reads `RES.DAT` directly out of the raw ISO file (no
+   mounting, no OS-specific tools) and indexes every translatable line
+   across all 300 scenes in a few seconds.
+2. **Browse & search** — scenes are listed on the left; the table on the
+   right shows character, original text, and translation side by side.
+   The search box filters across every scene at once, matching either
+   original or translated text.
+3. **Translate** — double-click a translation cell and type. Edits are
+   held in memory only; the source ISO is never touched until you choose
+   to compile.
+4. **Export / Import** — send the whole project, a single scene, or every
+   scene as separate files to CSV/TSV, so translation can happen in
+   Excel, Google Sheets, or handed off to other people, then re-imported.
+   Each row carries stable IDs (scene + block position), so re-importing
+   safely matches edits back to the right line even after re-opening the
+   ISO later.
+5. **Compile ISO** — rebuilds only the scenes that were actually edited,
+   re-nests every archive level, and binary-patches the result into a
+   fresh copy of the ISO (the original file is never modified). Typically
+   finishes in well under a second, even for a full 300-scene project.
+
+## Getting started
+
+### Download a prebuilt binary (recommended)
+
+Every tagged release (`vX.Y.Z`) triggers an automated build for both
+**Windows** and **macOS** via GitHub Actions, published under
+[Releases](../../releases). Just download the build for your OS and run
+it — no Python installation required. This is the easiest and recommended
+way to get the app.
+
+### Run from source
 
 ```bash
 python3 -m venv .venv
@@ -32,24 +66,34 @@ pip install -r requirements.txt
 PYTHONPATH=src python3 -m oreimo_translator.main
 ```
 
-## Descargas
+## Current scope
 
-Cada tag `vX.Y.Z` dispara un build automático (GitHub Actions) para
-**macOS y Windows**, publicado como [Release](../../releases) — no hace
-falta tener Python instalado para usar la app compilada.
+| Content | Status |
+|---|---|
+| `Dialogue` / `Dialogue2` blocks (spoken lines, narration) | Fully editable |
+| `Chapter` blocks (scene/chapter titles) | Fully editable |
+| `Choice` / `Choice2` / `Question` blocks (player-facing menus) | Preserved byte-for-byte, not yet editable here |
+| Scene ordering | Reflects on-disk order, not always in-game chronological order |
 
-## Estado / limitaciones actuales
+The `.obj`/`GPDA`/ISO-patch pipeline underneath has been validated
+end-to-end with real playtests (PPSSPP), including special characters,
+line-length changes, and multi-scene rebuilds — see the sibling research
+project's `documentation/FORMAT_NOTES.md` for the full technical history,
+including how a couple of nasty bugs (a silent ISO-rebuild corruption, a
+stale block-length header causing crashes on resize) were tracked down
+and fixed.
 
-- El acceso al ISO es 100% Python puro (sin `hdiutil` ni herramientas del
-  sistema) — funciona igual en macOS, Windows y Linux.
-- Solo se pueden traducir líneas de tipo **Dialogue/Dialogue2** (diálogo
-  normal) y **Chapter** (títulos de escena) — cubre todo lo usado hasta
-  ahora. Los bloques de tipo **Choice/Choice2/Question** (menús de opciones
-  del jugador) se preservan intactos pero aún no son editables desde aquí.
-- El orden de la lista de escenas es el orden interno del archivo, no
-  necesariamente el orden real del juego (pendiente de mejorar).
+## Contributing
 
-## Planeación
+Translation-workflow planning (glossaries, terminology, roadmaps) is
+tracked outside this repository by design — this repo is just the tool
+and its tests. Issues and pull requests around the GUI itself are welcome.
 
-La planeación detallada (specs, roadmap, tareas) se maneja fuera de este
-repositorio. Aquí solo vive el código y las pruebas.
+## Credits
+
+Developed by **[Choviics](https://github.com/Choviics)**.
+
+This tool exists so the community can build and maintain their own
+translations of this game — into Spanish, or into any other language —
+without having to reverse-engineer the format from scratch. If you use it
+to make one, consider sharing it back.
