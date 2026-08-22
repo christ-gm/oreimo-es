@@ -13,3 +13,11 @@ work/
 toolchain/
 EN/
 JP/
+
+# Python
+__pycache__/
+*.pyc
+
+# PyInstaller build output
+gui-interface/build/
+gui-interface/dist/
