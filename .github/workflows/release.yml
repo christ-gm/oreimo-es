@@ -1,0 +1,64 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: gui-interface
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+
+      - name: Build with PyInstaller
+        run: pyinstaller "Oreimo Translator.spec" --noconfirm
+
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          cd dist
+          ditto -c -k --sequesterRsrc --keepParent "Oreimo Translator.app" "Oreimo-Translator-macOS.zip"
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "dist/Oreimo Translator/*" -DestinationPath "Oreimo-Translator-Windows.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.os }}
+          path: gui-interface/dist/*.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*.zip
+          generate_release_notes: true
