@@ -63,18 +63,16 @@ jobs:
       - name: Versioned release (tag push)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         with:
+          token: ${{ secrets.RELEASE_TOKEN }}
           files: artifacts/**/*.zip
           body: "Built and published by Choviics."
 
       - name: Rolling build (push to main)
         if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         with:
+          token: ${{ secrets.RELEASE_TOKEN }}
           tag_name: latest
           name: Latest build (main)
           prerelease: true
