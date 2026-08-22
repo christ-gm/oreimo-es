@@ -77,6 +77,17 @@ jobs:
           fi
           echo "version=v$NEXT" >> "$GITHUB_OUTPUT"
 
+      - name: Read tag message (tag push)
+        if: startsWith(github.ref, 'refs/tags/')
+        id: tagmsg
+        run: |
+          MSG=$(git for-each-ref "refs/tags/${{ github.ref_name }}" --format='%(contents)')
+          {
+            echo "message<<TAGMSG_EOF"
+            echo "$MSG"
+            echo "TAGMSG_EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Generate changelog (tag push)
         if: startsWith(github.ref, 'refs/tags/')
         id: changelog
@@ -119,6 +130,8 @@ jobs:
             This release contains the **Oreimo Translator GUI** desktop tool (extraction/translation/repackaging app for Windows and macOS) — it is not the game's Spanish translation itself.
 
             Built and published by Choviics.
+
+            ${{ steps.tagmsg.outputs.message }}
 
             ${{ steps.changelog.outputs.notes }}
 
