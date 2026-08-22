@@ -1,12 +1,16 @@
 from pathlib import Path
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QAction, QColor
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QSplitter, QListWidget, QTableWidget,
     QTableWidgetItem, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel,
     QFileDialog, QMessageBox, QApplication, QAbstractItemView,
 )
+
+APP_VERSION = "0.1.0"
+AUTHOR_NAME = "Choviics"
+AUTHOR_GITHUB = "https://github.com/Choviics"
 
 EDITED_BACKGROUND = QColor(255, 244, 140)
 EDITED_FOREGROUND = QColor(20, 20, 20)
@@ -50,31 +54,36 @@ class MainWindow(QMainWindow):
     # ---- UI construction -------------------------------------------------
 
     def _build_menu(self):
-        file_menu = self.menuBar().addMenu("&Archivo")
+        file_menu = self.menuBar().addMenu("&File")
 
-        act_open = file_menu.addAction("&Abrir ISO...")
+        act_open = file_menu.addAction("&Open ISO...")
         act_open.triggered.connect(self.open_iso)
 
         file_menu.addSeparator()
 
-        act_export_all = file_menu.addAction("Exportar &todas las escenas (un archivo por escena)...")
+        act_export_all = file_menu.addAction("Export &all scenes (one file per scene)...")
         act_export_all.triggered.connect(self.export_all_scenes)
 
-        act_export_scene = file_menu.addAction("Exportar escena &seleccionada...")
+        act_export_scene = file_menu.addAction("Export &selected scene...")
         act_export_scene.triggered.connect(self.export_selected_scene)
 
-        act_export_single = file_menu.addAction("Exportar todo en &un solo archivo...")
+        act_export_single = file_menu.addAction("Export everything to a &single file...")
         act_export_single.triggered.connect(self.export_table)
 
         file_menu.addSeparator()
 
-        act_import = file_menu.addAction("&Importar archivo(s)...")
+        act_import = file_menu.addAction("&Import file(s)...")
         act_import.triggered.connect(self.import_tables)
 
         file_menu.addSeparator()
 
-        act_compile = file_menu.addAction("&Compilar ISO...")
+        act_compile = file_menu.addAction("&Compile ISO...")
         act_compile.triggered.connect(self.compile_iso)
+
+        help_menu = self.menuBar().addMenu("&Help")
+        act_about = help_menu.addAction("&About Oreimo Translator...")
+        act_about.setMenuRole(QAction.MenuRole.NoRole)
+        act_about.triggered.connect(self.show_about)
 
     def _build_central_widget(self):
         central = QWidget()
@@ -82,9 +91,9 @@ class MainWindow(QMainWindow):
         root = QVBoxLayout(central)
 
         search_row = QHBoxLayout()
-        search_row.addWidget(QLabel("Buscar:"))
+        search_row.addWidget(QLabel("Search:"))
         self.search_box = QLineEdit()
-        self.search_box.setPlaceholderText("Buscar en todos los dialogos (original o traduccion)...")
+        self.search_box.setPlaceholderText("Search all dialogue (original or translation)...")
         self.search_box.textChanged.connect(self._on_search_changed)
         search_row.addWidget(self.search_box)
         root.addLayout(search_row)
@@ -97,7 +106,7 @@ class MainWindow(QMainWindow):
         splitter.addWidget(self.scene_list)
 
         self.table = QTableWidget(0, 4)
-        self.table.setHorizontalHeaderLabels(["Escena", "Personaje", "Original", "Traduccion"])
+        self.table.setHorizontalHeaderLabels(["Scene", "Character", "Original", "Translation"])
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.setColumnWidth(COL_SCENE, 120)
         self.table.setColumnWidth(COL_CHARACTER, 100)
@@ -115,7 +124,7 @@ class MainWindow(QMainWindow):
     # ---- actions -----------------------------------------------------
 
     def open_iso(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Abrir ISO", "", "Imagenes ISO (*.iso)")
+        path, _ = QFileDialog.getOpenFileName(self, "Open ISO", "", "ISO images (*.iso)")
         if not path:
             return
 
@@ -125,7 +134,7 @@ class MainWindow(QMainWindow):
             project.load(path)
         except Exception as exc:
             QApplication.restoreOverrideCursor()
-            QMessageBox.critical(self, "Error al abrir el ISO", str(exc))
+            QMessageBox.critical(self, "Error opening ISO", str(exc))
             return
         QApplication.restoreOverrideCursor()
 
@@ -142,7 +151,7 @@ class MainWindow(QMainWindow):
         if not self._require_project():
             return
         path, _ = QFileDialog.getSaveFileName(
-            self, "Exportar todo en un archivo", "traduccion.csv",
+            self, "Export everything to a file", "translation.csv",
             "CSV (*.csv);;TSV (*.tsv)"
         )
         if not path:
@@ -151,20 +160,20 @@ class MainWindow(QMainWindow):
         try:
             self.project.export_table(path, delimiter=delimiter)
         except Exception as exc:
-            QMessageBox.critical(self, "Error al exportar", str(exc))
+            QMessageBox.critical(self, "Error exporting", str(exc))
             return
-        QMessageBox.information(self, "Exportado", f"Tabla exportada a:\n{path}")
+        QMessageBox.information(self, "Exported", f"Table exported to:\n{path}")
 
     def export_selected_scene(self):
         if not self._require_project():
             return
         current = self.scene_list.currentItem()
         if not current:
-            QMessageBox.information(self, "Sin escena seleccionada", "Selecciona una escena en la lista primero.")
+            QMessageBox.information(self, "No scene selected", "Select a scene in the list first.")
             return
         scene_name = current.text()
         path, _ = QFileDialog.getSaveFileName(
-            self, "Exportar escena", f"{scene_name}.csv",
+            self, "Export scene", f"{scene_name}.csv",
             "CSV (*.csv);;TSV (*.tsv)"
         )
         if not path:
@@ -173,9 +182,9 @@ class MainWindow(QMainWindow):
         try:
             self.project.export_scene(scene_name, path, delimiter=delimiter)
         except Exception as exc:
-            QMessageBox.critical(self, "Error al exportar", str(exc))
+            QMessageBox.critical(self, "Error exporting", str(exc))
             return
-        QMessageBox.information(self, "Exportado", f"Escena {scene_name!r} exportada a:\n{path}")
+        QMessageBox.information(self, "Exported", f"Scene {scene_name!r} exported to:\n{path}")
 
     def export_all_scenes(self):
         """Exports every scene to its own file (named after the scene) in
@@ -183,7 +192,7 @@ class MainWindow(QMainWindow):
         individually or as any group later."""
         if not self._require_project():
             return
-        directory = QFileDialog.getExistingDirectory(self, "Elegir carpeta de destino")
+        directory = QFileDialog.getExistingDirectory(self, "Choose destination folder")
         if not directory:
             return
 
@@ -192,13 +201,13 @@ class MainWindow(QMainWindow):
             written = self.project.export_all_per_scene(directory)
         except Exception as exc:
             QApplication.restoreOverrideCursor()
-            QMessageBox.critical(self, "Error al exportar", str(exc))
+            QMessageBox.critical(self, "Error exporting", str(exc))
             return
         QApplication.restoreOverrideCursor()
 
         QMessageBox.information(
-            self, "Exportado",
-            f"{len(written)} archivos (uno por escena) escritos en:\n{directory}"
+            self, "Exported",
+            f"{len(written)} files (one per scene) written to:\n{directory}"
         )
 
     def import_tables(self):
@@ -208,14 +217,14 @@ class MainWindow(QMainWindow):
         can be selected together and applied in one go."""
         if not self._require_project():
             return
-        paths, _ = QFileDialog.getOpenFileNames(self, "Importar archivo(s)", "", "CSV/TSV (*.csv *.tsv)")
+        paths, _ = QFileDialog.getOpenFileNames(self, "Import file(s)", "", "CSV/TSV (*.csv *.tsv)")
         if not paths:
             return
 
         try:
             results = self.project.import_tables(paths)
         except Exception as exc:
-            QMessageBox.critical(self, "Error al importar", str(exc))
+            QMessageBox.critical(self, "Error importing", str(exc))
             return
 
         self._refresh_current_view()
@@ -229,23 +238,23 @@ class MainWindow(QMainWindow):
         if all_warnings:
             preview = "\n".join(all_warnings[:20])
             if len(all_warnings) > 20:
-                preview += f"\n... y {len(all_warnings) - 20} avisos mas"
-            QMessageBox.warning(self, "Importado con avisos", preview)
+                preview += f"\n... and {len(all_warnings) - 20} more warnings"
+            QMessageBox.warning(self, "Imported with warnings", preview)
         else:
             QMessageBox.information(
-                self, "Importado",
-                f"{len(paths)} archivo(s) importados, todas las filas se aplicaron correctamente."
+                self, "Imported",
+                f"{len(paths)} file(s) imported, all rows applied successfully."
             )
 
     def compile_iso(self):
         if not self._require_project():
             return
         if self.project.edited_count() == 0:
-            QMessageBox.information(self, "Nada que compilar", "No hay lineas editadas todavia.")
+            QMessageBox.information(self, "Nothing to compile", "No lines have been edited yet.")
             return
 
         default_name = Path(self.project.iso_path).stem + "_ES.iso"
-        path, _ = QFileDialog.getSaveFileName(self, "Compilar ISO", default_name, "Imagenes ISO (*.iso)")
+        path, _ = QFileDialog.getSaveFileName(self, "Compile ISO", default_name, "ISO images (*.iso)")
         if not path:
             return
 
@@ -254,22 +263,33 @@ class MainWindow(QMainWindow):
             report = self.project.compile(path)
         except Exception as exc:
             QApplication.restoreOverrideCursor()
-            QMessageBox.critical(self, "Error al compilar", str(exc))
+            QMessageBox.critical(self, "Error compiling", str(exc))
             return
         QApplication.restoreOverrideCursor()
 
         QMessageBox.information(
-            self, "ISO compilado",
-            f"Listo: {path}\n\n"
-            f"Escenas modificadas: {len(report['scenes_changed'])}\n"
-            f"Lineas cambiadas: {report['lines_changed']}"
+            self, "ISO compiled",
+            f"Done: {path}\n\n"
+            f"Scenes changed: {len(report['scenes_changed'])}\n"
+            f"Lines changed: {report['lines_changed']}"
+        )
+
+    def show_about(self):
+        QMessageBox.about(
+            self, "About Oreimo Translator",
+            f"<h3>Oreimo Translator</h3>"
+            f"<p>Version {APP_VERSION}</p>"
+            f"<p>GUI tool for extracting, translating and reinserting "
+            f"dialogue for the Oreimo Spanish localization project.</p>"
+            f"<p>Created by {AUTHOR_NAME}<br>"
+            f"<a href=\"{AUTHOR_GITHUB}\">{AUTHOR_GITHUB}</a></p>"
         )
 
     # ---- view updates -----------------------------------------------------
 
     def _require_project(self) -> bool:
         if self.project is None:
-            QMessageBox.information(self, "Sin ISO", "Primero abre un ISO (Archivo > Abrir ISO...).")
+            QMessageBox.information(self, "No ISO open", "Open an ISO first (File > Open ISO...).")
             return False
         return True
 
@@ -337,10 +357,10 @@ class MainWindow(QMainWindow):
 
     def _update_status(self):
         if not self.project:
-            self.status_label.setText("Sin ISO abierto.")
+            self.status_label.setText("No ISO open.")
             return
         total = sum(len(v) for v in self.project.scenes.values())
         self.status_label.setText(
-            f"{len(self.project.scene_names())} escenas | {total} lineas | "
-            f"{self.project.edited_count()} editadas"
+            f"{len(self.project.scene_names())} scenes | {total} lines | "
+            f"{self.project.edited_count()} edited"
         )
