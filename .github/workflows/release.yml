@@ -56,17 +56,47 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
 
-      - name: Generate changelog
+      - name: Compute next version (push to main)
+        if: github.ref == 'refs/heads/main'
+        id: nextver
+        run: |
+          LAST=$(git tag -l 'v*.*.*' | sed 's/^v//' | sort -t. -k1,1n -k2,2n -k3,3n | tail -1)
+          if [ -z "$LAST" ]; then
+            NEXT="0.1.0"
+          else
+            IFS=. read -r MAJOR MINOR PATCH <<< "$LAST"
+            NEXT="$MAJOR.$MINOR.$((PATCH + 1))"
+          fi
+          echo "version=v$NEXT" >> "$GITHUB_OUTPUT"
+
+      - name: Generate changelog (tag push)
         if: startsWith(github.ref, 'refs/tags/')
         id: changelog
         env:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           NOTES=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=${{ github.ref_name }}" --jq .body)
+          {
+            echo "notes<<CHANGELOG_EOF"
+            echo "$NOTES"
+            echo "CHANGELOG_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Generate changelog (push to main)
+        if: github.ref == 'refs/heads/main'
+        id: changelog_main
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          NOTES=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=${{ steps.nextver.outputs.version }}" -f "target_commitish=main" --jq .body)
           {
             echo "notes<<CHANGELOG_EOF"
             echo "$NOTES"
@@ -86,16 +116,18 @@ jobs:
 
             ${{ steps.changelog.outputs.notes }}
 
-      - name: Rolling build (push to main)
+      - name: Auto release (push to main)
         if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.RELEASE_TOKEN }}
-          tag_name: latest
-          name: Latest build (main)
-          prerelease: true
+          tag_name: ${{ steps.nextver.outputs.version }}
+          name: ${{ steps.nextver.outputs.version }}
+          target_commitish: main
           files: artifacts/**/*.zip
           body: |
-            Automated development build of the **Oreimo Translator GUI** tool from the latest `main` commit — not the game's Spanish translation itself.
+            This release contains the **Oreimo Translator GUI** desktop tool (extraction/translation/repackaging app for Windows and macOS) — it is not the game's Spanish translation itself.
 
-            Published by Choviics.
+            Automatically published on push to main by Choviics.
+
+            ${{ steps.changelog_main.outputs.notes }}
