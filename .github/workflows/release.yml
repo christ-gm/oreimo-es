@@ -43,7 +43,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          Compress-Archive -Path "dist/Oreimo Translator/*" -DestinationPath "Oreimo-Translator-Windows.zip"
+          Compress-Archive -Path "dist/Oreimo Translator/*" -DestinationPath "dist/Oreimo-Translator-Windows.zip"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -66,6 +66,7 @@ jobs:
         with:
           files: artifacts/**/*.zip
           generate_release_notes: true
+          body: "Built and published by Choviics."
 
       - name: Rolling build (push to main)
         if: github.ref == 'refs/heads/main'
@@ -75,3 +76,4 @@ jobs:
           name: Latest build (main)
           prerelease: true
           files: artifacts/**/*.zip
+          body: "Automated build from main, published by Choviics."
