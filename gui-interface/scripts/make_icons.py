@@ -18,6 +18,10 @@ full-bleed either way, which is the convention there.
 
 Pass --no-round-corners if the artwork already carries its own silhouette
 and transparency, since the mask would clip it.
+
+The smallest .ico sizes are built from a tighter crop of the same master
+rather than a straight downscale, because the full illustration collapses
+into an unrecognisable dark shape at 16px - see SMALL_SIZE_CROP.
 """
 import argparse
 import shutil
@@ -33,6 +37,18 @@ MASTER = ASSETS / "icon.png"
 
 # Windows .ico: every size Explorer/taskbar/alt-tab actually picks from.
 ICO_SIZES = [16, 24, 32, 48, 64, 128, 256]
+
+# At and below this size, a straight downscale of the full illustration
+# loses the subject entirely - the face ends up a handful of pixels and
+# the icon reads as a dark blob in the taskbar. These sizes are built from
+# SMALL_SIZE_CROP instead, a tighter framing of the same master.
+SMALL_SIZE_MAX = 32
+
+# (left, top, right, bottom) in the 1024px master: head and cat ears,
+# picked by eye from a magnified side-by-side of the candidate crops.
+# SPECIFIC TO THE CURRENT ARTWORK - recheck it if icon.png is replaced,
+# or pass --small-crop none to just downscale the whole image.
+SMALL_SIZE_CROP = (300, 120, 800, 620)
 
 # macOS .iconset: Apple's required (name, pixel size) set. 1024 is the
 # @2x of 512 and is what the App Store / Finder preview uses.
@@ -91,10 +107,35 @@ def load_master() -> Image.Image:
     return im
 
 
-def build_ico(im: Image.Image):
+def build_ico(im: Image.Image, small_crop: tuple[int, int, int, int] | None):
+    """Writes a multi-resolution .ico. Every size is rendered explicitly
+    and handed to Pillow via append_images (it matches each requested
+    size against the provided frames, and only downscales the base image
+    when nothing matches), so the small sizes can come from a different
+    source image than the large ones."""
     out = ASSETS / "icon.ico"
-    im.save(out, format="ICO", sizes=[(s, s) for s in ICO_SIZES])
-    print(f"wrote {out.name} ({', '.join(f'{s}x{s}' for s in ICO_SIZES)})")
+    cropped = im.crop(small_crop) if small_crop else None
+
+    frames = []
+    for size in sorted(ICO_SIZES, reverse=True):
+        source = cropped if cropped and size <= SMALL_SIZE_MAX else im
+        frames.append(source.resize((size, size), Image.LANCZOS))
+
+    # the base image must be the LARGEST frame: Pillow skips any requested
+    # size bigger than the base's own dimensions
+    frames[0].save(
+        out, format="ICO",
+        sizes=[(s, s) for s in ICO_SIZES],
+        append_images=frames[1:],
+    )
+
+    if cropped:
+        small = [s for s in ICO_SIZES if s <= SMALL_SIZE_MAX]
+        detail = (f"{', '.join(f'{s}x{s}' for s in small)} from the crop, "
+                  f"rest from the full image")
+    else:
+        detail = ", ".join(f"{s}x{s}" for s in ICO_SIZES)
+    print(f"wrote {out.name} ({detail})")
 
 
 def build_icns(im: Image.Image):
@@ -126,10 +167,26 @@ def main():
              "rounded-square mask and margin (for art that already has its "
              "own silhouette, which the mask would clip)"
     )
+    parser.add_argument(
+        "--small-crop", metavar="L,T,R,B", default=None,
+        help="override the crop used for the smallest .ico sizes, in 1024px "
+             "master coordinates, or 'none' to downscale the full image at "
+             f"every size (default: {','.join(map(str, SMALL_SIZE_CROP))})"
+    )
     args = parser.parse_args()
 
+    if args.small_crop is None:
+        small_crop = SMALL_SIZE_CROP
+    elif args.small_crop.lower() == "none":
+        small_crop = None
+    else:
+        parts = tuple(int(v) for v in args.small_crop.split(","))
+        if len(parts) != 4:
+            sys.exit("--small-crop needs exactly four numbers: L,T,R,B")
+        small_crop = parts
+
     master = load_master()
-    build_ico(master)
+    build_ico(master, small_crop)
     build_icns(master if args.no_round_corners else apply_macos_shape(master))
 
 

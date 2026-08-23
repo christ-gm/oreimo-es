@@ -20,8 +20,16 @@ script therefore applies Apple's standard inset and corner radius to the
 convention. Pass `--no-round-corners` only if the artwork already carries
 its own silhouette, which the mask would otherwise clip.
 
-Keep meaningful detail large — the same file is rendered down to 16×16 in
-the Windows taskbar.
+The smallest `.ico` sizes (16, 24 and 32 px) are built from a tighter
+crop of the same master — `SMALL_SIZE_CROP` in the script, currently the
+head and cat ears. A straight downscale of the full illustration turns
+into an unrecognisable dark shape at 16×16 in the Windows taskbar. Those
+coordinates are specific to the current artwork, so **re-check them if you
+replace `icon.png`**; `--small-crop L,T,R,B` overrides the framing and
+`--small-crop none` disables the crop entirely.
+
+macOS is left alone here: the Dock never renders below 128 px, where the
+full illustration reads fine.
 
 Until `icon.png` exists the app and both builds work fine, just without an
 icon: `resources.app_icon_path()` returns `None` and the spec omits the
