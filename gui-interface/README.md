@@ -62,7 +62,18 @@ ISO  →  extract RES.DAT  →  decompress every scene  →  parse blocks
    the fastest safe method automatically: a same-size binary patch when
    possible (no extra tools needed), or a full ISO rebuild (requires
    `mkisofs` from cdrtools — see Requirements) when an image edit grows
-   `RES.DAT`, which is routine.
+   `RES.DAT`. Each edited image is re-encoded in its *original* pixel
+   format (palette or RGBA8888) rather than always RGBA8888, since that
+   mismatch alone can exceed the game's texture memory budget and crash
+   it in-game — see `documentation/FORMAT_NOTES.md` §23 for the real
+   crash this was found from and fixed. Compiling also regenerates
+   `RES.DAT`'s seekmap (a table of absolute file offsets the game seeks
+   with, stored inside `first.dat`) whenever anything moves — a stale one
+   hangs the game on load, see §24.
+7. **Stays responsive during slow operations** — opening an ISO,
+   compiling, and bulk image export all run on a background thread
+   instead of freezing the window (the whole UI, including the mouse
+   cursor, used to lock up during a full ISO rebuild).
 
 ## Getting started
 
@@ -102,8 +113,9 @@ silently produces a disc the PSP won't boot correctly, see
 | `Choice` / `Choice2` / `Question` blocks (player-facing menus) | Preserved byte-for-byte, not yet editable here |
 | Scene ordering | Reflects on-disk order, not always in-game chronological order |
 | Scene images (background/event/character/cutin/tukkomi) | Viewable, exportable to PNG, importable, and compilable into the ISO |
-| Compiling image edits into the ISO | Works — boot-tested in PPSSPP (no hang/crash, reaches the title screen and beyond); a full manual playthrough to a specific edited scene hasn't been done yet, see `documentation/FORMAT_NOTES.md` §22 |
+| Compiling image edits into the ISO | Works. Two real in-game failures were root-caused and fixed along the way: re-encoding in the wrong pixel format blew past the game's texture memory budget (`FORMAT_NOTES.md` §23), and `RES.DAT`'s seekmap — a table of absolute offsets stored in `first.dat` — went stale whenever anything changed size, hanging the game on load (§24). Both validated by measurement (11,642 palette images round-tripped with 0 mismatches; seekmap regeneration reproduces the original byte-for-byte) plus boot tests |
 | Character expression-swap overlays (mouth/eye parts) | Shown as separate raw parts, not composited onto the base sprite; also excluded from image reinsertion (no builder yet for their container format) |
+| Re-importing unedited images | `Import images...` re-encodes every PNG present in the folder, not just ones you actually changed — harmless now that format/size are preserved, but still wasted work (not fixed yet, see FORMAT_NOTES.md §23 "Still open") |
 
 The `.obj`/`GPDA`/ISO-patch pipeline underneath has been validated
 end-to-end with real playtests (PPSSPP), including special characters,

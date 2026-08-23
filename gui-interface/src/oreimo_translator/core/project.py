@@ -9,7 +9,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import gpda, iso_tools, obj_blocks, scene_images, image_io
+from . import gpda, iso_tools, obj_blocks, scene_images, image_io, seekmap
 
 
 def split_speaker(text: str) -> tuple[str | None, str]:
@@ -326,16 +326,18 @@ class Project:
         script_blob = self.res_dat[script_off:script_off + script_size]
 
         unsupported_image_edits: list[tuple[str, str, str]] = []
+        encoding_warnings: list[str] = []
         new_script_entries = []
         for e in self.script_entries:
             if e.name in changed_scene_names:
                 scene_blob = script_blob[e.data_offset:e.data_offset + e.data_size]
-                new_scene_blob, unsupported = self._rebuild_scene(
+                new_scene_blob, unsupported, scene_warnings = self._rebuild_scene(
                     scene_blob,
                     changed_dialogue.get(e.name, []),
                     image_edits_by_scene.get(e.name, {}),
                 )
                 unsupported_image_edits.extend(unsupported)
+                encoding_warnings.extend(f"{e.name}/{w}" for w in scene_warnings)
                 new_script_entries.append((e.name, new_scene_blob))
             else:
                 new_script_entries.append((e.name, script_blob[e.data_offset:e.data_offset + e.data_size]))
@@ -351,47 +353,92 @@ class Project:
                 new_top_entries.append((e.name, self.res_dat[e.data_offset:e.data_offset + e.data_size]))
         new_res_dat = gpda.build_gpda(new_top_entries)
 
-        resized = len(new_res_dat) != len(self.res_dat)
-        if resized:
-            # Image edits routinely grow RES.DAT (our re-encoder is
-            # pixel-perfect but compresses a bit less tightly than
-            # whatever originally packed these textures - see
-            # documentation/FORMAT_NOTES.md §22), which the fast same-
-            # size patch below can't accommodate. Fall back to a full
-            # rebuild (pycdlib extract + real mkisofs -iso-level 4 -xa),
-            # validated by an actual PPSSPP boot test in §22.
-            iso_tools.rebuild_iso_with_new_res_dat(self.iso_path, new_res_dat, output_iso_path)
+        # first.dat embeds a seekmap: a table of ABSOLUTE offsets into
+        # RES.DAT for every entry in its tree. Any size change in RES.DAT
+        # shifts later offsets and makes it stale, which hangs the game on
+        # load (confirmed in-game - see core/seekmap.py and
+        # documentation/FORMAT_NOTES.md §24). Regenerate it unconditionally:
+        # when nothing actually moved (the usual dialogue-only case, where
+        # GPDA padding absorbs the change) the result is byte-identical to
+        # the original, so first.dat is unchanged and the fast path below
+        # still applies.
+        original_first_dat = iso_tools.read_file(self.iso_path, iso_tools.FIRST_DAT_ISO_PATH)
+        new_first_dat = seekmap.update_for(new_res_dat, original_first_dat)
+
+        replacements = {
+            iso_tools.RES_DAT_ISO_PATH: new_res_dat,
+            iso_tools.FIRST_DAT_ISO_PATH: new_first_dat,
+        }
+        # Both files keep their size whenever GPDA's 0x800 padding absorbs
+        # the change (the usual dialogue-only case), which lets us patch
+        # them in place - fast, and needs no external tools. Image edits
+        # routinely grow RES.DAT past its padding (our re-encoder is
+        # pixel-perfect but compresses a bit less tightly than whatever
+        # originally packed these textures - see FORMAT_NOTES.md §22), and
+        # only then do we fall back to a full rebuild (pycdlib extract +
+        # real mkisofs -iso-level 4 -xa), validated by a PPSSPP boot test.
+        needs_full_rebuild = (
+            len(new_res_dat) != len(self.res_dat)
+            or len(new_first_dat) != len(original_first_dat)
+        )
+        if needs_full_rebuild:
+            iso_tools.rebuild_iso_with_files(self.iso_path, replacements, output_iso_path)
         else:
-            iso_tools.patch_res_dat_into_iso(self.iso_path, new_res_dat, output_iso_path)
+            iso_tools.patch_files_into_iso(self.iso_path, replacements, output_iso_path)
         return {
             "scenes_changed": list(changed_scene_names),
             "lines_changed": sum(1 for entries in changed_dialogue.values() for e in entries if e.is_edited),
             "images_changed": len(self.image_edits) - len(unsupported_image_edits),
             "unsupported_image_edits": unsupported_image_edits,
+            "encoding_warnings": encoding_warnings,
             "res_dat_size": len(new_res_dat),
-            "full_iso_rebuild": resized,
+            "full_iso_rebuild": needs_full_rebuild,
+            "seekmap_updated": new_first_dat != original_first_dat,
         }
 
     @staticmethod
     def _rebuild_named_image_container(
         container_blob: bytes, edits_by_gim_name: dict[str, image_io.ImportedImage]
-    ) -> bytes:
+    ) -> tuple[bytes, list[str]]:
         """Rebuilds a GPDA container whose entries are each a gzip-
         compressed, individually-named GIM image (the shape used by
         Background/Event/Cutin/Tukkomi - NOT the unnamed multi-part
         Character container, which has no builder yet, see
-        _rebuild_scene). edits_by_gim_name: {entry_name: ImportedImage}."""
+        _rebuild_scene). edits_by_gim_name: {entry_name: ImportedImage}.
+
+        Re-encodes each edited image in the ORIGINAL entry's own GIM
+        format (palette vs RGBA8888) rather than always RGBA8888 - see
+        scene_images.encode_to_gim's docstring for why this matters (a
+        format change alone, even with the exact same pixels, can exceed
+        the game's texture memory budget and crash - confirmed in-game,
+        documentation/FORMAT_NOTES.md §22/§23). Also flags any edit whose
+        re-encoded size is bigger than the original's, regardless of
+        cause, as a warning - a general safety net alongside the
+        format-preservation fix. Returns (new_container_blob, warnings)."""
         entries = gpda.parse_gpda(container_blob)
         new_entries = []
+        warnings: list[str] = []
         for e in entries:
+            old_gz = container_blob[e.data_offset:e.data_offset + e.data_size]
             if e.name in edits_by_gim_name:
-                new_gim = scene_images.encode_to_gim(edits_by_gim_name[e.name].png_bytes)
+                original_gim = gzip.decompress(old_gz)
+                target_format = scene_images.peek_format(original_gim)
+                new_gim, enc_warnings = scene_images.encode_to_gim(
+                    edits_by_gim_name[e.name].png_bytes, target_format
+                )
+                warnings.extend(f"{e.name}: {w}" for w in enc_warnings)
+                if len(new_gim) > len(original_gim):
+                    growth = (len(new_gim) - len(original_gim)) / len(original_gim) * 100
+                    warnings.append(
+                        f"{e.name}: now {growth:.0f}% bigger in texture memory than the "
+                        f"original ({len(original_gim):,} -> {len(new_gim):,} bytes) - "
+                        f"this may exceed the game's texture memory budget and crash"
+                    )
                 new_gz = gzip.compress(new_gim, compresslevel=9, mtime=0)
                 new_entries.append((e.name, new_gz))
             else:
-                old_gz = container_blob[e.data_offset:e.data_offset + e.data_size]
                 new_entries.append((e.name, old_gz))
-        return gpda.build_gpda(new_entries)
+        return gpda.build_gpda(new_entries), warnings
 
     @staticmethod
     def _rebuild_scene(
@@ -407,8 +454,9 @@ class Project:
         (see scene_images.py's module docstring) has no builder, only a
         reader, so those are reported back as unsupported instead of
         silently dropped or corrupting the container. Returns
-        (new_scene_blob, unsupported_image_edit_keys)."""
+        (new_scene_blob, unsupported_image_edit_keys, encoding_warnings)."""
         unsupported: list[tuple[str, str, str]] = []
+        encoding_warnings: list[str] = []
         edits_by_category: dict[str, dict[str, image_io.ImportedImage]] = defaultdict(dict)
         for (_scene, category, gim_name), item in image_edits.items():
             edits_by_category[category][gim_name] = item
@@ -427,7 +475,8 @@ class Project:
             if entry is None:
                 continue
             container = scene_blob[entry.data_offset:entry.data_offset + entry.data_size]
-            new_top[entry_name] = Project._rebuild_named_image_container(container, edits_by_category[label])
+            new_top[entry_name], warnings = Project._rebuild_named_image_container(container, edits_by_category[label])
+            encoding_warnings.extend(f"{label}/{w}" for w in warnings)
 
         folder000 = next(x for x in scene_entries if x.name == "000")
         folder000_blob = scene_blob[folder000.data_offset:folder000.data_offset + folder000.data_size]
@@ -450,7 +499,8 @@ class Project:
             if entry is None:
                 continue
             container = folder000_blob[entry.data_offset:entry.data_offset + entry.data_size]
-            new_inner[entry.name] = Project._rebuild_named_image_container(container, edits_by_category[label])
+            new_inner[entry.name], warnings = Project._rebuild_named_image_container(container, edits_by_category[label])
+            encoding_warnings.extend(f"{label}/{w}" for w in warnings)
 
         if new_inner:
             new_000_entries = [
@@ -461,10 +511,10 @@ class Project:
 
         if not new_top:
             # every requested edit for this scene was unsupported (Character-only)
-            return scene_blob, unsupported
+            return scene_blob, unsupported, encoding_warnings
 
         new_scene_entries = [
             (x.name, new_top.get(x.name, scene_blob[x.data_offset:x.data_offset + x.data_size]))
             for x in scene_entries
         ]
-        return gpda.build_gpda(new_scene_entries), unsupported
+        return gpda.build_gpda(new_scene_entries), unsupported, encoding_warnings

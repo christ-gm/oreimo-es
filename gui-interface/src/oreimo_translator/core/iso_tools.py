@@ -19,7 +19,10 @@ to the original disc, works perfectly for same-size changes and is the
 default this project uses.
 
 When RES.DAT's size DOES change (routine for image edits - see §22), a
-full rebuild is unavoidable. `rebuild_iso_with_new_res_dat()` does this
+full rebuild is unavoidable - and note that such a rebuild must also
+replace `first.dat`, whose embedded seekmap indexes absolute offsets into
+RES.DAT and goes stale the moment anything shifts (see core/seekmap.py
+and FORMAT_NOTES.md §24). `rebuild_iso_with_files()` does this
 using `pycdlib` (pure Python) to extract every file off the original ISO,
 and real `mkisofs` (cdrtools) - NOT `xorriso` - to repack it, with the
 exact flag set (`-iso-level 4 -xa ...`) taken from the sibling
@@ -32,6 +35,7 @@ emulation mode has no `-xa` equivalent at all (checked: absent from its
 `-help` output), which is the most likely reason it silently produced a
 disc the PSP firmware's module loader couldn't read correctly.
 """
+import io
 import platform
 import shutil
 import struct
@@ -136,6 +140,48 @@ def mkisofs_available() -> bool:
     return shutil.which("mkisofs") is not None
 
 
+def _locate_file_offset(iso_path: str, inner_path: str) -> tuple[int, int]:
+    """Returns (byte_offset, length) of a file on the disc, from its
+    ISO9660 directory record. Cross-checked against the independent
+    raw-magic-scan locator for RES.DAT (both report 40056832 on this
+    game's disc) before being trusted for in-place patching."""
+    import pycdlib
+
+    iso = pycdlib.PyCdlib()
+    iso.open(iso_path)
+    try:
+        record = iso.get_record(iso_path=inner_path)
+        return record.extent_location() * 2048, record.get_data_length()
+    finally:
+        iso.close()
+
+
+def patch_files_into_iso(source_iso_path: str, replacements: dict[str, bytes], output_iso_path: str):
+    """Clones the ISO and overwrites each replacement in place, without
+    touching the filesystem structure. Every replacement must be exactly
+    the same size as the file it replaces - anything else would run into
+    neighbouring data on the disc. This is the fast, dependency-free path
+    (no mkisofs); callers fall back to rebuild_iso_with_files when a size
+    actually changed."""
+    located = {}
+    for inner_path, new_bytes in replacements.items():
+        offset, length = _locate_file_offset(source_iso_path, inner_path)
+        if len(new_bytes) != length:
+            raise IsoError(
+                f"refusing to patch: new {inner_path} is {len(new_bytes)} bytes, "
+                f"original is {length}. Writing a different size would overwrite "
+                f"real data adjacent to it on the disc."
+            )
+        located[inner_path] = offset
+
+    _clone_file(source_iso_path, output_iso_path)
+
+    with open(output_iso_path, "r+b") as f:
+        for inner_path, new_bytes in replacements.items():
+            f.seek(located[inner_path])
+            f.write(new_bytes)
+
+
 def _extract_iso_tree(iso_path: str, dest_dir: Path):
     """Extracts every file off iso_path into dest_dir, preserving the
     exact directory structure and filename casing (this disc has no Rock
@@ -160,20 +206,42 @@ def _extract_iso_tree(iso_path: str, dest_dir: Path):
         iso.close()
 
 
-def rebuild_iso_with_new_res_dat(source_iso_path: str, new_res_dat: bytes, output_iso_path: str):
-    """Full rebuild path, used when new_res_dat is NOT the same size as
+RES_DAT_ISO_PATH = "/PSP_GAME/INSDIR/RES.DAT"
+FIRST_DAT_ISO_PATH = "/PSP_GAME/USRDIR/first.dat"
+
+
+def read_file(iso_path: str, inner_path: str) -> bytes:
+    """Reads one file out of the ISO by its path on disc (e.g.
+    FIRST_DAT_ISO_PATH), via pycdlib. Unlike read_res_dat's raw magic
+    scan, this works for any file regardless of content."""
+    import pycdlib
+
+    iso = pycdlib.PyCdlib()
+    iso.open(iso_path)
+    try:
+        buf = io.BytesIO()
+        iso.get_file_from_iso_fp(buf, iso_path=inner_path)
+        return buf.getvalue()
+    finally:
+        iso.close()
+
+
+def rebuild_iso_with_files(source_iso_path: str, replacements: dict[str, bytes], output_iso_path: str):
+    """Full rebuild path, used when a replacement file's size differs from
     the original (patch_res_dat_into_iso can't handle that case at all).
-    Extracts every file off the original ISO (pycdlib), swaps in
-    new_res_dat, and repacks with real mkisofs using the validated flag
-    set (see module docstring). Raises IsoError if mkisofs isn't
-    installed - this is an external dependency (cdrtools), unlike the
-    same-size patch path which needs nothing beyond the stdlib."""
+    Extracts every file off the original ISO (pycdlib), swaps in each
+    entry of `replacements` ({iso_path: new_bytes}, e.g.
+    {RES_DAT_ISO_PATH: ..., FIRST_DAT_ISO_PATH: ...}), and repacks with
+    real mkisofs using the validated flag set (see module docstring).
+    Raises IsoError if mkisofs isn't installed - this is an external
+    dependency (cdrtools), unlike the same-size patch path which needs
+    nothing beyond the stdlib."""
     if not mkisofs_available():
         raise IsoError(
-            "mkisofs not found on PATH. Rebuilding the ISO with a resized "
-            "RES.DAT (needed for this compile) requires real mkisofs from "
-            "cdrtools - install it (macOS: `brew install cdrtools`; "
-            "Windows/Linux: see the project README) and try again."
+            "mkisofs not found on PATH. Rebuilding the ISO (needed for this "
+            "compile, because a rebuilt file changed size) requires real "
+            "mkisofs from cdrtools - install it (macOS: `brew install "
+            "cdrtools`; Windows/Linux: see the project README) and try again."
         )
 
     import tempfile
@@ -182,19 +250,11 @@ def rebuild_iso_with_new_res_dat(source_iso_path: str, new_res_dat: bytes, outpu
         staging = Path(tmp) / "staging"
         _extract_iso_tree(source_iso_path, staging)
 
-        # find the staged RES.DAT by locating whichever extracted file has
-        # the same size as the ORIGINAL RES.DAT (name casing on disc is
-        # "RES.DAT", but resolved via search rather than assumed, in case
-        # a future disc uses different casing)
-        original_size = len(read_res_dat(source_iso_path))
-        res_dat_path = None
-        for candidate in staging.rglob("*"):
-            if candidate.is_file() and candidate.stat().st_size == original_size and candidate.name.upper() == "RES.DAT":
-                res_dat_path = candidate
-                break
-        if res_dat_path is None:
-            raise IsoError("could not locate RES.DAT in the extracted ISO tree")
-        res_dat_path.write_bytes(new_res_dat)
+        for inner_path, new_bytes in replacements.items():
+            staged = staging / inner_path.lstrip("/")
+            if not staged.is_file():
+                raise IsoError(f"could not locate {inner_path} in the extracted ISO tree")
+            staged.write_bytes(new_bytes)
 
         mkisofs = shutil.which("mkisofs")
         subprocess.run(

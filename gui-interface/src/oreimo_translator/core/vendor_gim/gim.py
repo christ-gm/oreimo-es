@@ -1,15 +1,25 @@
 #!/usr/bin/env python3
 """
-Vendored, unmodified except for the import below, from
-https://github.com/GeofrontTeam/LibPSPThemes (gim.py + bitconv.py) - decodes
-the PSP MIG.00.1PSP ("GIM") texture format used for every scene image
-(background/event/character/cutin/tukkomi) in RES.DAT. No LICENSE file was
-present in that repo at the commit pulled (7ace443, 2021-09-24); kept here
-with clear attribution, same spirit as this project's use of
-zapan/FastAsyncOreimoTranslateTool as a format reference elsewhere. Originally
-vendored for a one-shot investigation in the sibling gim-menu-investigation/
-sub-project; copied here so the GUI's "view scene images" feature is
-self-contained.
+Vendored from https://github.com/GeofrontTeam/LibPSPThemes (gim.py +
+bitconv.py) - decodes/encodes the PSP MIG.00.1PSP ("GIM") texture format
+used for every scene image (background/event/character/cutin/tukkomi) in
+RES.DAT. No LICENSE file was present in that repo at the commit pulled
+(7ace443, 2021-09-24); kept here with clear attribution, same spirit as
+this project's use of zapan/FastAsyncOreimoTranslateTool as a format
+reference elsewhere. Originally vendored for a one-shot investigation in
+the sibling gim-menu-investigation/ sub-project; copied here so the GUI's
+"view scene images" feature is self-contained.
+
+Two changes from upstream: the relative `bitconv` import (for its new
+home as a sub-package), and a real bug fix in
+`encode_image_data_rgba_palette()` (see the comment there) that crashed
+with IndexError on any palette-format image shorter than 256px tall - the
+RGBA8888 (non-palette) encode path this project used first didn't hit it,
+which is why it went unnoticed until palette encoding was actually needed
+(see documentation/FORMAT_NOTES.md §23). The RGBA8888 encode path was
+separately verified byte-for-byte identical to Sony's own official
+GimConv 1.20h tool's output for real translated content from this game -
+see the same section - so it's trusted as-is.
 """
 
 import argparse
@@ -68,21 +78,49 @@ def png2gim(data, args):
         return pixels
     
     def encode_image_data_rgba_palette(im, gim_pixel_order):
+        # BUG FIX (oreimo-es): the original vendored code indexed
+        # `im_pixels` (the per-pixel index data, one entry per image ROW)
+        # instead of `im_pixels_palette` (the actual color table from
+        # im.getpalette()) when building the 256-entry palette - `pos`
+        # runs 0-255 while `im_pixels` only has `height` rows, so any
+        # image shorter than 256px crashed with IndexError the moment a
+        # palette-format image was encoded (confirmed against this game's
+        # real Character textures). Rewritten to read the real palette.
+        #
+        # Also reads per-color alpha (not just PIL's usual single
+        # transparent-index model) - this game's real P8 textures use
+        # per-color alpha for gradient fades (confirmed on a real Cutin
+        # image, see documentation/FORMAT_NOTES.md §23), which a single
+        # transparency index can't represent. PIL's own `im.getpalette
+        # ("RGBA")` does NOT round-trip this correctly once an image has
+        # been through actual PNG bytes (as every caller here has, via
+        # png2gim's `Image.open(io.BytesIO(data))`) - it silently reports
+        # 255 for every entry regardless of the file's real tRNS chunk.
+        # The real per-index alpha values only survive in
+        # `im.info['transparency']`, as a raw bytes blob (one alpha byte
+        # per palette index, in file order - PNG's actual tRNS chunk
+        # encoding) when there's more than one non-opaque color; a plain
+        # int there instead means the older single-transparent-index case.
         im_pixels = encode_image_data_rgba(im, gim_pixel_order)
-        im_pixels_palette = list(im.getpalette())
-        
+        raw_palette = im.getpalette() or []  # RGB triples only
+        transparency = im.info.get('transparency')
+        alpha_bytes = transparency if isinstance(transparency, (bytes, bytearray)) else None
+        transparency_index = transparency if isinstance(transparency, int) else None
+
         pixels_palette = [[0] * 256]
-        pos = 0
-        y = 0
         for x in range(256):
-            if pos < len(im_pixels_palette):
-                if isinstance(im_pixels[pos], int):
-                    pixels_palette[y][x] = im_pixels_palette[pos]
-                else:
-                    pixels_palette[y][x] = int.from_bytes(bytes(im_pixels_palette[pos]), byteorder='little')
+            base = x * 3
+            if base + 2 < len(raw_palette):
+                r, g, b = raw_palette[base], raw_palette[base + 1], raw_palette[base + 2]
             else:
-                pixels_palette[y][x] = 0
-            pos += 1
+                r = g = b = 0
+            if alpha_bytes is not None:
+                a = alpha_bytes[x] if x < len(alpha_bytes) else 255
+            elif transparency_index is not None and x == transparency_index:
+                a = 0
+            else:
+                a = 255
+            pixels_palette[0][x] = int.from_bytes(bytes((r, g, b, a)), byteorder='little')
         
         return im_pixels, pixels_palette
     

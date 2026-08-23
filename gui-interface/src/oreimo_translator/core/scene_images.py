@@ -25,14 +25,25 @@ a separate "part" rather than compositing them onto the base canvas - full
 expression compositing is not implemented yet.
 """
 import gzip
+import io
 import struct
 from dataclasses import dataclass, field
 from types import SimpleNamespace
+
+from PIL import Image
 
 from . import gpda
 from .vendor_gim.gim import gim2png, png2gim
 
 GIM_MAGICS = (b"MIG.", b".GIM")  # little-endian ("MIG.") and big-endian (".GIM") GIM headers
+
+FORMAT_RGBA8888 = 3
+FORMAT_P8 = 5
+PALETTE_FORMATS = {4, 5}  # P4, P8 - both re-encoded as P8, the only indexed depth the vendored encoder supports
+FORMAT_NAMES = {
+    0: "RGBA5650", 1: "RGBA5551", 2: "RGBA4444", 3: "RGBA8888", 4: "P4", 5: "P8",
+    6: "PA88", 7: "PAxx8888", 8: "DXT1", 9: "DXT3", 10: "DXT5",
+}
 
 # top-level scene entries, in the order they should be shown
 SCENE_CATEGORIES = [
@@ -159,10 +170,104 @@ _ENCODE_ARGS = SimpleNamespace(
 )
 
 
-def encode_to_gim(png_bytes: bytes) -> bytes:
-    """Encodes PNG bytes to a raw MIG.00.1PSP GIM texture (RGBA8888,
-    tiled). Round-trip validated (encode then decode_to_rgba back)
-    byte-for-byte identical against real background/event/character
-    textures from this game before this was trusted for reinsertion - see
-    documentation/FORMAT_NOTES.md §22."""
-    return png2gim(png_bytes, _ENCODE_ARGS)
+def peek_format(gim_bytes: bytes) -> int:
+    """Reads just the numeric GIM pixel-format code (see FORMAT_NAMES)
+    from raw MIG.00.1PSP bytes, without decoding any pixels - walks the
+    root->picture->image block chain to the image block's format field.
+    Used at compile time to match a replacement's encoding to the
+    original's (see encode_to_gim). Returns FORMAT_RGBA8888 if no image
+    block is found (shouldn't happen for real files, but keeps this a
+    safe default rather than raising)."""
+    pos = 16  # past the fixed GIM/MIG magic+version+platform header
+    for _ in range(3):
+        if pos + 16 > len(gim_bytes):
+            break
+        (block_type,) = struct.unpack_from("<H", gim_bytes, pos)
+        content_start = pos + 16
+        if block_type == 4:  # image block
+            (fmt,) = struct.unpack_from("<H", gim_bytes, content_start + 4)
+            return fmt
+        pos = content_start
+    return FORMAT_RGBA8888
+
+
+def _build_rgba_palette_image(im: Image.Image, max_colors: int = 256) -> Image.Image | None:
+    """Quantizes an RGBA image into an indexed 'P'-mode image carrying a
+    full RGBA palette (independent alpha per color - not PIL's usual
+    single-transparent-index model). Exact/lossless: every distinct
+    (R,G,B,A) combination gets its own palette slot, no color averaging.
+    Returns None if the image needs more than max_colors combinations
+    (this game's real P8 textures top out at 256 - confirmed one uses a
+    genuine alpha *gradient* built entirely from per-color alpha, not
+    just a single transparent color, see FORMAT_NOTES.md §23)."""
+    w, h = im.size
+    palette: list[tuple[int, int, int, int]] = []
+    index_of: dict[tuple[int, int, int, int], int] = {}
+    indices = bytearray(w * h)
+    for i, color in enumerate(im.getdata()):
+        idx = index_of.get(color)
+        if idx is None:
+            if len(palette) >= max_colors:
+                return None
+            idx = len(palette)
+            index_of[color] = idx
+            palette.append(color)
+        indices[i] = idx
+
+    palette.extend([(0, 0, 0, 0)] * (max_colors - len(palette)))
+    flat_rgba = bytes(component for color in palette for component in color)
+
+    im_p = Image.frombytes("P", (w, h), bytes(indices))
+    im_p.putpalette(flat_rgba, rawmode="RGBA")
+    return im_p
+
+
+def encode_to_gim(png_bytes: bytes, target_format: int = FORMAT_RGBA8888) -> tuple[bytes, list[str]]:
+    """Encodes PNG bytes to a raw MIG.00.1PSP GIM texture, tiled, matching
+    target_format when possible.
+
+    Re-encoding a palette-format (P4/P8) original as RGBA8888 quadruples
+    its decoded size (1 byte/pixel -> 4) - this is exactly what caused a
+    real in-game crash (see documentation/FORMAT_NOTES.md §22/§23): the
+    game budgets texture memory assuming each scene's original formats,
+    and a scene whose Background/Cutin got silently blown up to 4x their
+    size ran out of room the moment the next texture (Tukkomi) tried to
+    load. So when target_format is P4/P8, this tries to encode as an
+    8-bit palette instead - the only indexed depth the vendored encoder
+    supports (P4 originals still get P8 output; a 256-color palette is
+    strictly more capacity than a 16-color one, and 8bpp is 1/4 of
+    RGBA8888 either way).
+
+    Palette encoding is exact/lossless for images with <=256 distinct
+    (R,G,B,A) combinations - including transparency and alpha gradients,
+    since GIM's palette format carries independent alpha per color (see
+    _build_rgba_palette_image). Only falls back to RGBA8888, with a
+    warning, when the content genuinely needs more than 256 combinations
+    - since that can't be represented in a palette without visible
+    quality loss the caller hasn't asked for. Returns (gim_bytes,
+    warnings) - warnings is non-empty exactly when a palette target had
+    to fall back to RGBA8888, so the caller can surface "this may exceed
+    the game's texture memory budget" to the user instead of finding out
+    from a crash.
+
+    The RGBA8888 path itself was verified byte-for-byte identical to
+    Sony's own official GimConv 1.20h tool's output for real translated
+    content from this game before being trusted - see §22/§23."""
+    warnings: list[str] = []
+
+    if target_format in PALETTE_FORMATS:
+        im = Image.open(io.BytesIO(png_bytes)).convert("RGBA")
+        paletted = _build_rgba_palette_image(im)
+        if paletted is None:
+            warnings.append(
+                "uses more than 256 distinct color+transparency combinations, but "
+                "the original texture here is a 256-color palette format - using "
+                "RGBA8888 instead (uses more texture memory than the original; "
+                "verify in-game)"
+            )
+        else:
+            buf = io.BytesIO()
+            paletted.save(buf, format="PNG")
+            return png2gim(buf.getvalue(), _ENCODE_ARGS), warnings
+
+    return png2gim(png_bytes, _ENCODE_ARGS), warnings

@@ -484,7 +484,20 @@ class MainWindow(QMainWindow):
                     f"\n\n{len(unsupported)} Character image edit(s) were NOT applied - "
                     f"reinserting Character images isn't supported yet:\n{names}"
                 )
-            QMessageBox.information(self, "ISO compiled", message)
+
+            encoding_warnings = report.get("encoding_warnings") or []
+            if encoding_warnings:
+                preview = "\n".join(encoding_warnings[:20])
+                if len(encoding_warnings) > 20:
+                    preview += f"\n... and {len(encoding_warnings) - 20} more"
+                message += (
+                    f"\n\n{len(encoding_warnings)} image encoding warning(s) - these "
+                    f"images ended up using more texture memory than the original, "
+                    f"which can crash the game (verify in-game before shipping):\n{preview}"
+                )
+                QMessageBox.warning(self, "ISO compiled with warnings", message)
+            else:
+                QMessageBox.information(self, "ISO compiled", message)
 
         def on_error(message):
             QMessageBox.critical(self, "Error compiling", message)
