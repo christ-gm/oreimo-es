@@ -1,19 +1,36 @@
 """
 ISO-level helpers: locate RES.DAT inside a raw PSP ISO file, read it, and
-patch a same-size RES.DAT back into a clone of the ISO without a full
-rebuild.
+either (a) patch a same-size RES.DAT back into a clone of the ISO without
+a full rebuild (fast path, no external tools), or (b) do a full rebuild
+when RES.DAT changed size (needed for image edits - see
+documentation/FORMAT_NOTES.md §22).
 
-Pure Python, no OS-specific tools (no mounting) and no assumption about
-the ISO9660 filesystem layout - RES.DAT is found by scanning the raw
-bytes for the GPDA container format's own magic/size header. Works
-identically on macOS, Windows, and Linux.
+RES.DAT lookup/patching is pure Python, no OS-specific tools (no mounting)
+and no assumption about the ISO9660 filesystem layout - RES.DAT is found
+by scanning the raw bytes for the GPDA container format's own magic/size
+header. Works identically on macOS, Windows, and Linux.
 
-Why binary-patch instead of rebuilding the ISO from scratch: see the
-sibling reverse-engineering project's documentation/FORMAT_NOTES.md §13 —
-a full `xorriso` rebuild silently broke the game (a module failed to load,
-infinite hang). Binary-patching RES.DAT in place, keeping everything else
-byte-identical to the original disc, works perfectly and is what this
-project uses in production.
+Why binary-patch instead of rebuilding the ISO from scratch whenever
+possible: see the sibling reverse-engineering project's
+documentation/FORMAT_NOTES.md §13 — a full `xorriso -as mkisofs` rebuild
+silently broke the game (psmf.prx failed to load, infinite hang).
+Binary-patching RES.DAT in place, keeping everything else byte-identical
+to the original disc, works perfectly for same-size changes and is the
+default this project uses.
+
+When RES.DAT's size DOES change (routine for image edits - see §22), a
+full rebuild is unavoidable. `rebuild_iso_with_new_res_dat()` does this
+using `pycdlib` (pure Python) to extract every file off the original ISO,
+and real `mkisofs` (cdrtools) - NOT `xorriso` - to repack it, with the
+exact flag set (`-iso-level 4 -xa ...`) taken from the sibling
+`FastAsyncOreimoTranslateTool` project (already used in production to
+ship a full translated build of this game) and confirmed by an actual
+PPSSPP boot test to reach the title screen cleanly (§22), unlike the
+`xorriso` attempt. The critical, previously-missing ingredient is `-xa`
+(rationalized CD-ROM XA directory attributes) - `xorriso -as mkisofs`'s
+emulation mode has no `-xa` equivalent at all (checked: absent from its
+`-help` output), which is the most likely reason it silently produced a
+disc the PSP firmware's module loader couldn't read correctly.
 """
 import platform
 import shutil
@@ -113,3 +130,84 @@ def patch_res_dat_into_iso(source_iso_path: str, new_res_dat: bytes, output_iso_
             raise IsoError(f"expected GPDA magic at offset {offset} in the clone, got {magic!r}")
         f.seek(offset)
         f.write(new_res_dat)
+
+
+def mkisofs_available() -> bool:
+    return shutil.which("mkisofs") is not None
+
+
+def _extract_iso_tree(iso_path: str, dest_dir: Path):
+    """Extracts every file off iso_path into dest_dir, preserving the
+    exact directory structure and filename casing (this disc has no Rock
+    Ridge/Joliet - pycdlib reads the raw, non-standard-but-tolerated
+    lowercase/mixed-case primary ISO9660 identifiers directly; verified
+    byte-for-byte against the trusted raw-byte-scan RES.DAT reader before
+    this was trusted, see FORMAT_NOTES.md §22)."""
+    import pycdlib
+
+    iso = pycdlib.PyCdlib()
+    iso.open(iso_path)
+    try:
+        for root, _dirs, files in iso.walk(iso_path="/"):
+            root_rel = root.lstrip("/")
+            out_dir = dest_dir / root_rel if root_rel else dest_dir
+            out_dir.mkdir(parents=True, exist_ok=True)
+            for fname in files:
+                entry_iso_path = f"{root}/{fname}" if root != "/" else f"/{fname}"
+                with open(out_dir / fname, "wb") as f:
+                    iso.get_file_from_iso_fp(f, iso_path=entry_iso_path)
+    finally:
+        iso.close()
+
+
+def rebuild_iso_with_new_res_dat(source_iso_path: str, new_res_dat: bytes, output_iso_path: str):
+    """Full rebuild path, used when new_res_dat is NOT the same size as
+    the original (patch_res_dat_into_iso can't handle that case at all).
+    Extracts every file off the original ISO (pycdlib), swaps in
+    new_res_dat, and repacks with real mkisofs using the validated flag
+    set (see module docstring). Raises IsoError if mkisofs isn't
+    installed - this is an external dependency (cdrtools), unlike the
+    same-size patch path which needs nothing beyond the stdlib."""
+    if not mkisofs_available():
+        raise IsoError(
+            "mkisofs not found on PATH. Rebuilding the ISO with a resized "
+            "RES.DAT (needed for this compile) requires real mkisofs from "
+            "cdrtools - install it (macOS: `brew install cdrtools`; "
+            "Windows/Linux: see the project README) and try again."
+        )
+
+    import tempfile
+
+    with tempfile.TemporaryDirectory(prefix="oreimo_iso_rebuild_") as tmp:
+        staging = Path(tmp) / "staging"
+        _extract_iso_tree(source_iso_path, staging)
+
+        # find the staged RES.DAT by locating whichever extracted file has
+        # the same size as the ORIGINAL RES.DAT (name casing on disc is
+        # "RES.DAT", but resolved via search rather than assumed, in case
+        # a future disc uses different casing)
+        original_size = len(read_res_dat(source_iso_path))
+        res_dat_path = None
+        for candidate in staging.rglob("*"):
+            if candidate.is_file() and candidate.stat().st_size == original_size and candidate.name.upper() == "RES.DAT":
+                res_dat_path = candidate
+                break
+        if res_dat_path is None:
+            raise IsoError("could not locate RES.DAT in the extracted ISO tree")
+        res_dat_path.write_bytes(new_res_dat)
+
+        mkisofs = shutil.which("mkisofs")
+        subprocess.run(
+            [
+                mkisofs,
+                "-iso-level", "4", "-xa",
+                "-A", "PSP GAME",
+                "-V", "OreImo",
+                "-sysid", "PSP GAME",
+                "-volset", "OreImo",
+                "-p", "", "-publisher", "",
+                "-o", str(output_iso_path),
+                str(staging),
+            ],
+            check=True, capture_output=True, text=True,
+        )

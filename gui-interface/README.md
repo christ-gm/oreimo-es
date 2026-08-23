@@ -46,6 +46,23 @@ ISO  →  extract RES.DAT  →  decompress every scene  →  parse blocks
    re-nests every archive level, and binary-patches the result into a
    fresh copy of the ISO (the original file is never modified). Typically
    finishes in well under a second, even for a full 300-scene project.
+6. **View, export and import scene images** — the "Images" tab (its own
+   full view, with its own scene list) shows every background, event/CG,
+   character and cutin/tukkomi texture (`MIG.00.1PSP`/`.gim`, PSP's
+   proprietary format) attached to the selected scene, decoded on demand.
+   Checkboxes above the scene list filter it down to only scenes that
+   actually contain a given image category (e.g. "only scenes with a
+   Tukkomi" — reaction-stamp overlays, a likely place for baked-in
+   Japanese text). `File > Export images...` writes PNGs (for the
+   selected scene, or every scene passing the current filter) plus a
+   `manifest.json` that identifies each file by scene/category/label;
+   `File > Import images...` reads that folder back, validates each PNG
+   (dimensions must match exactly), and marks it as a pending edit
+   (highlighted in the tree, same as edited dialogue). Compiling picks
+   the fastest safe method automatically: a same-size binary patch when
+   possible (no extra tools needed), or a full ISO rebuild (requires
+   `mkisofs` from cdrtools — see Requirements) when an image edit grows
+   `RES.DAT`, which is routine.
 
 ## Getting started
 
@@ -66,6 +83,16 @@ pip install -r requirements.txt
 PYTHONPATH=src python3 -m oreimo_translator.main
 ```
 
+Compiling dialogue-only edits needs nothing beyond the above. Compiling
+image edits needs real `mkisofs` (from **cdrtools**, not `xorriso` — it
+silently produces a disc the PSP won't boot correctly, see
+`documentation/FORMAT_NOTES.md` §13/§22) on `PATH`:
+- macOS: `brew install cdrtools`
+- Linux: `sudo apt install genisoimage` (provides `mkisofs`) or your
+  distro's `cdrtools`/`cdrkit` package
+- Windows: not yet wired up in this app; a Windows `mkisofs.exe` exists
+  in `tool-bin/` from the sibling toolchain project but isn't bundled here yet
+
 ## Current scope
 
 | Content | Status |
@@ -74,6 +101,9 @@ PYTHONPATH=src python3 -m oreimo_translator.main
 | `Chapter` blocks (scene/chapter titles) | Fully editable |
 | `Choice` / `Choice2` / `Question` blocks (player-facing menus) | Preserved byte-for-byte, not yet editable here |
 | Scene ordering | Reflects on-disk order, not always in-game chronological order |
+| Scene images (background/event/character/cutin/tukkomi) | Viewable, exportable to PNG, importable, and compilable into the ISO |
+| Compiling image edits into the ISO | Works — boot-tested in PPSSPP (no hang/crash, reaches the title screen and beyond); a full manual playthrough to a specific edited scene hasn't been done yet, see `documentation/FORMAT_NOTES.md` §22 |
+| Character expression-swap overlays (mouth/eye parts) | Shown as separate raw parts, not composited onto the base sprite; also excluded from image reinsertion (no builder yet for their container format) |
 
 The `.obj`/`GPDA`/ISO-patch pipeline underneath has been validated
 end-to-end with real playtests (PPSSPP), including special characters,
