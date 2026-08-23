@@ -1,11 +1,20 @@
 # -*- mode: python ; coding: utf-8 -*-
+from pathlib import Path
 
+# The per-platform icon files are generated from assets/icon.png by
+# scripts/make_icons.py and committed. Each is wired in only if it's
+# actually present, so a checkout without the artwork still builds
+# (PyInstaller hard-errors on an icon path that doesn't exist).
+ASSETS = Path(SPECPATH) / 'assets'
+ICON_PNG = ASSETS / 'icon.png'    # loaded at runtime for the window icon
+ICON_ICO = ASSETS / 'icon.ico'    # embedded in the Windows executable
+ICON_ICNS = ASSETS / 'icon.icns'  # embedded in the macOS .app bundle
 
 a = Analysis(
     ['app_entry.py'],
     pathex=['src'],
     binaries=[],
-    datas=[],
+    datas=[(str(ICON_PNG), 'assets')] if ICON_PNG.exists() else [],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -32,6 +41,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=str(ICON_ICO) if ICON_ICO.exists() else None,
 )
 coll = COLLECT(
     exe,
@@ -45,6 +55,6 @@ coll = COLLECT(
 app = BUNDLE(
     coll,
     name='Oreimo Translator.app',
-    icon=None,
+    icon=str(ICON_ICNS) if ICON_ICNS.exists() else None,
     bundle_identifier='com.choviics.oreimotranslator',
 )

@@ -77,48 +77,48 @@ jobs:
           fi
           echo "version=v$NEXT" >> "$GITHUB_OUTPUT"
 
-      - name: Read tag message (tag push)
-        if: startsWith(github.ref, 'refs/tags/')
-        id: tagmsg
-        run: |
-          MSG=$(git for-each-ref "refs/tags/${{ github.ref_name }}" --format='%(contents)')
-          {
-            echo "message<<TAGMSG_EOF"
-            echo "$MSG"
-            echo "TAGMSG_EOF"
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Generate changelog (tag push)
-        if: startsWith(github.ref, 'refs/tags/')
-        id: changelog
+      - name: Compose release notes
         env:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
-          NOTES=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=${{ github.ref_name }}" --jq .body)
-          if [ -z "$(echo "$NOTES" | grep -E '^\* ')" ]; then
-            NOTES="_No merged pull requests since the previous release._"
+          # Body = boilerplate + (tag message, if any) + the maintained
+          # feature description in gui-interface/RELEASE_NOTES.md + the
+          # auto-generated PR changelog. Composed to a file rather than
+          # inline in the release steps, because RELEASE_NOTES.md is
+          # multi-line and can't be threaded through a step output cleanly.
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            TAG="${{ steps.nextver.outputs.version }}"
+            CHANGELOG=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=$TAG" -f "target_commitish=main" --jq .body)
+            PUBLISHED="Automatically published on push to main by Choviics."
+            TAG_MESSAGE=""
+          else
+            TAG="${{ github.ref_name }}"
+            CHANGELOG=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=$TAG" --jq .body)
+            PUBLISHED="Built and published by Choviics."
+            TAG_MESSAGE=$(git for-each-ref "refs/tags/$TAG" --format='%(contents)')
           fi
-          {
-            echo "notes<<CHANGELOG_EOF"
-            echo "$NOTES"
-            echo "CHANGELOG_EOF"
-          } >> "$GITHUB_OUTPUT"
 
-      - name: Generate changelog (push to main)
-        if: github.ref == 'refs/heads/main'
-        id: changelog_main
-        env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        run: |
-          NOTES=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=${{ steps.nextver.outputs.version }}" -f "target_commitish=main" --jq .body)
-          if [ -z "$(echo "$NOTES" | grep -E '^\* ')" ]; then
-            NOTES="_No merged pull requests since the previous release._"
+          if ! echo "$CHANGELOG" | grep -qE '^\* '; then
+            CHANGELOG="_No merged pull requests since the previous release._"
           fi
+
           {
-            echo "notes<<CHANGELOG_EOF"
-            echo "$NOTES"
-            echo "CHANGELOG_EOF"
-          } >> "$GITHUB_OUTPUT"
+            echo "This release contains the **Oreimo Translator GUI** desktop tool (extraction/translation/repackaging app for Windows and macOS) — it is not the game's Spanish translation itself."
+            echo
+            echo "$PUBLISHED"
+            if [ -n "$TAG_MESSAGE" ]; then
+              echo
+              echo "$TAG_MESSAGE"
+            fi
+            echo
+            # strip the maintainer-facing HTML comment header
+            sed '/^<!--/,/-->/d' gui-interface/RELEASE_NOTES.md
+            echo
+            echo "$CHANGELOG"
+          } > release_body.md
+
+          echo "----- composed release body -----"
+          cat release_body.md
 
       - name: Versioned release (tag push)
         if: startsWith(github.ref, 'refs/tags/')
@@ -126,14 +126,7 @@ jobs:
         with:
           token: ${{ secrets.RELEASE_TOKEN }}
           files: artifacts/**/*.zip
-          body: |
-            This release contains the **Oreimo Translator GUI** desktop tool (extraction/translation/repackaging app for Windows and macOS) — it is not the game's Spanish translation itself.
-
-            Built and published by Choviics.
-
-            ${{ steps.tagmsg.outputs.message }}
-
-            ${{ steps.changelog.outputs.notes }}
+          body_path: release_body.md
 
       - name: Auto release (push to main)
         if: github.ref == 'refs/heads/main'
@@ -144,9 +137,4 @@ jobs:
           name: ${{ steps.nextver.outputs.version }}
           target_commitish: main
           files: artifacts/**/*.zip
-          body: |
-            This release contains the **Oreimo Translator GUI** desktop tool (extraction/translation/repackaging app for Windows and macOS) — it is not the game's Spanish translation itself.
-
-            Automatically published on push to main by Choviics.
-
-            ${{ steps.changelog_main.outputs.notes }}
+          body_path: release_body.md
