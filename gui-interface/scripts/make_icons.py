@@ -8,13 +8,16 @@ because .icns generation needs macOS's `iconutil` and the Windows build
 runner obviously doesn't have it. Re-run this script (on macOS) whenever
 icon.png changes, and commit all three files together.
 
-    python3 scripts/make_icons.py [--round-corners]
+    python3 scripts/make_icons.py [--no-round-corners]
 
---round-corners applies macOS's standard rounded-square mask and margin
-to the .icns only (the Windows .ico stays full-bleed, which is the
-convention there). Use it when the source art is a full-bleed square;
-skip it when the art already has its own shape and transparency, or the
-mask will clip it.
+The .icns gets macOS's standard rounded-square mask and margin applied by
+default, so the source artwork can just be a full-bleed square - macOS
+doesn't round app icons the way iOS does, and an unmasked square sits in
+the Dock as a hard tile among rounded neighbours. The Windows .ico stays
+full-bleed either way, which is the convention there.
+
+Pass --no-round-corners if the artwork already carries its own silhouette
+and transparency, since the mask would clip it.
 """
 import argparse
 import shutil
@@ -118,14 +121,16 @@ def build_icns(im: Image.Image):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--round-corners", action="store_true",
-        help="apply macOS's rounded-square mask and margin to the .icns"
+        "--no-round-corners", action="store_true",
+        help="leave the .icns artwork as-is instead of applying macOS's "
+             "rounded-square mask and margin (for art that already has its "
+             "own silhouette, which the mask would clip)"
     )
     args = parser.parse_args()
 
     master = load_master()
     build_ico(master)
-    build_icns(apply_macos_shape(master) if args.round_corners else master)
+    build_icns(master if args.no_round_corners else apply_macos_shape(master))
 
 
 if __name__ == "__main__":
