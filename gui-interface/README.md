@@ -79,11 +79,12 @@ ISO  →  extract RES.DAT  →  decompress every scene  →  parse blocks
 
 ### Download a prebuilt binary (recommended)
 
-Every tagged release (`vX.Y.Z`) triggers an automated build for both
-**Windows** and **macOS** via GitHub Actions, published under
-[Releases](../../releases). Just download the build for your OS and run
-it — no Python installation required. This is the easiest and recommended
-way to get the app.
+Every merge into `main` — and every manual `vX.Y.Z` tag — triggers an
+automated build for both **Windows** and **macOS** via GitHub Actions,
+published under [Releases](../../releases) with a full description of
+what the app can do. Just download the build for your OS and run it — no
+Python installation required. This is the easiest and recommended way to
+get the app.
 
 ### Run from source
 
@@ -130,6 +131,11 @@ and fixed.
 Translation-workflow planning (glossaries, terminology, roadmaps) is
 tracked outside this repository by design — this repo is just the tool
 and its tests. Issues and pull requests around the GUI itself are welcome.
+
+If your change adds or alters something a user would notice, update
+`RELEASE_NOTES.md` in the same PR: that file is injected verbatim into
+the body of every GitHub Release, and merging to `main` is what publishes
+the next one.
 
 ## Credits
 
