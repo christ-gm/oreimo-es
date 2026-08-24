@@ -327,8 +327,24 @@ class Project:
         for key, item in self.image_edits.items():
             image_edits_by_scene[key[0]][key] = item
 
+        # An image edit whose scene isn't on this disc can never be
+        # applied - the compile loop below simply never meets it. Left
+        # uncounted it inflates the "images changed" total, which is how
+        # a cross-disc import came to report success while writing
+        # nothing at all.
+        orphan_image_edits = [k for k in self.image_edits if k[0] not in self.scenes]
+
         changed_scene_names = set(changed_dialogue) | set(image_edits_by_scene)
+        changed_scene_names &= set(self.scenes) | set(changed_dialogue)
         if not changed_scene_names:
+            if orphan_image_edits:
+                scenes = sorted({k[0] for k in orphan_image_edits})
+                raise ValueError(
+                    "Nothing to compile: none of the imported images belong "
+                    "to a scene on this disc (" + ", ".join(scenes[:6]) +
+                    "). An export from the other disc won't match - the two "
+                    "discs have different scenes."
+                )
             raise ValueError("no edited lines or images to compile")
 
         script_off, script_size = gpda.find_path(self.res_dat, ["script"])
@@ -397,7 +413,9 @@ class Project:
         return {
             "scenes_changed": list(changed_scene_names),
             "lines_changed": sum(1 for entries in changed_dialogue.values() for e in entries if e.is_edited),
-            "images_changed": len(self.image_edits) - len(unsupported_image_edits),
+            "images_changed": (len(self.image_edits) - len(unsupported_image_edits)
+                               - len(orphan_image_edits)),
+            "orphan_image_edits": orphan_image_edits,
             "unsupported_image_edits": unsupported_image_edits,
             "encoding_warnings": encoding_warnings,
             "res_dat_size": len(new_res_dat),

@@ -518,7 +518,7 @@ class MainWindow(QMainWindow):
             return
 
         try:
-            imported, warnings = image_io.import_images(directory)
+            imported, warnings = image_io.import_images(directory, self.project)
         except Exception as exc:
             QMessageBox.critical(self, "Error importing images", str(exc))
             return
@@ -567,6 +567,15 @@ class MainWindow(QMainWindow):
                 + (f"\nLines auto-wrapped: {report['lines_wrapped']}"
                    if report.get("lines_wrapped") else "")
             )
+            orphans = report.get("orphan_image_edits") or []
+            if orphans:
+                scenes = sorted({k[0] for k in orphans})
+                message += (
+                    f"\n\n{len(orphans)} imported image(s) were NOT written: "
+                    f"their scenes ({', '.join(scenes[:6])}) are not on this "
+                    f"disc. An export from the other disc won't match."
+                )
+
             unsupported = report.get("unsupported_image_edits") or []
             if unsupported:
                 names = ", ".join(f"{s}/{c}/{l}" for s, c, l in unsupported[:10])
@@ -578,6 +587,9 @@ class MainWindow(QMainWindow):
                 )
 
             encoding_warnings = report.get("encoding_warnings") or []
+            if orphans and not encoding_warnings:
+                QMessageBox.warning(self, "ISO compiled with warnings", message)
+                return
             if encoding_warnings:
                 preview = "\n".join(encoding_warnings[:20])
                 if len(encoding_warnings) > 20:
