@@ -1,0 +1,140 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: gui-interface
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+
+      - name: Build with PyInstaller
+        run: pyinstaller "Oreimo Translator.spec" --noconfirm
+
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          cd dist
+          ditto -c -k --sequesterRsrc --keepParent "Oreimo Translator.app" "Oreimo-Translator-macOS.zip"
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "dist/Oreimo Translator/*" -DestinationPath "dist/Oreimo-Translator-Windows.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.os }}
+          path: gui-interface/dist/*.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Compute next version (push to main)
+        if: github.ref == 'refs/heads/main'
+        id: nextver
+        run: |
+          LAST=$(git tag -l 'v*.*.*' | sed 's/^v//' | sort -t. -k1,1n -k2,2n -k3,3n | tail -1)
+          if [ -z "$LAST" ]; then
+            NEXT="0.1.0"
+          else
+            IFS=. read -r MAJOR MINOR PATCH <<< "$LAST"
+            NEXT="$MAJOR.$MINOR.$((PATCH + 1))"
+          fi
+          echo "version=v$NEXT" >> "$GITHUB_OUTPUT"
+
+      - name: Compose release notes
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          # Body = boilerplate + (tag message, if any) + the maintained
+          # feature description in gui-interface/RELEASE_NOTES.md + the
+          # auto-generated PR changelog. Composed to a file rather than
+          # inline in the release steps, because RELEASE_NOTES.md is
+          # multi-line and can't be threaded through a step output cleanly.
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            TAG="${{ steps.nextver.outputs.version }}"
+            CHANGELOG=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=$TAG" -f "target_commitish=main" --jq .body)
+            PUBLISHED="Automatically published on push to main by Choviics."
+            TAG_MESSAGE=""
+          else
+            TAG="${{ github.ref_name }}"
+            CHANGELOG=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=$TAG" --jq .body)
+            PUBLISHED="Built and published by Choviics."
+            TAG_MESSAGE=$(git for-each-ref "refs/tags/$TAG" --format='%(contents)')
+          fi
+
+          if ! echo "$CHANGELOG" | grep -qE '^\* '; then
+            CHANGELOG="_No merged pull requests since the previous release._"
+          fi
+
+          {
+            echo "This release contains the **Oreimo Translator GUI** desktop tool (extraction/translation/repackaging app for Windows and macOS) — it is not the game's Spanish translation itself."
+            echo
+            echo "$PUBLISHED"
+            if [ -n "$TAG_MESSAGE" ]; then
+              echo
+              echo "$TAG_MESSAGE"
+            fi
+            echo
+            # strip the maintainer-facing HTML comment header
+            sed '/^<!--/,/-->/d' gui-interface/RELEASE_NOTES.md
+            echo
+            echo "$CHANGELOG"
+          } > release_body.md
+
+          echo "----- composed release body -----"
+          cat release_body.md
+
+      - name: Versioned release (tag push)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+          files: artifacts/**/*.zip
+          body_path: release_body.md
+
+      - name: Auto release (push to main)
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+          tag_name: ${{ steps.nextver.outputs.version }}
+          name: ${{ steps.nextver.outputs.version }}
+          target_commitish: main
+          files: artifacts/**/*.zip
+          body_path: release_body.md
