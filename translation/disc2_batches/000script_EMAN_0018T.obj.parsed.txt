@@ -1,0 +1,306 @@
+﻿###IDX:0###CHAR:###
+Manami's Kinkaku-ji Temple Quiz
+###IDX:1###CHAR:Manami###
+Now then, let's see how much you remember! I 
+have a quiz for you!
+###IDX:2###CHAR:Kyousuke###
+Hey, what's with this all of a sudden?
+###IDX:3###CHAR:Manami###
+It's just for fun, don't think too hard about it~
+###IDX:4###CHAR:Kyousuke###
+R-Right... I'll answer anything you got for me!
+###IDX:5###CHAR:###
+I have no idea how many of these I can answer 
+correctly though.
+###IDX:6###CHAR:Manami###
+Okay, question one!
+###IDX:7###CHAR:Manami###
+What is the official name of Kinkaku-ji Temple, also 
+known as the Golden Pavilion?
+###IDX:8###CHAR:Kyousuke###
+Pfft, even I know that. Rokuon-ji Temple.
+###IDX:9###CHAR:Manami###
+Correct! The reliquary hall in front of us is called 
+"Kinkaku", a Golden Pavilion.
+###IDX:10###CHAR:Kyousuke###
+The name Kinkaku-ji Temple was derived from that 
+and became the nickname for the whole temple, 
+right?
+###IDX:11###CHAR:Manami###
+Yes, you're right! Great job!
+###IDX:12###CHAR:Kyousuke###
+...Uh, what was it?
+###IDX:13###CHAR:Manami###
+It's Rokuon-ji Temple, Kyou-chan.
+###IDX:14###CHAR:Kyousuke###
+Oh yeah. Uh huh, of course it's Rokuon-ji Temple.
+###IDX:15###CHAR:Manami###
+Geez, you can't just forget about this stuff.
+###IDX:16###CHAR:###
+Well, this isn't some essential knowledge that's 
+needed for our daily lives.
+###IDX:17###CHAR:Manami###
+Okay, next question!
+###IDX:18###CHAR:Kyousuke###
+O-Okay...
+###IDX:19###CHAR:Manami###
+Was Kinkaku-ji Temple built by Ashikaga 
+Yoshimitsu?
+###IDX:20###CHAR:Kyousuke###
+Nah, that's wrong.
+###IDX:21###CHAR:Manami###
+Eeh?
+###IDX:22###CHAR:Kyousuke###
+The one who built Kinkaku-ji Temple was...
+###IDX:23###CHAR:Manami###
+..Was?
+###IDX:24###CHAR:Kyousuke###
+The builder at the time!
+###IDX:25###CHAR:Manami###
+Kyou-chan... this isn't some trick question.
+###IDX:26###CHAR:Kyousuke###
+I just wanted to try saying that. I know Ashikaga 
+Yoshimitsu was the guy who built it.
+###IDX:27###CHAR:Manami###
+Geez, then just answer the question properly.
+###IDX:28###CHAR:Kyousuke###
+Yeah yeah...
+###IDX:29###CHAR:Kyousuke###
+...
+###IDX:30###CHAR:Kyousuke###
+Yeah, isn't that right? I definitely remember that 
+Ashikaga Yoshimitsu built it.
+###IDX:31###CHAR:Manami###
+Correct! Maybe that was too easy?
+###IDX:32###CHAR:Kyousuke###
+Ginkaku-ji Temple, the Silver Pavilion was built by 
+Ashikaga Yoshimasa, right?
+###IDX:33###CHAR:Manami###
+Yup, that's right. The official name for that is 
+Jishou-ji Temple.
+###IDX:34###CHAR:Kyousuke###
+Well, I can handle that much, at least.
+###IDX:35###CHAR:Manami###
+Okay then, final question.
+###IDX:36###CHAR:Kyousuke###
+Oh, the last one?
+###IDX:37###CHAR:Manami###
+Kinkaku-ji Temple was built in 1397, also known as 
+Oei 4 at the time, correct?
+###IDX:38###CHAR:Kyousuke###
+Come on, you're asking me the year?
+###IDX:39###CHAR:Manami###
+Good luck, Kyou-chan.
+###IDX:40###CHAR:Kyousuke###
+Ugh...
+###IDX:41###CHAR:Kyousuke###
+It's 1394, right?
+###IDX:42###CHAR:Manami###
+Too bad, incorrect!
+###IDX:43###CHAR:Kyousuke###
+I'm really bad at remembering dates...
+###IDX:44###CHAR:Manami###
+1394 was the year that Ashikaga Yoshimitsu 
+became Grand Chancellor of State.
+###IDX:45###CHAR:Kyousuke###
+1394, Ashikaga Yoshimitsu became the Grand 
+Chancellor of State... okay, I'll remember that.
+###IDX:46###CHAR:Manami###
+Try a little harder... okay?
+###IDX:47###CHAR:Kyousuke###
+...
+###IDX:48###CHAR:Kyousuke###
+Kinkaku-ji Temple was built in 1397, the 4th year of 
+Oei... yup, that's correct.
+###IDX:49###CHAR:###
+I answered with confidence... but I was actually 
+going on my hazy memory.
+###IDX:50###CHAR:Manami###
+Amazing, that's right!
+###IDX:51###CHAR:Kyousuke###
+I guess that's that.
+###IDX:52###CHAR:Manami###
+I thought maybe you'd forgotten it. You're so 
+smart, Kyou-chan.
+###IDX:53###CHAR:Kyousuke###
+Nah, it was just luck. You, on the other hand, 
+remembered it all... Well, you got the brains for that 
+sort of thing.
+###IDX:54###CHAR:Manami###
+Eh? No, no, not at all.
+###IDX:55###CHAR:Manami###
+Hey, Kyou-chan, can I borrow your point card for a 
+moment?
+###IDX:56###CHAR:Kyousuke###
+Does this really deserve points?
+###IDX:57###CHAR:Manami###
+Yup. It brought back some fond memories of when 
+we were studying for entrance exams, I'm so 
+happy.
+###IDX:58###CHAR:Kyousuke###
+I see...
+###IDX:59###CHAR:Manami###
+Thank you for your continued patronage!①
+###IDX:60###CHAR:Kyousuke###
+I guess I don't really remember anything at all...
+###IDX:61###CHAR:Manami###
+You haven't been studying as much after finishing 
+the exams.
+###IDX:62###CHAR:Kyousuke###
+...Yeah...
+###IDX:63###CHAR:###
+I couldn't give the right answers... Man, just how did 
+I forget all of that?
+###IDX:64###CHAR:Manami###
+Now then, let's see how much you remember! I 
+have a quiz for you!
+###IDX:65###CHAR:Kyousuke###
+Hey, what's with this all of a sudden?
+###IDX:66###CHAR:Manami###
+It's just for fun, don't think too hard about it~
+###IDX:67###CHAR:Kyousuke###
+R-Right... I'll answer anything you got for me!
+###IDX:68###CHAR:###
+I have no idea how many of these I can answer 
+correctly though.
+###IDX:69###CHAR:Manami###
+Okay, question one!
+###IDX:70###CHAR:Manami###
+What is the official name of Kinkaku-ji Temple, also 
+known as the Golden Pavilion?
+###IDX:71###CHAR:Kyousuke###
+Pfft, even I know that. Rokuon-ji Temple.
+###IDX:72###CHAR:Manami###
+Correct! The reliquary hall in front of us is called 
+"Kinkaku", a Golden Pavilion.
+###IDX:73###CHAR:Kyousuke###
+The name Kinkaku-ji Temple was derived from that 
+and became the nickname for the whole temple, 
+right?
+###IDX:74###CHAR:Manami###
+Yes, you're right! Great job!
+###IDX:75###CHAR:Kyousuke###
+...Uh, what was it?
+###IDX:76###CHAR:Manami###
+It's Rokuon-ji Temple, Kyou-chan.
+###IDX:77###CHAR:Kyousuke###
+Oh yeah. Uh huh, of course it's Rokuon-ji Temple.
+###IDX:78###CHAR:Manami###
+Geez, you can't just forget about this stuff.
+###IDX:79###CHAR:###
+Well, this isn't some essential knowledge that's 
+needed for our daily lives.
+###IDX:80###CHAR:Manami###
+Okay, next question!
+###IDX:81###CHAR:Kyousuke###
+O-Okay...
+###IDX:82###CHAR:Manami###
+Was Kinkaku-ji Temple built by Ashikaga 
+Yoshimitsu?
+###IDX:83###CHAR:Kyousuke###
+Nah, that's wrong.
+###IDX:84###CHAR:Manami###
+Eeh?
+###IDX:85###CHAR:Kyousuke###
+The one who built Kinkaku-ji Temple was...
+###IDX:86###CHAR:Manami###
+..Was?
+###IDX:87###CHAR:Kyousuke###
+The builder at the time!
+###IDX:88###CHAR:Manami###
+Kyou-chan... this isn't some trick question.
+###IDX:89###CHAR:Kyousuke###
+I just wanted to try saying that. I know Ashikaga 
+Yoshimitsu was the guy who built it.
+###IDX:90###CHAR:Manami###
+Geez, then just answer the question properly.
+###IDX:91###CHAR:Kyousuke###
+Yeah yeah...
+###IDX:92###CHAR:Kyousuke###
+...
+###IDX:93###CHAR:Kyousuke###
+Yeah, isn't that right? I definitely remember that 
+Ashikaga Yoshimitsu built it.
+###IDX:94###CHAR:Manami###
+Correct! Maybe that was too easy?
+###IDX:95###CHAR:Kyousuke###
+Ginkaku-ji Temple, the Silver Pavilion was built by 
+Ashikaga Yoshimasa, right?
+###IDX:96###CHAR:Manami###
+Yup, that's right. The official name for that is 
+Jishou-ji Temple.
+###IDX:97###CHAR:Kyousuke###
+Well, I can handle that much, at least.
+###IDX:98###CHAR:Manami###
+Okay then, final question.
+###IDX:99###CHAR:Kyousuke###
+Oh, the last one?
+###IDX:100###CHAR:Manami###
+Kinkaku-ji Temple was built in 1397, also known as 
+Oei 4 at the time, correct?
+###IDX:101###CHAR:Kyousuke###
+Come on, you're asking me the year?
+###IDX:102###CHAR:Manami###
+Good luck, Kyou-chan.
+###IDX:103###CHAR:Kyousuke###
+Ugh...
+###IDX:104###CHAR:Kyousuke###
+It's 1394, right?
+###IDX:105###CHAR:Manami###
+Too bad, incorrect!
+###IDX:106###CHAR:Kyousuke###
+I'm really bad at remembering dates...
+###IDX:107###CHAR:Manami###
+1394 was the year that Ashikaga Yoshimitsu 
+became Grand Chancellor of State.
+###IDX:108###CHAR:Kyousuke###
+1394, Ashikaga Yoshimitsu became the Grand 
+Chancellor of State... okay, I'll remember that.
+###IDX:109###CHAR:Manami###
+Try a little harder... okay?
+###IDX:110###CHAR:Kyousuke###
+...
+###IDX:111###CHAR:Kyousuke###
+Kinkaku-ji Temple was built in 1397, the 4th year of 
+Oei... yup, that's correct.
+###IDX:112###CHAR:###
+I answered with confidence... but I was actually 
+going on my hazy memory.
+###IDX:113###CHAR:Manami###
+Amazing, that's right!
+###IDX:114###CHAR:Kyousuke###
+I guess that's that.
+###IDX:115###CHAR:Manami###
+I thought maybe you'd forgotten it. You're so 
+smart, Kyou-chan.
+###IDX:116###CHAR:Kyousuke###
+Nah, it was just luck. You, on the other hand, 
+remembered it all... Well, you got the brains for that 
+sort of thing.
+###IDX:117###CHAR:Manami###
+Eh? No, no, not at all.
+###IDX:118###CHAR:Manami###
+Hey, Kyou-chan, can I borrow your point card for a 
+moment?
+###IDX:119###CHAR:Kyousuke###
+Does this really deserve points?
+###IDX:120###CHAR:Manami###
+Yup. It brought back some fond memories of when 
+we were studying for entrance exams, I'm so 
+happy.
+###IDX:121###CHAR:Kyousuke###
+I see...
+###IDX:122###CHAR:Manami###
+Thank you for your continued patronage!①
+###IDX:123###CHAR:Kyousuke###
+I guess I don't really remember anything at all...
+###IDX:124###CHAR:Manami###
+You haven't been studying as much after finishing 
+the exams.
+###IDX:125###CHAR:Kyousuke###
+...Yeah...
+###IDX:126###CHAR:###
+I couldn't give the right answers... Man, just how did 
+I forget all of that?
+
+

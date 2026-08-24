@@ -1,0 +1,317 @@
+﻿###IDX:0###CHAR:###
+Visiting the Tamura Residence
+###IDX:1###CHAR:Kyousuke###
+Alright, I'll see you tomorrow then, at the usual 
+spot in the school cafeteria.
+###IDX:2###CHAR:Manami###
+Ah, Kyou-chan. Do you want some tea before you 
+go?
+###IDX:3###CHAR:Kyousuke###
+I always end up having tea after escorting you 
+home, so I'll pass this time.
+###IDX:4###CHAR:Manami###
+But, but... Grandpa and Grandma and Dad and Mom 
+would be happy to see you, you know?
+###IDX:5###CHAR:Kyousuke###
+...
+###IDX:6###CHAR:Manami###
+*stare*
+###IDX:7###CHAR:Kyousuke###
+Haa...
+###IDX:8###CHAR:Kyousuke###
+Well, just for a while then.
+###IDX:9###CHAR:Manami###
+...Okay!
+###IDX:10###CHAR:###
+I knew my way around here, so I went straight to 
+the living room upon entering.
+###IDX:11###CHAR:Kyousuke###
+I have no sense of restraint, even if I say so myself.
+###IDX:12###CHAR:Manami###
+There's some steamed buns, so feel free to have 
+some.
+###IDX:13###CHAR:Kyousuke###
+Thanks. Huh? These buns...
+###IDX:14###CHAR:Manami###
+New products that we'll be selling soon. How are 
+they?
+###IDX:15###CHAR:Kyousuke###
+I figured as much. These are really good. Your 
+father is amazing, as expected.
+###IDX:16###CHAR:Manami###
+Huh? You're exaggerating～
+###IDX:17###CHAR:###
+The steam probably fogged up her glasses, since 
+she took them off to wipe while she replied.
+###IDX:18###CHAR:###
+Sometimes I wonder... no really, but she does look 
+rather adorable without her glasses.
+###IDX:19###CHAR:###
+Well, such occasions are rare since she can barely 
+see anything without them.
+###IDX:20###CHAR:Grandpa###
+Ooh, Kyou-chan. It's been a while.
+###IDX:21###CHAR:Kyousuke###
+"It's been a while"? It's only been like a week.
+###IDX:22###CHAR:Grandpa###
+No need to take this so seriously, it's just a casual 
+greeting. I've still got a long way to go before I'm 
+senile. Hahahaha!
+###IDX:23###CHAR:###
+Laughing so heartily, he sure is energetic. This old 
+geezer could probably live for about two hundred 
+years, I bet.
+###IDX:24###CHAR:Kyousuke###
+Where do you get your vitality from, Grandpa?
+###IDX:25###CHAR:Grandpa###
+Oh, I'm still in the game, Kyou-chan. I wouldn't even 
+lose to you.
+###IDX:26###CHAR:Kyousuke###
+I appreciate the enthusiasm, but you really should 
+consider your age.
+###IDX:27###CHAR:Grandpa###
+So, how far have you gone with Manami? Hmm?
+###IDX:28###CHAR:Kyousuke###
+Wha-? I'm pretty sure you ask that whenever we 
+meet? It's not like it's your business anyway...
+###IDX:29###CHAR:Manami###
+We went to Odaiba today.
+###IDX:30###CHAR:Grandpa###
+Manami, I didn't ask about a location. I'm talking 
+about... you know... between a man and a woman.
+###IDX:31###CHAR:Manami###
+H-Huh?!
+###IDX:32###CHAR:Kyousuke###
+｛125：Hey Gramps, that’s not something that 
+you should be asking!｝
+###IDX:33###CHAR:Manami###
+...
+###IDX:34###CHAR:Kyousuke###
+See! You're just making things awkward for her!
+###IDX:35###CHAR:Grandpa###
+What? You two are still in the "platonic" phase?  
+Well, that's boring. I would like to see my 
+great-grandchild’s face soon.
+###IDX:36###CHAR:Kyousuke###
+Just how impatient are you? Especially at your age.
+###IDX:37###CHAR:Grandpa###
+No need to get upset, Kyou-chan. Fufufufufu...
+###IDX:38###CHAR:Kyousuke###
+What's with that laugh? You're not thinking of 
+anything bad, right?
+###IDX:39###CHAR:Grandpa###
+No, no, absolutely not.
+###IDX:40###CHAR:Manami###
+Grandpa, you sure are enjoying yourself more than 
+usual today. Are you happy?
+###IDX:41###CHAR:Kyousuke###
+Definitely, he is more giggly than usual. This 
+happens when the store earns 20% extra profit.
+###IDX:42###CHAR:Grandpa###
+Hmph, so you figured it out? And I tried so hard to 
+keep it hidden...
+###IDX:43###CHAR:Grandpa###
+Fufufufu, well actually, there's something I'd like to 
+show you both.
+###IDX:44###CHAR:Manami###
+What? What is it?
+###IDX:45###CHAR:Kyousuke###
+So, what is it, Gramps?
+###IDX:46###CHAR:Grandpa###
+Haaah, whatever should I do...?
+###IDX:47###CHAR:Kyousuke###
+Stop acting so smug. If you keep us in suspense 
+like that, then we HAVE to see it!
+###IDX:48###CHAR:Manami###
+Yeah. Come on, Grandpa.
+###IDX:49###CHAR:Grandpa###
+No, well, you see, I have to ham it up for something 
+so good. Otherwise, you won't appreciate it.
+###IDX:50###CHAR:###
+*sigh*... Well, guess we'll have to play along.
+###IDX:51###CHAR:Kyousuke###
+Gramps, I'm begging you, just show it to us 
+already.
+###IDX:52###CHAR:Grandpa###
+No matter what?
+###IDX:53###CHAR:Kyousuke###
+No matter what!
+###IDX:54###CHAR:###
+Ugh! Seriously, this old fart is such a pain!
+###IDX:55###CHAR:Grandpa###
+Mmm, okay then...
+###IDX:56###CHAR:Grandpa###
+Ta-dah~~! I won a three-day, two-night trip to 
+Kyoto for two from the town lottery!
+###IDX:57###CHAR:Manami###
+Wow! That's amazing, Grandpa!
+###IDX:58###CHAR:Kyousuke###
+You have some absurd luck, Gramps!
+###IDX:59###CHAR:Grandpa###
+Hahaha. It's because of my little daily routines. Even 
+God understands...
+###IDX:60###CHAR:###
+Man... I sure want to be a smart-ass right now...
+###IDX:61###CHAR:Kyousuke###
+Well, this is great, Gramps. Hey, why don't you go 
+on the trip with Granny, then?
+###IDX:62###CHAR:Grandpa###
+No, no, I had that idea, but...
+###IDX:63###CHAR:Grandpa###
+If I were to go on this kind of trip, it'd be better to 
+be accompanied by a lively gal instead.
+###IDX:64###CHAR:Kyousuke###
+Hey now, if Granny hears you, she’ll pull out what's 
+left of your hair.
+###IDX:65###CHAR:Grandpa###
+That wouldn't end well. So then, I thought about it...
+###IDX:66###CHAR:Grandpa###
+I'll just give this prize to you two.
+###IDX:67###CHAR:Manami###
+Eh?!
+###IDX:68###CHAR:###
+Whoa, that sure is generous of him...
+###IDX:69###CHAR:Grandpa###
+It's almost your summer vacation, right? It'll be a 
+pleasant memory for me in the afterlife.
+###IDX:70###CHAR:###
+Hey old geezer. Don't say stuff like that.
+###IDX:71###CHAR:Manami###
+Are you sure, Grandpa?
+###IDX:72###CHAR:Grandpa###
+I don't mind. I got it by pure chance anyway... 
+Besides, this is so I can see my great-grandchild 
+sooner.
+###IDX:73###CHAR:Manami###
+Thank you, Grandpa!
+###IDX:74###CHAR:###
+Hey, Miss Manami. Are you just going to ignore that 
+ridiculous statement?
+###IDX:75###CHAR:Grandpa###
+Well, we are too old for long trips. Our bodies can’t 
+take it.
+###IDX:76###CHAR:Kyousuke###
+You sure don't look that way to me...
+###IDX:77###CHAR:Manami###
+Kyou-chan, Kyou-chan, it’s a vacation! A three-day, 
+two-night vacation!
+###IDX:78###CHAR:Kyousuke###
+Yeah. We haven't been to Kyoto since our school 
+trip.
+###IDX:79###CHAR:###
+Speaking of which, we went to Kiyomizu temple 
+that time, too.
+###IDX:80###CHAR:Manami###
+｛85：And this time, it's just the two of us...｝
+###IDX:81###CHAR:###
+Do you realize what you're saying, Manami? Can I 
+treat this as a flag?
+###IDX:82###CHAR:Kyousuke###
+Y-Yeah... just the two of us.
+###IDX:83###CHAR:Kyousuke###
+H-Hey! Are you okay with this, Gramps!?
+###IDX:84###CHAR:Grandpa###
+Of course. Don't you worry about a thing, just 
+enjoy yourselves to the fullest.
+###IDX:85###CHAR:Manami###
+Yup. We'll bring back lots of souvenirs~
+###IDX:86###CHAR:Manami###
+I hope we have a great vacation, Kyou-chan.
+###IDX:87###CHAR:Kyousuke###
+Manami's old-hag personality and Kyoto. What a 
+nice combination.
+###IDX:88###CHAR:Manami###
+What did you say~? That's not very nice, 
+Kyou-chan.
+###IDX:89###CHAR:###
+Even though I'm just teasing her as usual... Crap, 
+my heart is beating so fast.
+###IDX:90###CHAR:Manami###
+Since we're going on a vacation, maybe I should 
+put more effort in dressing myself up?
+###IDX:91###CHAR:Kyousuke###
+Hm? I think you're pretty just the way you are, 
+though?
+###IDX:92###CHAR:Manami###
+But, sometimes I just want to know your opinion.
+###IDX:93###CHAR:Kyousuke###
+If you think it'll help, then sure...
+###IDX:94###CHAR:Manami###
+So...
+###IDX:95###CHAR:Manami###
+Like, for example, what if I just started using 
+contacts all the time?
+###IDX:96###CHAR:Kyousuke###
+I don't think you have to force yourself, right?
+###IDX:97###CHAR:Manami###
+Eh? But... but... I'll be able to see even better 
+compared to my glasses.
+###IDX:98###CHAR:Kyousuke###
+You gotta put them directly onto your eyes, you 
+know? You're not used to it, yet you're gonna wear 
+them on vacation?
+###IDX:99###CHAR:Manami###
+I guess... it wouldn't work.
+###IDX:100###CHAR:Kyousuke###
+If that's the case, you should just stick to your 
+glasses.
+###IDX:101###CHAR:Manami###
+Speaking of which, you really like girls with glasses, 
+huh? All your dirty magazines have them.
+###IDX:102###CHAR:###
+WHA--!! She even remembers that?!
+###IDX:103###CHAR:Kyousuke###
+That was a misunderstanding... no need to bring that 
+up, okay?
+###IDX:104###CHAR:Manami###
+I’d be just happy to fit your "type", I guess.
+###IDX:105###CHAR:Kyousuke###
+...
+###IDX:106###CHAR:Manami###
+Kyou-chan... you're not... embarrassed, are you?
+###IDX:107###CHAR:Kyousuke###
+No, I'm not...
+###IDX:108###CHAR:Manami###
+Fufufu...
+###IDX:109###CHAR:Manami###
+Should I try to use contact lenses?
+###IDX:110###CHAR:Kyousuke###
+That doesn't sound bad. I wanna see you without 
+glasses too.
+###IDX:111###CHAR:Manami###
+Really? But... don't you like girls with glasses more?
+###IDX:112###CHAR:Kyousuke###
+Huh? What do you mean?
+###IDX:113###CHAR:Manami###
+Well, all the girls in your dirty magazines wore 
+them.
+###IDX:114###CHAR:Kyousuke###
+You sure remember some ancient stuff, huh?!
+###IDX:115###CHAR:###
+Just forget them! Please forget them immediately!
+###IDX:116###CHAR:Manami###
+Hmm, I see. Well, I'll put in contacts for our trip, so 
+look forward to it.
+###IDX:117###CHAR:Kyousuke###
+S-Sure...
+###IDX:118###CHAR:Manami###
+Which do you like better, me with glasses, or 
+without?
+###IDX:119###CHAR:Kyousuke###
+Umm, well... if I must answer... I guess I like them 
+both.
+###IDX:120###CHAR:Manami###
+Kyou-chan, y-your honesty is just...
+###IDX:121###CHAR:Kyousuke###
+Anyway, why don't you just be your usual self?
+###IDX:122###CHAR:Manami###
+...Yeah, okay.
+###IDX:123###CHAR:Kyousuke###
+Mmm.
+###IDX:124###CHAR:Grandpa###
+Heh heh heh, what an interesting development. I'm 
+looking forward to this...
+###IDX:125###CHAR:Grandpa###
+It's time to pay the piper, Kyou-chan――
+
+

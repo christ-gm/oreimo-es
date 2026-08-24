@@ -1,0 +1,143 @@
+0		The Flight of the Matsudo Black Cat
+1		Finally, Kuroneko and I, having no other place we 
+could think of going to, eventually made our way to 
+the arcade.
+2	Kyousuke	Well, this place is more suited for us after all.
+3	Kuroneko	What's wrong?
+4	Kyousuke	No, it's nothing.
+5		This place's unique ambiance keeps you from 
+calming down.
+6	Kyousuke	Do you have any game you want to play?
+7	Kuroneko	It's not like I do, although...
+8	Kyousuke	Speaking of which, I haven't seen you play much 
+lately.
+9	Kuroneko	What do you mean? Bringing this up out of the 
+blue...
+10	Kyousuke	Nah, it's just been awhile. I just wanted to see you 
+playing games.
+11	Kuroneko	You already know of my skills, right?
+12	Kyousuke	That's true, but did you get better since then?
+13	Kuroneko	...But, wouldn't that be boring for you?
+14	Kyousuke	Nah, not at all.
+15		It's not just fighting games, but for any game, we 
+spectators get a kick out of watching skilled 
+players. Even more so if that player's my girlfriend.
+16	Kuroneko	If you put it that way, I guess I might as well.
+17	Kuroneko	Now then, I will have you witness my magnificent 
+victories.
+18	Kuroneko	Let us begin. Darker than the still of midnight, the 
+devil's banquet...
+19	Commentary	Whoa! The challenger's been driven to the corner?! 
+There's no way out now!
+20	Otaku 1	Hey, it's a 20-win streak now...
+21	Otaku 2	But if it's him... that "Inazuma" guy will surely...!
+22	Commentary	The challenger's putting it all on the line! He's using 
+a super!
+23	Commentary	...Huh? What? She blocked every hit of that 
+fearsome attack...? Whoa! It's a total reversal!
+24	Otaku 1	Amazing, she escaped the corner by putting her 
+opponent in it!
+25	Otaku 2	Hey whoa, are you serious...? Her inputs are 
+frame-perfect?!
+26	Commentary	An awesome comeback from the corner! Here 
+comes the final blow!!
+27	Otaku 1	N-No way, what kind of godly play is this! Is this 
+even for real?!
+28		As Kuroneko's win advanced her to the next round, 
+I noticed that the fighting games corner attracted 
+a crowd.
+29	Kyousuke	I mean, just where did all these people come 
+from?!
+30		I don't know when this happened, but there are 
+people commentating over her matches. There 
+weren't many people here earlier...
+31	Kuroneko	Hmph, too naive. You can't outlast my combo like 
+that...
+32		Kuroneko's being Kuroneko. She's totally into it.
+33	Kyousuke	...Hmm?
+34		At this moment, I noticed a notebook tied to the 
+side of the game cabinet.
+35	Kyousuke	Record book? Inside is... a record of the matches of 
+this game?
+36		What's written here is a record of win streaks for 
+the month. The more pages I turned, the more I 
+grew perplexed. The contents:
+37		〇〇/〇〇 〇〇:〇〇, Girl in Black Cosplay 32-win 
+streak.
+38		××/〇〇 △△:△△, Girl in Black Cosplay record 
+update. 37-win streak.
+39		It continued like that in different handwriting. This 
+"Girl in Black Cosplay", it's gotta be Kuroneko, 
+right?
+40	Kyousuke	Just many times have you been to this arcade, 
+Kuroneko...
+41	Kuroneko	And that's that. Were you watching?
+42	Kyousuke	Yeah, it was an intense battle!
+43		She was so strong, I started sympathizing with the 
+challengers. Well, it's not like I would cheer for 
+anyone other than Kuroneko, of course.
+44	Kyousuke	You're truly amazing.
+45	Kuroneko	I-I'm not that amazing...
+46		For some reason, Kuroneko started fidgeting with 
+her fingers, looking down bashfully. HNNGGHH! This 
+is when she's the cutest, yeah!
+47	Kyousuke	By the way, Kuroneko.
+48	Kuroneko	What is it?
+49	Kyousuke	Earlier, I took a look at the attached record 
+notebook.
+50	Kuroneko	Ah, that...
+51	Kyousuke	No matter how many times I considered it, those 
+win streaks can only be from you, are you a 
+regular here?
+52	Kuroneko	It's not like that. It's just that I've been around this 
+area lately.
+53	Kyousuke	Yeah, but why?
+54	Kuroneko	It's just a rumor I heard but, the legendary 
+champion of the Siscaly World Tournament comes 
+here often.
+55		The Siscaly World Tournament. The one Kuroneko 
+participated in and lost.
+56	Kyousuke	So you were looking for that person, hence 
+spending time here.
+57	Kuroneko	But in the end, we have yet to meet each other...
+58	Kyousuke	I see. But you could probably still win, as you are 
+now.
+59	Kuroneko	I'm not that good. Frankly speaking, the victory 
+today can't be considered flawless...
+60	Kyousuke	Is that how things work...?
+61		It seems that this world goes deeper than I 
+thought.
+62	Kuroneko	But...
+63	Kuroneko	...With your support, perhaps I can do it after all.
+64	Kyousuke	Y-Yeah...
+65	Kyousuke	All things considered, there's no one left to oppose 
+you here.
+66	Kuroneko	That's not exactly true.
+67	Kyousuke	You mean there's someone else around here that's 
+stronger than you?
+68	Kuroneko	Going by Akagi-san's words, it does seem that way.
+69	Kuroneko	I never got to meet that person in the end...
+70	Kyousuke	I see.
+71	Kuroneko	Well, gaining supremacy of this region isn't a bad 
+thing either.
+72	Kyousuke	Hey now...
+73	Kuroneko	I'm joking. I don't have much time for that these 
+days.
+74	Kyousuke	That's good then.
+75		When I consider her skills, it'll be dreadful if she's 
+able to achieve that.
+76	Kuroneko	｛75：So you're not going to ask "What are you busy with lately"? Who do 
+you think I'm using up my time for...｝
+77	Kyousuke	Hmm? What is it, Kuroneko?
+78	Kuroneko	No, it's nothing. Yes, nothing at all...
+79	Kuroneko	Shall we get going then?
+80	Kyousuke	Are you satisfied?
+81	Kuroneko	Yes. I planned to show you my glory, that goal has 
+now been achieved.
+82	Kuroneko	Besides, it seems like you don't have much interest 
+in the games here?
+83	Kyousuke	Hey, you shouldn't be so quick to judge, alright? 
+Even I have games I want to play...
+84	Kuroneko	Oh my, which one then?
+85	Kyousuke	Umm... There. That one! I'm really interested in that 
+one!

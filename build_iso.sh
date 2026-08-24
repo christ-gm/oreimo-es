@@ -8,6 +8,9 @@
 #   - Tu ISO (copia legal) con el parche EN v1 de dizzyziddy aplicado.
 #   - .NET SDK (10 o superior), git y mkisofs (cdrtools) en tu PATH.
 #
+# Acepta el disco 1 (NPJH-50568) o el disco 2 (NPJH-50569); el disco
+# se detecta automáticamente tras extraer y se aplica su traducción.
+#
 # El script clona la toolchain base de zapan/FastAsyncOreimoTranslateTool
 # (su código NO se redistribuye aquí), compila nuestro driver y ejecuta
 # todo el pipeline: extraer -> aplicar traducción -> reempaquetar.
@@ -16,7 +19,7 @@ set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TOOLCHAIN="${TOOLCHAIN_DIR:-$REPO/toolchain}"
 WORK="${WORK_DIR:-$REPO/work}"
-BUILD="$WORK/disc1"
+
 
 ISO_IN=""
 ISO_OUT=""
@@ -80,14 +83,29 @@ mkdir -p "$WORK"
 rm -rf "$BUILD"
 
 echo "==> [1/5] Extrayendo ISO..."
-dotnet "$DLL" extract-iso "$ISO_IN" --base "$BUILD"
+STAGE="$WORK/_incoming"
+rm -rf "$STAGE"
+dotnet "$DLL" extract-iso "$ISO_IN" --base "$STAGE"
+
+# Detectar disco por serial (UMD_DATA.BIN)
+DISC=disc1
+if grep -q "NPJH-50569" "$STAGE/Data/Iso/UMD_DATA.BIN" 2>/dev/null; then
+    DISC=disc2
+fi
+echo "==> Disco detectado: $DISC"
+BUILD="$WORK/$DISC"
+rm -rf "$BUILD"
+mv "$STAGE" "$BUILD"
 
 echo "==> [2/5] Extrayendo datos del juego..."
 dotnet "$DLL" extract-game --base "$BUILD"
 
 echo "==> [3/5] Aplicando traducción al español..."
-cp "$REPO/translation/Translation.json" "$BUILD/Data/Translation.json"
-dotnet "$DLL" insert-linebreaks --base "$BUILD"
+TRAD="$REPO/translation/Translation.json"
+if [ "$DISC" = disc2 ]; then TRAD="$REPO/translation/Translation_disc2.json"; fi
+cp "$TRAD" "$BUILD/Data/Translation.json"
+# 0 = placeholder obligatorio del parser; 570 px = ancho real de la caja
+dotnet "$DLL" insert-linebreaks 0 570 --base "$BUILD"
 
 echo "==> [4/5] Reempaquetando datos del juego..."
 dotnet "$DLL" repack-game --base "$BUILD"

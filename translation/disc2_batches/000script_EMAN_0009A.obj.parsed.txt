@@ -1,0 +1,240 @@
+﻿###IDX:0###CHAR:###
+School Trip→Family Trip
+###IDX:1###CHAR:Kyousuke###
+So, where are we going next? Frankly, I don't know 
+where the famous spots are around here.
+###IDX:2###CHAR:Manami###
+Hold on, let me check...
+###IDX:3###CHAR:###
+Manami pulls out a sightseeing guidebook, diligently 
+looking through the page she marked with some 
+post-it notes.
+###IDX:4###CHAR:Kyousuke###
+You even brought that along, huh...
+###IDX:5###CHAR:Manami###
+Oh, sorry. I wasn't trying to hide it or anything...
+###IDX:6###CHAR:Kyousuke###
+Judging from the state of that book, it sure seems 
+like you've been reading it pretty thoroughly.
+###IDX:7###CHAR:Manami###
+It's just the two of us, so I thought it would be 
+nice to find some interesting places to visit.
+###IDX:8###CHAR:Kyousuke###
+Just like what happened during the school trip.
+###IDX:9###CHAR:Manami###
+Oh, it's totally different compared to that.
+###IDX:10###CHAR:Kyousuke###
+I guess that's true. We don't have to worry about 
+other people now.
+###IDX:11###CHAR:###
+Unlike the school trip, it's free and easy with just 
+the two of us, so there's no need to rush.
+###IDX:12###CHAR:Manami###
+Yup. So, Kyou-chan, just let me know if there are 
+any places you want to check out.
+###IDX:13###CHAR:Kyousuke###
+'Kay.
+###IDX:14###CHAR:Manami###
+Ehehe, now then... where should we go...?
+###IDX:15###CHAR:Kyousuke###
+Hey, how about the Jishu Shrine?
+###IDX:16###CHAR:Manami###
+Do you want to go, Kyou-chan?
+###IDX:17###CHAR:Kyousuke###
+Don't worry about me, but didn't you say you'd like 
+to visit the waterfall famed for marriages?
+###IDX:18###CHAR:Manami###
+Well yeah, but... I think I'm fine now.
+###IDX:19###CHAR:Kyousuke###
+? What do you mean by that?
+###IDX:20###CHAR:Manami###
+Well, my wish has come true.
+###IDX:21###CHAR:Kyousuke###
+Y-Yeah, I guess there's no need to go then.
+###IDX:22###CHAR:###
+If you're already with someone, it would be kind of 
+strange to go get blessed to find a lover...
+###IDX:23###CHAR:Manami###
+I'm happy to be with you, Kyou-chan. But... I 
+wonder if you feel the same?
+###IDX:24###CHAR:Kyousuke###
+You don't even need to ask me that, do you?
+###IDX:25###CHAR:Manami###
+Hehe... Yup, I thought so.
+###IDX:26###CHAR:Kyousuke###
+I've thought about it, but nothing comes to mind.
+###IDX:27###CHAR:Manami###
+Want to read this sightseeing guide with me??
+###IDX:28###CHAR:Kyousuke###
+I'll read it after you've finished. You only have that 
+one guidebook after all.
+###IDX:29###CHAR:Manami###
+Ah, yeah... okay, hold on. I'll make a decision soon.
+###IDX:30###CHAR:Kyousuke###
+There's no need to rush.
+###IDX:31###CHAR:Manami###
+How about we go for a stroll from Adashino 
+Nenbutsu Temple to the Togetsu-kyo Bridge in 
+Arashiyama?
+###IDX:32###CHAR:Kyousuke###
+Togetsu-kyo?
+###IDX:33###CHAR:Manami###
+Literally "Moon Crossing Bridge", it's at the foot of 
+Arashiyama. Says here it's made of wood~
+###IDX:34###CHAR:Manami###
+There's lots of greenery around there, along with 
+many temples as well.
+###IDX:35###CHAR:###
+You know, she's definitely living up to her title as an 
+old lady... What a plain and simple choice. I don't 
+dislike that side of her though.
+###IDX:36###CHAR:Kyousuke###
+Fine by me, but looks like it's a long way to go. Can 
+you handle it?
+###IDX:37###CHAR:Manami###
+Don't worry. There's still some rock candy left, 
+there's also drinks and hydration salts if we get 
+sweaty.
+###IDX:38###CHAR:Kyousuke###
+Aren't you a little crazy prepared for everything?!
+###IDX:39###CHAR:###
+I mean, that way of thinking and prepping for the 
+worst is way too old-fashioned!
+###IDX:40###CHAR:###
+Is she really the same age as me? Sometimes I 
+really wonder...
+###IDX:41###CHAR:Manami###
+I even have enough for you too, Kyou-chan.
+###IDX:42###CHAR:Kyousuke###
+Well, I definitely appreciate that, but...
+###IDX:43###CHAR:###
+What is this? It's turning out to be a family trip than 
+a trip for lovers...
+###IDX:44###CHAR:Manami###
+The weather's pretty good too, so a stroll would 
+feel really nice~
+###IDX:45###CHAR:Kyousuke###
+For sure. I mean, we're already here, so let's enjoy 
+Kyoto to the fullest.
+###IDX:46###CHAR:Manami###
+Yup!
+###IDX:47###CHAR:Kyousuke###
+So, where are we going next? Frankly, I don't know 
+where the famous spots are around here.
+###IDX:48###CHAR:Manami###
+Hold on, let me check...
+###IDX:49###CHAR:###
+Manami pulls out a sightseeing guidebook, diligently 
+looking through the page she marked with some 
+post-it notes.
+###IDX:50###CHAR:Kyousuke###
+You even brought that along, huh...
+###IDX:51###CHAR:Manami###
+Oh, sorry. I wasn't trying to hide it or anything...
+###IDX:52###CHAR:Kyousuke###
+Judging from the state of that book, it sure seems 
+like you've been reading it pretty thoroughly.
+###IDX:53###CHAR:Manami###
+It's just the two of us, so I thought it would be 
+nice if we went to interesting places.
+###IDX:54###CHAR:Kyousuke###
+Just like what happened during the school trip.
+###IDX:55###CHAR:Manami###
+Oh, it's totally different compared to that.
+###IDX:56###CHAR:Kyousuke###
+I guess that's true. We don't have to worry about 
+other people now.
+###IDX:57###CHAR:###
+Unlike the school trip, it's free and easy with just 
+the two of us, so there's no need to rush.
+###IDX:58###CHAR:Manami###
+Yup. So, Kyou-chan, just let me know if there are 
+any places you want to check out.
+###IDX:59###CHAR:Kyousuke###
+'Kay.
+###IDX:60###CHAR:Manami###
+Ehehe, now then... where should we go...?
+###IDX:61###CHAR:Kyousuke###
+Hey, how about the Jishu Shrine?
+###IDX:62###CHAR:Manami###
+Do you want to go, Kyou-chan?
+###IDX:63###CHAR:Kyousuke###
+Don't worry about me, but didn't you say you'd like 
+to visit the waterfall famed for marriages?
+###IDX:64###CHAR:Manami###
+Well yeah, but... I think I'm fine now.
+###IDX:65###CHAR:Kyousuke###
+? What do you mean by that?
+###IDX:66###CHAR:Manami###
+Well, my wish has come true.
+###IDX:67###CHAR:Kyousuke###
+Y-Yeah, I guess there's no need to go then.
+###IDX:68###CHAR:###
+If you're already with someone, it would be kind of 
+strange to go get blessed to find a lover...
+###IDX:69###CHAR:Manami###
+I'm happy to be with you, Kyou-chan. But... I 
+wonder if you feel the same?
+###IDX:70###CHAR:Kyousuke###
+You don't even need to ask me that, do you?
+###IDX:71###CHAR:Manami###
+Hehe... Yup, I thought so.
+###IDX:72###CHAR:Kyousuke###
+I've thought about it, but nothing comes to mind.
+###IDX:73###CHAR:Manami###
+Want to read this sightseeing guide with me??
+###IDX:74###CHAR:Kyousuke###
+I'll read it after you've finished. You only have that 
+one guidebook after all.
+###IDX:75###CHAR:Manami###
+Ah, yeah... okay, hold on. I'll make a decision soon.
+###IDX:76###CHAR:Kyousuke###
+There's no need to rush.
+###IDX:77###CHAR:Manami###
+How about we go for a stroll from Adashino 
+Nenbutsu Temple to the Togetsu-kyo Bridge in 
+Arashiyama?
+###IDX:78###CHAR:Kyousuke###
+Togetsu-kyo Bridge?
+###IDX:79###CHAR:Manami###
+Literally "Moon Crossing Bridge", it's at the foot of 
+Arashiyama. Says here it's made of wood~
+###IDX:80###CHAR:Manami###
+There's lots of greenery around there, along with 
+many temples as well.
+###IDX:81###CHAR:###
+You know, she's definitely living up to her title as an 
+old lady... What a plain and simple choice. I don't 
+dislike that side of her though.
+###IDX:82###CHAR:Kyousuke###
+Fine by me, but looks like it's a long way to go. Can 
+you handle it?
+###IDX:83###CHAR:Manami###
+Don't worry. There's still some rock candy left, 
+there's also drinks and hydration salts if we get 
+sweaty.
+###IDX:84###CHAR:Kyousuke###
+Aren't you a little crazy prepared for everything?!
+###IDX:85###CHAR:###
+I mean, that way of thinking and prepping for the 
+worst is way too old-fashioned!
+###IDX:86###CHAR:###
+Is she really the same age as me? Sometimes I 
+really wonder...
+###IDX:87###CHAR:Manami###
+I even have enough for you too, Kyou-chan.
+###IDX:88###CHAR:Kyousuke###
+Well, I definitely appreciate that, but...
+###IDX:89###CHAR:###
+What is this? It's turning out to be a family trip than 
+a trip for lovers...
+###IDX:90###CHAR:Manami###
+The weather's pretty good too, so a stroll would 
+feel really nice~
+###IDX:91###CHAR:Kyousuke###
+For sure. I mean, we're already here, so let's enjoy 
+Kyoto to the fullest.
+###IDX:92###CHAR:Manami###
+Yup!
+
+

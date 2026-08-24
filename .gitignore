@@ -17,6 +17,11 @@ JP/
 # Python
 __pycache__/
 *.pyc
+.claude/
+
+# Backups temporales y artifacts de traduccion
+*.bak
+*.prewrap.bak
 
 # PyInstaller build output
 gui-interface/build/
