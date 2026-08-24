@@ -9,7 +9,87 @@ on:
   workflow_dispatch:
 
 jobs:
+  gate:
+    # A push to main is only worth a release if it actually changed the
+    # thing being released - the GUI app. Merges that only touch the
+    # game-translation side of the repo (translation/, scripts/, docs)
+    # used to publish an identical build under a new version number.
+    #
+    # The comparison is against the last release tag rather than the
+    # previous commit, so a docs-only push can't "reset" the check and a
+    # GUI change never gets skipped just because it arrived in a later
+    # push than the one that will be compared.
+    #
+    # Manual runs are explicit publish requests and always proceed. Tag
+    # pushes usually are too - except for the tag this workflow pushes
+    # itself, see the tag branch below.
+    runs-on: ubuntu-latest
+    outputs:
+      release: ${{ steps.decide.outputs.release }}
+      version: ${{ steps.decide.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Decide whether to release, and under which version
+        id: decide
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          LAST=$(git tag -l 'v*.*.*' | sed 's/^v//' | sort -t. -k1,1n -k2,2n -k3,3n | tail -1)
+          if [ -z "$LAST" ]; then
+            NEXT="0.1.0"
+          else
+            IFS=. read -r MAJOR MINOR PATCH <<< "$LAST"
+            NEXT="$MAJOR.$MINOR.$((PATCH + 1))"
+          fi
+          echo "version=v$NEXT" >> "$GITHUB_OUTPUT"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual run - releasing unconditionally."
+            echo "release=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            # The auto-release path publishes with a PAT, and unlike the
+            # default GITHUB_TOKEN a PAT's pushes DO trigger workflows -
+            # so the tag this workflow creates fires this workflow again
+            # and rebuilds the same bundles. The release is created in
+            # the same API call that creates the tag, so a tag that
+            # already has a release is this workflow hearing its own
+            # echo. A human publishing a tag by hand pushes a tag with
+            # no release attached yet, and still gets built.
+            TAG="${{ github.ref_name }}"
+            if gh release view "$TAG" --json tagName >/dev/null 2>&1; then
+              echo "$TAG already has a release - this is the auto-release's own tag, skipping."
+              echo "release=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "$TAG has no release yet - hand-published tag, building it."
+              echo "release=true" >> "$GITHUB_OUTPUT"
+            fi
+            exit 0
+          fi
+
+          if [ -z "$LAST" ]; then
+            echo "No previous release tag - publishing the first release."
+            echo "release=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if git diff --quiet "v$LAST" HEAD -- gui-interface; then
+            echo "No GUI changes since v$LAST - skipping the release."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "GUI changed since v$LAST - releasing $NEXT:"
+            git diff --stat "v$LAST" HEAD -- gui-interface
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    needs: gate
+    if: needs.gate.outputs.release == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -51,7 +131,7 @@ jobs:
           path: gui-interface/dist/*.zip
 
   release:
-    needs: build
+    needs: [gate, build]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -64,19 +144,6 @@ jobs:
         with:
           path: artifacts
 
-      - name: Compute next version (push to main)
-        if: github.ref == 'refs/heads/main'
-        id: nextver
-        run: |
-          LAST=$(git tag -l 'v*.*.*' | sed 's/^v//' | sort -t. -k1,1n -k2,2n -k3,3n | tail -1)
-          if [ -z "$LAST" ]; then
-            NEXT="0.1.0"
-          else
-            IFS=. read -r MAJOR MINOR PATCH <<< "$LAST"
-            NEXT="$MAJOR.$MINOR.$((PATCH + 1))"
-          fi
-          echo "version=v$NEXT" >> "$GITHUB_OUTPUT"
-
       - name: Compose release notes
         env:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -87,7 +154,7 @@ jobs:
           # inline in the release steps, because RELEASE_NOTES.md is
           # multi-line and can't be threaded through a step output cleanly.
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            TAG="${{ steps.nextver.outputs.version }}"
+            TAG="${{ needs.gate.outputs.version }}"
             CHANGELOG=$(gh api "repos/${{ github.repository }}/releases/generate-notes" -f "tag_name=$TAG" -f "target_commitish=main" --jq .body)
             PUBLISHED="Automatically published on push to main by Choviics."
             TAG_MESSAGE=""
@@ -133,8 +200,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.RELEASE_TOKEN }}
-          tag_name: ${{ steps.nextver.outputs.version }}
-          name: ${{ steps.nextver.outputs.version }}
+          tag_name: ${{ needs.gate.outputs.version }}
+          name: ${{ needs.gate.outputs.version }}
           target_commitish: main
           files: artifacts/**/*.zip
           body_path: release_body.md

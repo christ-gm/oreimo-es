@@ -33,11 +33,19 @@ Quiero ser transparente desde el principio para que no te lleves sorpresas: simp
 
 ## Demo
 
+### Disco 1
+
 ![Captura 2](assets/image2.png)
 
 ![Captura 1](assets/image.png)
 
 https://github.com/user-attachments/assets/89a1ea8c-f36d-41dd-9895-dd198a5309c8
+
+### Disco 2
+
+![Captura 1—Disco 2](assets/disc2_image.png)
+
+![Captura 2—Disco 2](assets/disc2_image2.png)
 
 ## Créditos
 
@@ -122,6 +130,22 @@ Los iré revisando **a mi ritmo** (después de todo esto es un proyecto personal
 
 ---
 
+## Oreimo Translator — app de escritorio
+
+Además de los asistentes de arriba, este repositorio incluye en [`gui-interface/`](gui-interface/) una **aplicación de escritorio** (Windows y macOS) para editar el guion del juego sin tocar un editor hexadecimal ni la línea de comandos:
+
+- Abre tu ISO e indexa las ~19.000 líneas de diálogo de las 300 escenas.
+- Busca, filtra y edita las traducciones línea por línea.
+- Exporta e importa CSV/TSV, para traducir en Excel o Google Sheets y repartir el trabajo.
+- Ve, exporta e importa las imágenes de cada escena (fondos, CG, personajes, cutins).
+- Compila una ISO jugable con tus cambios, sin modificar la original.
+
+Está pensada para que **cualquiera pueda hacer su propia traducción del juego, a cualquier idioma** — no solo esta al español. Se descarga ya compilada desde [Releases](../../releases), sin necesidad de instalar Python.
+
+📖 **Documentación completa de la app: [`gui-interface/README.md`](gui-interface/README.md)** (está en inglés) — instalación, uso, alcance actual y detalles técnicos del formato.
+
+---
+
 ## Estructura del repositorio
 
 ```
@@ -132,6 +156,7 @@ Los iré revisando **a mi ritmo** (después de todo esto es un proyecto personal
 │   ├── corpus_disc2/           # Texto EN extraído del disco 2 (268 .tsv)
 │   ├── disc2_batches/          # Lotes de traducción del disco 2 (batch_00..19.json)
 │   └── review/                 # Hojas XLSX de revisión (EN → ES)
+├── gui-interface/              # Oreimo Translator: app de escritorio (ver su propio README)
 ├── retorts/                    # Imágenes de "retorts" (mensajes rápidos) traducidas
 ├── scripts/                    # Scripts de traducción por lotes y del pipeline
 ├── tool/OreimoAutomation/      # Driver de automatización (C#, propio)
