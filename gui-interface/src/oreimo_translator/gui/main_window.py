@@ -41,22 +41,28 @@ def _mark_edited(item: QTableWidgetItem, edited: bool,
     a yellow background and inherited the theme's text color, which was
     unreadable in dark mode). Clears back to the theme default (rather
     than hardcoding white) when not edited."""
+    # "I changed this" and "this is too wide" are separate facts, so
+    # they get separate channels: the background keeps meaning edited,
+    # and width speaks through the tooltip and - only when it actually
+    # needs the writer - a background of its own. Letting width win
+    # outright is what made an edited long line stop looking edited.
     if width_status == text_wrap.NEEDS_HELP:
+        # Rare, and nothing downstream will fix it: worth overriding the
+        # edited colour for.
         item.setBackground(OVERFLOW_BACKGROUND)
         item.setForeground(OVERFLOW_FOREGROUND)
         item.setToolTip(OVERFLOW_TOOLTIP)
+        return
+    if edited:
+        item.setBackground(EDITED_BACKGROUND)
+        item.setForeground(EDITED_FOREGROUND)
     elif width_status == text_wrap.WILL_WRAP:
         item.setBackground(WILL_WRAP_BACKGROUND)
         item.setForeground(WILL_WRAP_FOREGROUND)
-        item.setToolTip(WILL_WRAP_TOOLTIP)
-    elif edited:
-        item.setBackground(EDITED_BACKGROUND)
-        item.setForeground(EDITED_FOREGROUND)
-        item.setToolTip("")
     else:
         item.setData(Qt.BackgroundRole, None)
         item.setData(Qt.ForegroundRole, None)
-        item.setToolTip("")
+    item.setToolTip(WILL_WRAP_TOOLTIP if width_status == text_wrap.WILL_WRAP else "")
 
 COL_SCENE = 0
 COL_CHARACTER = 1

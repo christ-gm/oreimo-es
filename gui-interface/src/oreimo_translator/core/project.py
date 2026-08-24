@@ -340,12 +340,13 @@ class Project:
         for e in self.script_entries:
             if e.name in changed_scene_names:
                 scene_blob = script_blob[e.data_offset:e.data_offset + e.data_size]
-                new_scene_blob, unsupported, scene_warnings = self._rebuild_scene(
+                new_scene_blob, unsupported, scene_warnings, scene_wrapped = self._rebuild_scene(
                     scene_blob,
                     changed_dialogue.get(e.name, []),
                     image_edits_by_scene.get(e.name, {}),
                 )
                 unsupported_image_edits.extend(unsupported)
+                self._wrapped_lines += scene_wrapped
                 encoding_warnings.extend(f"{e.name}/{w}" for w in scene_warnings)
                 new_script_entries.append((e.name, new_scene_blob))
             else:
@@ -469,6 +470,7 @@ class Project:
         (new_scene_blob, unsupported_image_edit_keys, encoding_warnings)."""
         unsupported: list[tuple[str, str, str]] = []
         encoding_warnings: list[str] = []
+        wrapped_count = 0
         edits_by_category: dict[str, dict[str, image_io.ImportedImage]] = defaultdict(dict)
         for (_scene, category, gim_name), item in image_edits.items():
             edits_by_category[category][gim_name] = item
@@ -511,7 +513,7 @@ class Project:
                     continue
                 wrapped = text_wrap.wrap(e.translation, is_speech=e.speaker is not None)
                 if wrapped != e.translation:
-                    self._wrapped_lines += 1
+                    wrapped_count += 1
                 edits[e.block_offset] = join_speaker(e.speaker, wrapped)
             if edits:
                 new_obj_bytes, _applied = obj_blocks.replace_strings_by_offset(obj_bytes, edits)
@@ -536,10 +538,10 @@ class Project:
 
         if not new_top:
             # every requested edit for this scene was unsupported (Character-only)
-            return scene_blob, unsupported, encoding_warnings
+            return scene_blob, unsupported, encoding_warnings, wrapped_count
 
         new_scene_entries = [
             (x.name, new_top.get(x.name, scene_blob[x.data_offset:x.data_offset + x.data_size]))
             for x in scene_entries
         ]
-        return gpda.build_gpda(new_scene_entries), unsupported, encoding_warnings
+        return gpda.build_gpda(new_scene_entries), unsupported, encoding_warnings, wrapped_count
