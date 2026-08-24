@@ -41,6 +41,7 @@ import platform
 import shutil
 import struct
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -139,14 +140,29 @@ def patch_res_dat_into_iso(source_iso_path: str, new_res_dat: bytes, output_iso_
 
 def _mkisofs_executable() -> str | None:
     """Locates mkisofs: first on PATH, then the oreimo-es repo's own
-    tool-bin shim (a WSL wrapper around the bundled cygwin mkisofs.exe,
-    used by build_iso.sh) when running from a repo checkout."""
+    tool-bin copy - mkisofs.exe (standalone cygwin binary) on Windows,
+    or the WSL shim wrapping it elsewhere. Walks upwards from this file
+    (source checkout) and from the executable (PyInstaller build) since
+    the frozen layout nests deeper than src/."""
     found = shutil.which("mkisofs")
     if found:
         return found
-    shim = Path(__file__).resolve().parents[4] / "tool-bin" / "mkisofs"
-    if shim.is_file() and os.access(shim, os.X_OK):
-        return str(shim)
+    # platform order matters: on POSIX the bash shim converts POSIX paths
+    # for the cygwin binary; native Windows wants the .exe directly.
+    names = ("mkisofs", "mkisofs.exe") if os.name != "nt" else ("mkisofs.exe", "mkisofs")
+    starts = [Path(__file__).resolve()]
+    if getattr(sys, "frozen", False):
+        starts.append(Path(sys.executable).resolve())
+    for start in starts:
+        d = start.parent
+        for _ in range(8):
+            for name in names:
+                cand = d / "tool-bin" / name
+                if cand.is_file():
+                    return str(cand)
+            if d.parent == d:
+                break
+            d = d.parent
     return None
 
 
