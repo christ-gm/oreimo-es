@@ -34,6 +34,7 @@ def _mark_edited(item: QTableWidgetItem, edited: bool):
 from ..core import Project
 from ..core import scene_images
 from ..core import image_io
+from ..core import es_bridge
 
 COL_SCENE = 0
 COL_CHARACTER = 1
@@ -106,6 +107,9 @@ class MainWindow(QMainWindow):
 
         act_import = file_menu.addAction("&Import file(s)...")
         act_import.triggered.connect(self.import_tables)
+
+        act_import_es = file_menu.addAction("Import &ES translation (oreimo-es JSON)...")
+        act_import_es.triggered.connect(self.import_es_translation)
 
         file_menu.addSeparator()
 
@@ -245,7 +249,10 @@ class MainWindow(QMainWindow):
 
         def on_success(project):
             self.project = project
-            self.setWindowTitle(f"Oreimo Translator - {Path(path).name}")
+            title = f"Oreimo Translator - {Path(path).name}"
+            if project.disc_serial:
+                title += f" [{project.disc_serial}]"
+            self.setWindowTitle(title)
             self.scene_list.clear()
             self.scene_list.addItems(project.scene_names())
             self.search_box.clear()
@@ -363,6 +370,56 @@ class MainWindow(QMainWindow):
                 self, "Imported",
                 f"{len(paths)} file(s) imported, all rows applied successfully."
             )
+
+    def import_es_translation(self):
+        """Loads an oreimo-es consolidated translation JSON (Translation.json
+        for disc 1, Translation_disc2.json for disc 2) into the opened
+        project, applying the existing Spanish translation in one go."""
+        if not self._require_project():
+            return
+
+        suggested = "Translation_disc2.json" if self.project.disc_serial == "NPJH-50569" else "Translation.json"
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Importar traducción ES", suggested, "JSON (*.json)"
+        )
+        if not path:
+            return
+
+        def load():
+            return es_bridge.load_es_translation(self.project, path)
+
+        def on_success(report):
+            self._refresh_current_view()
+            self._update_status()
+
+            skipped = report["skipped"]
+            summary = (
+                f"Escenas: {report['matched_scenes']}/{report['scenes']} cargadas\n"
+                f"Líneas aplicadas: {report['matched_lines']}\n"
+                f"Nombres traducidos: {report['names_applied']}"
+            )
+            if report["matched_scenes"] == 0 and report["scenes"] > 0:
+                summary += (
+                    "\n\nNinguna escena coincidió. ¿Seguro que este JSON es de "
+                    f"este disco? ({'Disco 2 -> Translation_disc2.json' if self.project.disc_serial == 'NPJH-50569' else 'Disco 1 -> Translation.json'})"
+                )
+            elif skipped:
+                preview = "\n".join(f"  {n}: {r}" for n, r in skipped[:15])
+                if len(skipped) > 15:
+                    preview += f"\n  ... y {len(skipped) - 15} más"
+                QMessageBox.warning(
+                    self, "Traducción ES importada con avisos",
+                    f"{summary}\n\nEscenas omitidas:\n{preview}"
+                )
+            else:
+                QMessageBox.information(self, "Traducción ES importada", summary)
+
+        def on_error(message):
+            QMessageBox.critical(self, "Error importando traducción ES", message)
+
+        self._run_background(
+            load, on_success, on_error, busy_message="Importando traducción ES...",
+        )
 
     def export_images_selected_scene(self):
         if not self._require_project():

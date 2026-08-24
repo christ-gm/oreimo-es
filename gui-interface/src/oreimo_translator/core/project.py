@@ -1,7 +1,8 @@
 """
 Project: the in-memory model for one opened ISO. Indexes every translatable
-dialogue/chapter-title line across all 300 scenes, tracks edits, and can
-export/import them as CSV/TSV or compile them back into a playable ISO.
+dialogue/chapter-title line across all scenes of the opened disc, tracks
+edits, and can export/import them as CSV/TSV or compile them back into a
+playable ISO.
 """
 import csv
 import gzip
@@ -42,6 +43,7 @@ class DialogueEntry:
     block_offset: int  # byte offset of the block within its scene's decompressed .obj - unique per scene
     raw_original: str  # exact text as stored in the .obj, e.g. 'Kirino「Yup!」' - may include a speaker prefix
     translation: str | None = None  # dialogue-only, no speaker/brackets; defaults to `original` below
+    speaker_override: str | None = None  # replaces the original speaker name (e.g. ES name) when set
 
     def __post_init__(self):
         if self.translation is None:
@@ -52,7 +54,11 @@ class DialogueEntry:
         """The speaking character's name, or None for narration lines.
         Derived from `raw_original` - the game embeds it as a literal
         'Name「...」' prefix in the text itself, there's no separate
-        structured speaker field in the format."""
+        structured speaker field in the format. An imported translation
+        may override it (speaker_override) so compiled output keeps the
+        translated name."""
+        if self.speaker_override is not None:
+            return self.speaker_override
         speaker, _ = split_speaker(self.raw_original)
         return speaker
 
@@ -82,6 +88,7 @@ class Project:
         self.res_dat: bytes | None = None
         self.script_blob: bytes | None = None  # kept for on-demand scene image lookups
         self.script_entries: list[gpda.GPDAEntry] = []
+        self.disc_serial: str | None = None  # e.g. 'NPJH-50568' (disc 1) / 'NPJH-50569' (disc 2)
         self.scenes: dict[str, list[DialogueEntry]] = {}
         self._image_category_index: dict[str, set[str]] | None = None
         # (scene, category, label) -> ImportedImage; pending image edits, held
@@ -93,6 +100,7 @@ class Project:
     def load(self, iso_path: str, progress_callback=None):
         self.iso_path = iso_path
         self.res_dat = iso_tools.read_res_dat(iso_path)
+        self.disc_serial = iso_tools.detect_disc(iso_path)
 
         script_off, script_size = gpda.find_path(self.res_dat, ["script"])
         script_blob = self.res_dat[script_off:script_off + script_size]

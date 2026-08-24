@@ -36,10 +36,12 @@ emulation mode has no `-xa` equivalent at all (checked: absent from its
 disc the PSP firmware's module loader couldn't read correctly.
 """
 import io
+import os
 import platform
 import shutil
 import struct
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -136,8 +138,46 @@ def patch_res_dat_into_iso(source_iso_path: str, new_res_dat: bytes, output_iso_
         f.write(new_res_dat)
 
 
+def _mkisofs_executable() -> str | None:
+    """Locates mkisofs: first on PATH, then the oreimo-es repo's own
+    tool-bin copy - mkisofs.exe (standalone cygwin binary) on Windows,
+    or the WSL shim wrapping it elsewhere. Walks upwards from this file
+    (source checkout) and from the executable (PyInstaller build) since
+    the frozen layout nests deeper than src/."""
+    found = shutil.which("mkisofs")
+    if found:
+        return found
+    # platform order matters: on POSIX the bash shim converts POSIX paths
+    # for the cygwin binary; native Windows wants the .exe directly.
+    names = ("mkisofs", "mkisofs.exe") if os.name != "nt" else ("mkisofs.exe", "mkisofs")
+    starts = [Path(__file__).resolve()]
+    if getattr(sys, "frozen", False):
+        # onedir/onefile builds: PyInstaller unpacks bundled binaries here
+        meipass = getattr(sys, "_MEIPASS", None)
+        if meipass:
+            starts.append(Path(meipass) / "tool-bin")  # sentinel: exact match below
+        starts.append(Path(sys.executable).resolve())
+    for start in starts:
+        if start.name == "tool-bin":
+            for name in names:
+                cand = start / name
+                if cand.is_file():
+                    return str(cand)
+            continue
+        d = start.parent
+        for _ in range(8):
+            for name in names:
+                cand = d / "tool-bin" / name
+                if cand.is_file():
+                    return str(cand)
+            if d.parent == d:
+                break
+            d = d.parent
+    return None
+
+
 def mkisofs_available() -> bool:
-    return shutil.which("mkisofs") is not None
+    return _mkisofs_executable() is not None
 
 
 def _locate_file_offset(iso_path: str, inner_path: str) -> tuple[int, int]:
@@ -208,6 +248,31 @@ def _extract_iso_tree(iso_path: str, dest_dir: Path):
 
 RES_DAT_ISO_PATH = "/PSP_GAME/INSDIR/RES.DAT"
 FIRST_DAT_ISO_PATH = "/PSP_GAME/USRDIR/first.dat"
+# UMD_DATA.BIN lives at the ISO root on standard PSP images; some
+# repacks place it under SYSDIR, so probe both.
+UMD_DATA_ISO_PATHS = ("/UMD_DATA.BIN", "/PSP_GAME/SYSDIR/UMD_DATA.BIN")
+
+# Oreimo Portable ga Tsuzuku Wake ga Nai disc serials
+DISC_SERIALS = {
+    "NPJH-50568": "Disco 1",
+    "NPJH-50569": "Disco 2",
+}
+
+
+def detect_disc(iso_path: str) -> str | None:
+    """Returns the UMD serial of the ISO (e.g. 'NPJH-50568' for disc 1,
+    'NPJH-50569' for disc 2), or None if it can't be determined."""
+    import re
+
+    for inner in UMD_DATA_ISO_PATHS:
+        try:
+            data = read_file(iso_path, inner)
+        except Exception:
+            continue
+        m = re.search(rb"NPJH-\d{5}", data)
+        if m:
+            return m.group(0).decode("ascii")
+    return None
 
 
 def read_file(iso_path: str, inner_path: str) -> bytes:
@@ -236,7 +301,8 @@ def rebuild_iso_with_files(source_iso_path: str, replacements: dict[str, bytes],
     Raises IsoError if mkisofs isn't installed - this is an external
     dependency (cdrtools), unlike the same-size patch path which needs
     nothing beyond the stdlib."""
-    if not mkisofs_available():
+    mkisofs = _mkisofs_executable()
+    if not mkisofs:
         raise IsoError(
             "mkisofs not found on PATH. Rebuilding the ISO (needed for this "
             "compile, because a rebuilt file changed size) requires real "
@@ -256,8 +322,7 @@ def rebuild_iso_with_files(source_iso_path: str, replacements: dict[str, bytes],
                 raise IsoError(f"could not locate {inner_path} in the extracted ISO tree")
             staged.write_bytes(new_bytes)
 
-        mkisofs = shutil.which("mkisofs")
-        subprocess.run(
+        proc = subprocess.run(
             [
                 mkisofs,
                 "-iso-level", "4", "-xa",
@@ -271,3 +336,11 @@ def rebuild_iso_with_files(source_iso_path: str, replacements: dict[str, bytes],
             ],
             check=True, capture_output=True, text=True,
         )
+        # Some cygwin mkisofs builds exit 0 even when they fail (e.g. a
+        # staging path they can't resolve) - trust the output file, not
+        # the exit code.
+        if not Path(output_iso_path).is_file():
+            raise IsoError(
+                f"mkisofs reported success but no ISO was written to "
+                f"{output_iso_path}. stderr:\n{(proc.stderr or '').strip()[-800:]}"
+            )

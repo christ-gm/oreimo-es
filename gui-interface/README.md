@@ -111,15 +111,35 @@ to **`mkisofs` from cdrtools**. It has to be real cdrtools `mkisofs`, not
 `xorriso` — `xorriso` silently produces a disc the PSP won't boot
 correctly (`FORMAT_NOTES.md` §13/§22).
 
+- **Windows**: nothing to install — the app finds `tool-bin/mkisofs.exe`
+  (shipped in this repo) automatically, and prebuilt Windows binaries
+  bundle their own copy inside.
 - **macOS**: `brew install cdrtools`
 - **Linux**: `sudo apt install genisoimage` (provides `mkisofs`), or your
   distro's `cdrtools`/`cdrkit` package
-- **Windows**: not wired up yet. A Windows `mkisofs.exe` exists in
-  `tool-bin/` in the sibling toolchain project but isn't bundled here, so
-  image edits can't be compiled on Windows for now. Everything else works.
 
-This applies to the prebuilt binaries too — `mkisofs` is an external
-program, not something that can be baked into the app.
+On macOS/Linux this is an external program, so it can't be baked into
+those prebuilt binaries.
+
+## Load the Spanish translation (oreimo-es)
+
+This repo ships a complete Spanish translation of both discs. To apply
+it with the GUI instead of translating from scratch:
+
+1. Open the **English v1** ISO of the disc you want — the title bar
+   shows which disc was detected (`NPJH-50568` = Disc 1, `NPJH-50569`
+   = Disc 2).
+2. `File > Import ES translation (oreimo-es JSON)...` and pick:
+   - `translation/Translation.json` for Disc 1
+   - `translation/Translation_disc2.json` for Disc 2
+
+   The file dialog suggests the right one based on the detected disc.
+3. Every scene loads pre-translated (speaker names included); edit
+   anything you like on top of it, then `File > Compile ISO...`.
+
+Scenes whose line counts don't match the ISO parse are skipped and
+reported rather than mis-applied. Importing a whole translation always
+grows `RES.DAT`, which is why the `mkisofs` note above matters here.
 
 ## The File menu
 
@@ -130,6 +150,7 @@ program, not something that can be baked into the app.
 | **Export selected scene...** | Writes just the scene highlighted in the Dialogue tab. |
 | **Export everything to a single file...** | One CSV/TSV containing every scene. |
 | **Import file(s)...** | Select one or many exported files; applies their `translation` column. |
+| **Import ES translation (oreimo-es JSON)...** | Load this repo's finished Spanish translation for the opened disc in one step — see [above](#load-the-spanish-translation-oreimo-es). |
 | **Export images for selected scene...** | PNGs + `manifest.json` for the scene selected in the Images tab. |
 | **Export images for filtered scenes...** | Same, for every scene passing the Images tab's category filter. |
 | **Import images...** | Point at an export folder; loads the PNGs back as pending edits. |

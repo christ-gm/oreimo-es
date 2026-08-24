@@ -80,7 +80,6 @@ dotnet build "$TOOLCHAIN/OreimoAutomation" -c Release -v q
 
 DLL="$TOOLCHAIN/OreimoAutomation/bin/Release/net10.0/OreimoAutomation.dll"
 mkdir -p "$WORK"
-rm -rf "$BUILD"
 
 echo "==> [1/5] Extrayendo ISO..."
 STAGE="$WORK/_incoming"
