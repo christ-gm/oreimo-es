@@ -208,6 +208,28 @@ def _extract_iso_tree(iso_path: str, dest_dir: Path):
 
 RES_DAT_ISO_PATH = "/PSP_GAME/INSDIR/RES.DAT"
 FIRST_DAT_ISO_PATH = "/PSP_GAME/USRDIR/first.dat"
+UMD_DATA_ISO_PATH = "/PSP_GAME/SYSDIR/UMD_DATA.BIN"
+
+# Oreimo Portable ga Tsuzuku Wake ga Nai disc serials
+DISC_SERIALS = {
+    "NPJH-50568": "Disco 1",
+    "NPJH-50569": "Disco 2",
+}
+
+
+def detect_disc(iso_path: str) -> str | None:
+    """Returns the UMD serial of the ISO (e.g. 'NPJH-50568' for disc 1,
+    'NPJH-50569' for disc 2), or None if it can't be determined."""
+    import re
+
+    try:
+        data = read_file(iso_path, UMD_DATA_ISO_PATH)
+    except Exception:
+        return None
+    m = re.search(rb"NPJH-\d{5}", data)
+    if not m:
+        return None
+    return m.group(0).decode("ascii")
 
 
 def read_file(iso_path: str, inner_path: str) -> bytes:
