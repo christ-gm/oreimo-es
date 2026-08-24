@@ -10,7 +10,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import gpda, iso_tools, obj_blocks, scene_images, image_io, seekmap
+from . import gpda, iso_grow, iso_tools, obj_blocks, scene_images, image_io, seekmap, text_wrap
 
 
 def split_speaker(text: str) -> tuple[str | None, str]:
@@ -320,7 +320,8 @@ class Project:
 
     # ---- compiling -------------------------------------------------------
 
-    def compile(self, output_iso_path: str):
+    def compile(self, output_iso_path: str, progress_callback=None):
+        self._wrapped_lines = 0
         changed_dialogue = {name: entries for name, entries in self.scenes.items() if any(e.is_edited for e in entries)}
         image_edits_by_scene: dict[str, dict[tuple[str, str, str], image_io.ImportedImage]] = defaultdict(dict)
         for key, item in self.image_edits.items():
@@ -378,21 +379,20 @@ class Project:
             iso_tools.FIRST_DAT_ISO_PATH: new_first_dat,
         }
         # Both files keep their size whenever GPDA's 0x800 padding absorbs
-        # the change (the usual dialogue-only case), which lets us patch
-        # them in place - fast, and needs no external tools. Image edits
-        # routinely grow RES.DAT past its padding (our re-encoder is
-        # pixel-perfect but compresses a bit less tightly than whatever
-        # originally packed these textures - see FORMAT_NOTES.md §22), and
-        # only then do we fall back to a full rebuild (pycdlib extract +
-        # real mkisofs -iso-level 4 -xa), validated by a PPSSPP boot test.
-        needs_full_rebuild = (
+        # the change (the usual dialogue-only case). Image edits, and a
+        # whole imported translation, routinely push RES.DAT past that
+        # padding - importing all of disc 1's Spanish grows it by 14,336
+        # bytes, seven sectors. Either way the write goes through
+        # iso_grow, which edits the ISO9660 filesystem in place and needs
+        # nothing installed; the old mkisofs rebuild path is gone.
+        needs_resize = (
             len(new_res_dat) != len(self.res_dat)
             or len(new_first_dat) != len(original_first_dat)
         )
-        if needs_full_rebuild:
-            iso_tools.rebuild_iso_with_files(self.iso_path, replacements, output_iso_path)
-        else:
-            iso_tools.patch_files_into_iso(self.iso_path, replacements, output_iso_path)
+        iso_report = iso_grow.write_files_into_iso(
+            self.iso_path, replacements, output_iso_path,
+            progress_callback=progress_callback,
+        )
         return {
             "scenes_changed": list(changed_scene_names),
             "lines_changed": sum(1 for entries in changed_dialogue.values() for e in entries if e.is_edited),
@@ -400,8 +400,12 @@ class Project:
             "unsupported_image_edits": unsupported_image_edits,
             "encoding_warnings": encoding_warnings,
             "res_dat_size": len(new_res_dat),
-            "full_iso_rebuild": needs_full_rebuild,
+            "res_dat_resized": needs_resize,
             "seekmap_updated": new_first_dat != original_first_dat,
+            "files_moved": iso_report["moved"],
+            "filler_reclaimed": iso_report["reclaimed"],
+            "iso_grew_by": iso_report["image_grew_by"],
+            "lines_wrapped": self._wrapped_lines,
         }
 
     @staticmethod
@@ -495,7 +499,20 @@ class Project:
             objgz_entry = next(x for x in inner_entries if "obj.gz" in x.name)
             objgz_bytes = folder000_blob[objgz_entry.data_offset:objgz_entry.data_offset + objgz_entry.data_size]
             obj_bytes = gzip.decompress(objgz_bytes)
-            edits = {e.block_offset: e.full_translation for e in dialogue_entries if e.is_edited}
+            # The engine draws a line straight past the edge of the box
+            # unless the script tells it where to break, so add the
+            # markers here - the same way, and with the same glyph
+            # widths, as the command-line pipeline's insert-linebreaks
+            # step, so both routes produce the same script. Only the
+            # dialogue is measured; the speaker is drawn in its own box.
+            edits = {}
+            for e in dialogue_entries:
+                if not e.is_edited:
+                    continue
+                wrapped = text_wrap.wrap(e.translation, is_speech=e.speaker is not None)
+                if wrapped != e.translation:
+                    self._wrapped_lines += 1
+                edits[e.block_offset] = join_speaker(e.speaker, wrapped)
             if edits:
                 new_obj_bytes, _applied = obj_blocks.replace_strings_by_offset(obj_bytes, edits)
                 new_inner[objgz_entry.name] = gzip.compress(new_obj_bytes, compresslevel=9, mtime=0)

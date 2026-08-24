@@ -15,26 +15,43 @@ AUTHOR_GITHUB = "https://github.com/Choviics"
 
 EDITED_BACKGROUND = QColor(255, 244, 140)
 EDITED_FOREGROUND = QColor(20, 20, 20)
+# A line that would be drawn past the edge of the textbox. Compiling
+# inserts break markers to fix it, but flagging it here lets the
+# translator see it while writing rather than discovering it in-game.
+OVERFLOW_BACKGROUND = QColor(255, 138, 128)
+OVERFLOW_FOREGROUND = QColor(20, 20, 20)
+OVERFLOW_TOOLTIP = (
+    "Esta linea se sale de la caja de texto. Al compilar se parte "
+    "automaticamente; coloca un \uff3f a mano si prefieres elegir "
+    "donde cae el salto."
+)
 
 
-def _mark_edited(item: QTableWidgetItem, edited: bool):
+def _mark_edited(item: QTableWidgetItem, edited: bool, overflowing: bool = False):
     """Highlights an edited translation cell with a readable yellow (dark
     text on a light yellow background, set explicitly so it stays legible
     regardless of the OS light/dark theme - the previous version only set
     a yellow background and inherited the theme's text color, which was
     unreadable in dark mode). Clears back to the theme default (rather
     than hardcoding white) when not edited."""
-    if edited:
+    if overflowing:
+        item.setBackground(OVERFLOW_BACKGROUND)
+        item.setForeground(OVERFLOW_FOREGROUND)
+        item.setToolTip(OVERFLOW_TOOLTIP)
+    elif edited:
         item.setBackground(EDITED_BACKGROUND)
         item.setForeground(EDITED_FOREGROUND)
+        item.setToolTip("")
     else:
         item.setData(Qt.BackgroundRole, None)
         item.setData(Qt.ForegroundRole, None)
+        item.setToolTip("")
 
 from ..core import Project
 from ..core import scene_images
 from ..core import image_io
 from ..core import es_bridge
+from ..core import text_wrap
 
 COL_SCENE = 0
 COL_CHARACTER = 1
@@ -51,10 +68,10 @@ class _Worker(QThread):
     """Runs one no-argument callable on a background thread and reports
     back via signals - used for anything slow enough to freeze the UI if
     run directly on the main thread (ISO load, ISO compile, bulk image
-    export), most visibly the full-ISO-rebuild compile path (extracts the
-    whole disc with pycdlib, then shells out to mkisofs), which previously
-    froze the window - including the mouse pointer, since Qt couldn't
-    process any events - until it finished."""
+    export). Compiling is much cheaper now that resizing happens inside
+    the ISO rather than by re-mastering it, but it still copies a 1.4 GB
+    file, which is long enough to freeze the window - including the mouse
+    pointer, since Qt couldn't process any events - if run inline."""
     succeeded = Signal(object)
     failed = Signal(str)
 
@@ -524,13 +541,20 @@ class MainWindow(QMainWindow):
             return
 
         def on_success(report):
-            rebuild_note = "full ISO rebuild (RES.DAT resized)" if report.get("full_iso_rebuild") else "fast patch (same size)"
+            if report.get("res_dat_resized"):
+                grew = report.get("iso_grew_by") or 0
+                size_note = f"grew by {grew / 1048576:.1f} MB" if grew else "same size as the original"
+                method = f"resized in place, disc {size_note}"
+            else:
+                method = "patched in place (same size)"
             message = (
                 f"Done: {path}\n\n"
                 f"Scenes changed: {len(report['scenes_changed'])}\n"
                 f"Lines changed: {report['lines_changed']}\n"
                 f"Images changed: {report['images_changed']}\n"
-                f"Method: {rebuild_note}"
+                f"Method: {method}"
+                + (f"\nLines auto-wrapped: {report['lines_wrapped']}"
+                   if report.get("lines_wrapped") else "")
             )
             unsupported = report.get("unsupported_image_edits") or []
             if unsupported:
@@ -562,7 +586,7 @@ class MainWindow(QMainWindow):
         self._run_background(
             lambda: self.project.compile(path),
             on_success, on_error,
-            busy_message="Compiling ISO... this can take a while if images were edited (full rebuild).",
+            busy_message="Compiling ISO...",
         )
 
     def show_about(self):
@@ -680,7 +704,8 @@ class MainWindow(QMainWindow):
             self.table.setItem(row, COL_ORIGINAL, original_item)
 
             translation_item = QTableWidgetItem(entry.translation)
-            _mark_edited(translation_item, entry.is_edited)
+            _mark_edited(translation_item, entry.is_edited,
+                         text_wrap.overflows(entry.translation, entry.speaker is not None))
             self.table.setItem(row, COL_TRANSLATION, translation_item)
         self._populating = False
 
@@ -804,7 +829,8 @@ class MainWindow(QMainWindow):
         scene_item = self.table.item(item.row(), COL_SCENE)
         entry = scene_item.data(Qt.UserRole)
         entry.translation = item.text()
-        _mark_edited(item, entry.is_edited)
+        _mark_edited(item, entry.is_edited,
+                     text_wrap.overflows(entry.translation, entry.speaker is not None))
         self._update_status()
 
     def _update_status(self):
