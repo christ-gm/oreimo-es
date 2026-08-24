@@ -78,6 +78,30 @@ def widest(text: str, is_speech: bool = False) -> int:
     return max((measure(s, is_speech) for s in segments(text)), default=0)
 
 
+# Return values of status().
+FITS = "fits"          # nothing to do
+WILL_WRAP = "will"     # too wide, but compiling will break it up
+NEEDS_HELP = "needs"   # too wide and compiling will NOT fix it
+
+
+def status(text: str, is_speech: bool = False,
+           max_width: int = MAX_LINE_WIDTH) -> str:
+    """Whether a line fits, will be fixed automatically at compile time,
+    or is going to overflow in-game unless the writer intervenes.
+
+    The two failing cases look identical in the text but are completely
+    different problems, so they should not look identical on screen. A
+    line with no marker in it gets broken up on compile and needs no
+    attention at all. A line that already carries a marker is left alone
+    on purpose - whoever placed it gets the last word - so if one of its
+    segments is still too wide, nothing downstream will save it."""
+    if not overflows(text, is_speech, max_width):
+        return FITS
+    if overflows(wrap(text, is_speech, max_width), is_speech, max_width):
+        return NEEDS_HELP
+    return WILL_WRAP
+
+
 def _insert(text: str, is_speech: bool, max_width: int) -> str:
     """Port of LineBreaksInserterCLI.InsertLineBreaks."""
     bracketed = None

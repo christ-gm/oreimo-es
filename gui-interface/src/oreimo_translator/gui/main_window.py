@@ -9,6 +9,12 @@ from PySide6.QtWidgets import (
     QTabWidget, QTreeWidget, QTreeWidgetItem, QScrollArea, QCheckBox,
 )
 
+from ..core import Project
+from ..core import scene_images
+from ..core import image_io
+from ..core import es_bridge
+from ..core import text_wrap
+
 APP_VERSION = "0.1.0"
 AUTHOR_NAME = "Choviics"
 AUTHOR_GITHUB = "https://github.com/Choviics"
@@ -27,17 +33,22 @@ OVERFLOW_TOOLTIP = (
 )
 
 
-def _mark_edited(item: QTableWidgetItem, edited: bool, overflowing: bool = False):
+def _mark_edited(item: QTableWidgetItem, edited: bool,
+                 width_status: str = text_wrap.FITS):
     """Highlights an edited translation cell with a readable yellow (dark
     text on a light yellow background, set explicitly so it stays legible
     regardless of the OS light/dark theme - the previous version only set
     a yellow background and inherited the theme's text color, which was
     unreadable in dark mode). Clears back to the theme default (rather
     than hardcoding white) when not edited."""
-    if overflowing:
+    if width_status == text_wrap.NEEDS_HELP:
         item.setBackground(OVERFLOW_BACKGROUND)
         item.setForeground(OVERFLOW_FOREGROUND)
         item.setToolTip(OVERFLOW_TOOLTIP)
+    elif width_status == text_wrap.WILL_WRAP:
+        item.setBackground(WILL_WRAP_BACKGROUND)
+        item.setForeground(WILL_WRAP_FOREGROUND)
+        item.setToolTip(WILL_WRAP_TOOLTIP)
     elif edited:
         item.setBackground(EDITED_BACKGROUND)
         item.setForeground(EDITED_FOREGROUND)
@@ -46,12 +57,6 @@ def _mark_edited(item: QTableWidgetItem, edited: bool, overflowing: bool = False
         item.setData(Qt.BackgroundRole, None)
         item.setData(Qt.ForegroundRole, None)
         item.setToolTip("")
-
-from ..core import Project
-from ..core import scene_images
-from ..core import image_io
-from ..core import es_bridge
-from ..core import text_wrap
 
 COL_SCENE = 0
 COL_CHARACTER = 1
@@ -705,7 +710,7 @@ class MainWindow(QMainWindow):
 
             translation_item = QTableWidgetItem(entry.translation)
             _mark_edited(translation_item, entry.is_edited,
-                         text_wrap.overflows(entry.translation, entry.speaker is not None))
+                         text_wrap.status(entry.translation, entry.speaker is not None))
             self.table.setItem(row, COL_TRANSLATION, translation_item)
         self._populating = False
 
@@ -830,7 +835,7 @@ class MainWindow(QMainWindow):
         entry = scene_item.data(Qt.UserRole)
         entry.translation = item.text()
         _mark_edited(item, entry.is_edited,
-                     text_wrap.overflows(entry.translation, entry.speaker is not None))
+                     text_wrap.status(entry.translation, entry.speaker is not None))
         self._update_status()
 
     def _update_status(self):
