@@ -10,10 +10,22 @@ ICON_PNG = ASSETS / 'icon.png'    # loaded at runtime for the window icon
 ICON_ICO = ASSETS / 'icon.ico'    # embedded in the Windows executable
 ICON_ICNS = ASSETS / 'icon.icns'  # embedded in the macOS .app bundle
 
+# Ship the repo's own mkisofs so end users who only download the release
+# can compile ISOs whose RES.DAT changed size (full-rebuild path) without
+# installing cdrtools. Only the Windows binary exists in this repo; POSIX
+# builds just skip this and rely on a real mkisofs on PATH or the
+# checkout's tool-bin shim.
+TOOLBIN = Path(SPECPATH).parent / 'tool-bin'
+MKISOFS_BUNDLES = [
+    (str(p), 'tool-bin')
+    for p in (TOOLBIN / 'mkisofs.exe', TOOLBIN / 'cygwin1.dll')
+    if p.is_file()
+]
+
 a = Analysis(
     ['app_entry.py'],
     pathex=['src'],
-    binaries=[],
+    binaries=MKISOFS_BUNDLES,
     datas=[(str(ICON_PNG), 'assets')] if ICON_PNG.exists() else [],
     hiddenimports=[],
     hookspath=[],

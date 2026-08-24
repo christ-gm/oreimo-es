@@ -14,7 +14,7 @@ code: no file paths, no internal FORMAT_NOTES.md section references.
 
 - **Open an ISO directly** — reads the game's data straight out of the
   raw `.iso` file. No mounting, no UMD tools, no extra setup. All ~19,000
-  dialogue lines across the game's 300 scenes are indexed in a few
+  dialogue lines across every scene of either disc are indexed in a few
   seconds.
 - **Browse and search everything at once** — scenes on the left, and a
   table showing character, original Japanese, and your translation side

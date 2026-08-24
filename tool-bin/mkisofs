@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
-# Shim to run the cygwin mkisofs.exe from WSL, converting /mnt/<drive>/... paths
-# to Windows drive paths so the Windows binary can find its files.
+# Shim to run the cygwin mkisofs.exe from WSL, converting POSIX paths to
+# Windows ones so the Windows binary can find its files:
+#   /mnt/<drive>/...  -> <Drive>:\...      (drvfs mount)
+#   /other/abs/path   -> \\wsl.localhost\... (via wslpath, needs WSL2)
 EXE="$(dirname "$(readlink -f "$0")")/mkisofs.exe"
 args=()
 for a in "$@"; do
     if [[ "$a" =~ ^/mnt/([a-zA-Z])(/.*)?$ ]]; then
         d="${BASH_REMATCH[1]}"
-        rest="${BASH_REMATCH[2]:-/}"
+        rest="${BASH_REMATCH[2]-/}"
         rest="${rest//\//\\}"
         args+=("${d^^}:${rest}")
+    elif [[ "$a" == /* ]]; then
+        w="$(wslpath -w "$a" 2>/dev/null)" && args+=("$w") || args+=("$a")
     else
         args+=("$a")
     fi
