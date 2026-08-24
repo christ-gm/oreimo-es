@@ -49,7 +49,7 @@ ISO  →  extract RES.DAT  →  decompress every scene  →  parse blocks
 
 1. **Open ISO** — reads `RES.DAT` directly out of the raw ISO file (no
    mounting, no OS-specific tools) and indexes every translatable line
-   across every scene of the opened disc in a few seconds.
+   across all ~300 scenes in a few seconds.
 2. **Browse & search** — scenes are listed on the left; the table on the
    right shows character, original text, and translation side by side.
    The search box filters across every scene at once, matching either
