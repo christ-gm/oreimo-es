@@ -296,7 +296,7 @@ def rebuild_iso_with_files(source_iso_path: str, replacements: dict[str, bytes],
                 raise IsoError(f"could not locate {inner_path} in the extracted ISO tree")
             staged.write_bytes(new_bytes)
 
-        subprocess.run(
+        proc = subprocess.run(
             [
                 mkisofs,
                 "-iso-level", "4", "-xa",
@@ -310,3 +310,11 @@ def rebuild_iso_with_files(source_iso_path: str, replacements: dict[str, bytes],
             ],
             check=True, capture_output=True, text=True,
         )
+        # Some cygwin mkisofs builds exit 0 even when they fail (e.g. a
+        # staging path they can't resolve) - trust the output file, not
+        # the exit code.
+        if not Path(output_iso_path).is_file():
+            raise IsoError(
+                f"mkisofs reported success but no ISO was written to "
+                f"{output_iso_path}. stderr:\n{(proc.stderr or '').strip()[-800:]}"
+            )
