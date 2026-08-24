@@ -19,3 +19,10 @@ JP/
 *.prewrap.bak
 __pycache__/
 .claude/
+# Python
+__pycache__/
+*.pyc
+
+# PyInstaller build output
+gui-interface/build/
+gui-interface/dist/
