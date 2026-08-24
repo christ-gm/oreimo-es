@@ -14,6 +14,27 @@ self-contained Python package (`src/oreimo_translator/core/`), so it runs
 on its own — no need to clone the research project or run any other
 tooling first.
 
+> Technical references below point at `documentation/FORMAT_NOTES.md`,
+> which lives in that **sibling research project**, not in this repo. It
+> is the format reference: how each structure was decoded, and how every
+> bug listed here was tracked down.
+
+## Screenshots
+
+<!-- Drop the PNGs into docs/screenshots/ with these names and delete the
+     comment markers around each block. Any name works - just keep the
+     path and the caption in sync. -->
+
+### Dialogue view
+
+![Dialogue](docs/screenshots/dialogue.png)
+
+### Images view
+
+![Image](docs/screenshots/image-oreimo.png)
+
+![Image 2](docs/screenshots/image-oreimo2.png)
+
 ## How it works
 
 The game stores its ~19,000 dialogue lines inside `RES.DAT`, a nested
@@ -28,7 +49,7 @@ ISO  →  extract RES.DAT  →  decompress every scene  →  parse blocks
 
 1. **Open ISO** — reads `RES.DAT` directly out of the raw ISO file (no
    mounting, no OS-specific tools) and indexes every translatable line
-   across all 300 scenes in a few seconds.
+   across all ~300 scenes in a few seconds.
 2. **Browse & search** — scenes are listed on the left; the table on the
    right shows character, original text, and translation side by side.
    The search box filters across every scene at once, matching either
@@ -41,50 +62,30 @@ ISO  →  extract RES.DAT  →  decompress every scene  →  parse blocks
    Excel, Google Sheets, or handed off to other people, then re-imported.
    Each row carries stable IDs (scene + block position), so re-importing
    safely matches edits back to the right line even after re-opening the
-   ISO later.
+   ISO later. Full format spec below.
 5. **Compile ISO** — rebuilds only the scenes that were actually edited,
    re-nests every archive level, and binary-patches the result into a
    fresh copy of the ISO (the original file is never modified). Typically
-   finishes in well under a second, even for a full 300-scene project.
-6. **View, export and import scene images** — the "Images" tab (its own
-   full view, with its own scene list) shows every background, event/CG,
-   character and cutin/tukkomi texture (`MIG.00.1PSP`/`.gim`, PSP's
-   proprietary format) attached to the selected scene, decoded on demand.
-   Checkboxes above the scene list filter it down to only scenes that
-   actually contain a given image category (e.g. "only scenes with a
-   Tukkomi" — reaction-stamp overlays, a likely place for baked-in
-   Japanese text). `File > Export images...` writes PNGs (for the
-   selected scene, or every scene passing the current filter) plus a
-   `manifest.json` that identifies each file by scene/category/label;
-   `File > Import images...` reads that folder back, validates each PNG
-   (dimensions must match exactly), and marks it as a pending edit
-   (highlighted in the tree, same as edited dialogue). Compiling picks
-   the fastest safe method automatically: a same-size binary patch when
-   possible (no extra tools needed), or a full ISO rebuild (requires
-   `mkisofs` from cdrtools — see Requirements) when an image edit grows
-   `RES.DAT`. Each edited image is re-encoded in its *original* pixel
-   format (palette or RGBA8888) rather than always RGBA8888, since that
-   mismatch alone can exceed the game's texture memory budget and crash
-   it in-game — see `documentation/FORMAT_NOTES.md` §23 for the real
-   crash this was found from and fixed. Compiling also regenerates
-   `RES.DAT`'s seekmap (a table of absolute file offsets the game seeks
-   with, stored inside `first.dat`) whenever anything moves — a stale one
-   hangs the game on load, see §24.
+   finishes in well under a second for dialogue-only edits.
+6. **View, export and import scene images** — the "Images" tab shows
+   every background, event/CG, character and cutin/tukkomi texture
+   (`MIG.00.1PSP`/`.gim`, PSP's proprietary format) attached to the
+   selected scene, decoded on demand, and can round-trip them through
+   PNG. Full format spec below.
 7. **Stays responsive during slow operations** — opening an ISO,
    compiling, and bulk image export all run on a background thread
-   instead of freezing the window (the whole UI, including the mouse
-   cursor, used to lock up during a full ISO rebuild).
+   instead of freezing the window.
 
 ## Getting started
 
 ### Download a prebuilt binary (recommended)
 
-Every merge into `main` — and every manual `vX.Y.Z` tag — triggers an
-automated build for both **Windows** and **macOS** via GitHub Actions,
-published under [Releases](../../releases) with a full description of
-what the app can do. Just download the build for your OS and run it — no
-Python installation required. This is the easiest and recommended way to
-get the app.
+Every merge into `main` that changes this app — and every manual
+`vX.Y.Z` tag — triggers an automated build for both **Windows** and
+**macOS** via GitHub Actions, published under [Releases](../../releases)
+with a full description of what the app can do. Just download the build
+for your OS and run it — no Python installation required. This is the
+easiest and recommended way to get the app.
 
 ### Run from source
 
@@ -95,15 +96,244 @@ pip install -r requirements.txt
 PYTHONPATH=src python3 -m oreimo_translator.main
 ```
 
-Compiling dialogue-only edits needs nothing beyond the above. Compiling
-image edits needs real `mkisofs` (from **cdrtools**, not `xorriso` — it
-silently produces a disc the PSP won't boot correctly, see
-`documentation/FORMAT_NOTES.md` §13/§22) on `PATH`:
-- macOS: `brew install cdrtools`
-- Linux: `sudo apt install genisoimage` (provides `mkisofs`) or your
+## Requirements
+
+| What you want to do | What you need |
+|---|---|
+| Open an ISO, browse, translate, export/import CSV/TSV | Nothing beyond the app itself |
+| View, export and import images | Nothing beyond the app itself |
+| Compile **dialogue-only** edits into an ISO | Nothing beyond the app itself |
+| Compile **image** edits into an ISO | `mkisofs`, see below |
+
+Image edits usually change `RES.DAT`'s size, which forces a full ISO
+rebuild instead of the fast in-place patch, and that rebuild shells out
+to **`mkisofs` from cdrtools**. It has to be real cdrtools `mkisofs`, not
+`xorriso` — `xorriso` silently produces a disc the PSP won't boot
+correctly (`FORMAT_NOTES.md` §13/§22).
+
+- **macOS**: `brew install cdrtools`
+- **Linux**: `sudo apt install genisoimage` (provides `mkisofs`), or your
   distro's `cdrtools`/`cdrkit` package
-- Windows: not yet wired up in this app; a Windows `mkisofs.exe` exists
-  in `tool-bin/` from the sibling toolchain project but isn't bundled here yet
+- **Windows**: not wired up yet. A Windows `mkisofs.exe` exists in
+  `tool-bin/` in the sibling toolchain project but isn't bundled here, so
+  image edits can't be compiled on Windows for now. Everything else works.
+
+This applies to the prebuilt binaries too — `mkisofs` is an external
+program, not something that can be baked into the app.
+
+## The File menu
+
+| Item | What it does |
+|---|---|
+| **Open ISO...** | Loads an ISO and indexes every scene. Nothing is written to it, ever. |
+| **Export all scenes (one file per scene)...** | Pick a folder; writes one CSV/TSV per scene. |
+| **Export selected scene...** | Writes just the scene highlighted in the Dialogue tab. |
+| **Export everything to a single file...** | One CSV/TSV containing every scene. |
+| **Import file(s)...** | Select one or many exported files; applies their `translation` column. |
+| **Export images for selected scene...** | PNGs + `manifest.json` for the scene selected in the Images tab. |
+| **Export images for filtered scenes...** | Same, for every scene passing the Images tab's category filter. |
+| **Import images...** | Point at an export folder; loads the PNGs back as pending edits. |
+| **Compile ISO...** | Writes a new translated ISO. Defaults to `<original>_ES.iso`. |
+
+## Exporting and importing dialogue
+
+### File format
+
+Every export — whole project, single scene, or one-file-per-scene — uses
+the same five columns, in this order:
+
+| Column | Meaning | Edit it? |
+|---|---|---|
+| `scene` | Scene name, e.g. `AKYO_0010A` | **No** — it's half the row's ID |
+| `block_offset` | Byte offset of the text block inside that scene's decompressed `.obj`. Unique within a scene, stable across re-opens of the same ISO | **No** — it's the other half of the ID |
+| `character` | Speaking character, or empty for narration | **No** — derived, see below |
+| `original` | The English line as it exists in the ISO | **No** — it's the safety check |
+| `translation` | What you write. **Pre-filled with a copy of `original`** so untranslated rows are visible and easy to overwrite | **Yes — this is the only column you edit** |
+
+- **Encoding**: UTF-8 **with BOM**, so Excel opens accented characters
+  (á, é, ñ, ¿, ¡) correctly instead of mangling them. Keep it when you
+  save, and any editor that respects the BOM will round-trip fine.
+- **Delimiter**: comma for `.csv`, tab for `.tsv`. The single-file and
+  single-scene exports let you pick either from the save dialog; the
+  one-file-per-scene export always writes `.csv`. On import the delimiter
+  is read from the file extension, so don't rename a `.tsv` to `.csv`.
+- **Row order**: the order the lines appear in the scene's script — i.e.
+  reading order within the scene. Scenes themselves come out in on-disk
+  order, which is not always in-game chronological order.
+
+### Character names are handled for you
+
+The game has no separate speaker field — it stores the name inside the
+line itself, as a literal `Kirino「Yup!」`. The app splits that apart: the
+name goes in the `character` column, and `original`/`translation` hold
+**only the spoken text**, with no name and no `「」` brackets.
+
+At compile time the name and brackets are re-attached automatically. So
+in the `translation` column, write only the dialogue:
+
+```
+character   original          translation
+Kirino      Yup!              ¡Sí!              ← correct
+Kirino      Yup!              Kirino「¡Sí!」     ← wrong, the name gets doubled
+```
+
+### How import matches rows back
+
+Import looks each row up by `scene` + `block_offset` — never by row
+number — so you can reorder rows, delete the ones you're not working on,
+split a file into pieces, or hand out one scene per translator, and it
+all merges back correctly.
+
+Before applying a row, it checks that the file's `original` still matches
+what's in the currently open ISO. If it doesn't, **the row is skipped and
+you get a warning** naming the file and row number. That's the guard
+against importing an export taken from a different ISO or a different
+version of the text. Rows whose `scene`/`block_offset` don't exist are
+skipped and warned about the same way.
+
+A row is only counted as translated when `translation` differs from
+`original` — leaving the pre-filled copy alone means "not translated
+yet", and compiling won't touch that line.
+
+### Which export should I use?
+
+- **One file per scene** — best for splitting work between people, and
+  for reviewing a scene at a time. The file name *is* the scene name, so
+  files can be sent, edited and re-imported individually or in any
+  combination. Scenes with no translatable lines are skipped entirely.
+- **Single file** — best for a global find-and-replace, a terminology
+  pass, or feeding the whole script to a translation tool at once.
+- **Selected scene** — quick one-off fixes.
+
+<!-- Screenshots: uncomment once the PNGs are in docs/screenshots/
+
+![What a per-scene export folder looks like on disk](docs/screenshots/dialogue-export-folder.png)
+
+![An exported CSV opened in a spreadsheet, showing the five columns](docs/screenshots/dialogue-export-spreadsheet.png)
+
+![Importing translated files back, with the warnings dialog](docs/screenshots/dialogue-import.png)
+
+-->
+
+## Exporting and importing images
+
+### What gets exported
+
+Images are grouped into five categories, which are also the filter
+checkboxes above the Images tab's scene list:
+
+| Category | What it holds |
+|---|---|
+| `Background` | Scene backgrounds |
+| `Event / CG` | Event pictures / CGs |
+| `Character` | Character sprites and their expression-swap parts |
+| `Cutin` | Cut-in overlays |
+| `Tukkomi` | Reaction-stamp overlays — the most likely place for baked-in Japanese text |
+
+### Folder layout
+
+```
+<folder you picked>/
+├── manifest.json
+├── AKYO_0010A/
+│   ├── Background/
+│   │   └── BG00A.gim.png
+│   ├── Event_CG/
+│   │   └── EV01A.gim.png
+│   ├── Character/
+│   │   ├── KI_1C.gim.png
+│   │   └── KI_1C.gim_part_2.png
+│   └── Tukkomi/
+│       └── TKA0020B.gim.png
+└── AKYO_0011A/
+    └── ...
+```
+
+One folder per scene, one sub-folder per category, one PNG per texture.
+Categories a scene has no images for get no folder at all — the example
+above has no `Cutin/` because that scene has no cut-ins. Every PNG is
+RGBA, at the texture's exact original pixel size.
+
+### `manifest.json`
+
+A flat JSON list, one object per exported image:
+
+```json
+[
+  {
+    "scene": "AKYO_0010A",
+    "category": "Tukkomi",
+    "label": "TKA0020B.gim",
+    "file": "AKYO_0010A/Tukkomi/TKA0020B.gim.png",
+    "width": 256,
+    "height": 128
+  }
+]
+```
+
+**This file is what makes import work.** Import never guesses an image's
+identity from its folder path — it reads the manifest and looks each
+entry up by `scene` + `category` + `label`. Consequences worth knowing:
+
+- **Don't delete or move `manifest.json`.** Import refuses to run without
+  it, and points you at the export folder it expects.
+- **Don't rename the PNGs or their folders.** The manifest's `file` field
+  is how each image is found. Rename it and that image is simply not
+  imported (silently — a missing file is treated as "not being replaced").
+- **Do delete PNGs you didn't touch.** Missing files are skipped, so the
+  fastest workflow is to export, delete everything you're not editing,
+  and import the handful that remain.
+
+### Rules on import
+
+- **Pixel dimensions must match the manifest exactly.** A resized PNG is
+  rejected with a warning naming the file and both sizes. The game's
+  renderer assumes each texture's original dimensions.
+- Imported images become **pending edits**, highlighted in the tree just
+  like edited dialogue. Nothing is written until you compile.
+- **Character-category edits are not reinserted yet.** You can view and
+  export them, but compiling reports them as not applied — the container
+  format for expression-swap parts has no builder yet.
+- Each edited image is re-encoded in its **original pixel format**
+  (palette or RGBA8888), not always RGBA8888: that mismatch alone can
+  exceed the game's texture memory budget and crash it in-game
+  (`FORMAT_NOTES.md` §23). If an image still ends up costing more memory
+  than the original, compiling warns you and names it.
+
+<!-- Screenshots: uncomment once the PNGs are in docs/screenshots/
+
+![An image export folder: scenes, category sub-folders and manifest.json](docs/screenshots/image-export-folder.png)
+
+![Exported PNGs for one scene](docs/screenshots/image-export-pngs.png)
+
+![Importing edited images, with edited entries highlighted in the tree](docs/screenshots/image-import.png)
+
+-->
+
+## Compiling the ISO
+
+`File > Compile ISO...` asks where to write, defaulting to
+`<original>_ES.iso`. **The source ISO is never modified.**
+
+The app picks the method automatically:
+
+- **Fast patch** — when the rebuilt `RES.DAT` is the same size as the
+  original (the normal case for dialogue-only edits, because the archive
+  format's padding absorbs text-length changes). Clones the ISO and
+  patches the bytes in place. No external tools, well under a second.
+- **Full rebuild** — when an image edit changes `RES.DAT`'s size. Needs
+  `mkisofs` (see Requirements) and takes noticeably longer.
+
+Either way it also regenerates `RES.DAT`'s **seekmap** — a table of
+absolute file offsets, stored inside `first.dat`, that the game seeks
+with. A stale seekmap hangs the game on scene load, and this was a real
+bug that took a while to find (`FORMAT_NOTES.md` §24). For dialogue-only
+edits the regenerated table comes out identical to the original, so
+nothing extra happens.
+
+The report at the end tells you: scenes changed, lines changed, images
+changed, which method was used, any Character image edits that couldn't
+be applied, and any texture-memory warnings.
 
 ## Current scope
 
@@ -114,17 +344,25 @@ silently produces a disc the PSP won't boot correctly, see
 | `Choice` / `Choice2` / `Question` blocks (player-facing menus) | Preserved byte-for-byte, not yet editable here |
 | Scene ordering | Reflects on-disk order, not always in-game chronological order |
 | Scene images (background/event/character/cutin/tukkomi) | Viewable, exportable to PNG, importable, and compilable into the ISO |
-| Compiling image edits into the ISO | Works. Two real in-game failures were root-caused and fixed along the way: re-encoding in the wrong pixel format blew past the game's texture memory budget (`FORMAT_NOTES.md` §23), and `RES.DAT`'s seekmap — a table of absolute offsets stored in `first.dat` — went stale whenever anything changed size, hanging the game on load (§24). Both validated by measurement (11,642 palette images round-tripped with 0 mismatches; seekmap regeneration reproduces the original byte-for-byte) plus boot tests |
+| Compiling image edits into the ISO | Works. Two real in-game failures were root-caused and fixed along the way: re-encoding in the wrong pixel format blew past the game's texture memory budget (`FORMAT_NOTES.md` §23), and `RES.DAT`'s seekmap went stale whenever anything changed size, hanging the game on load (§24). Both validated by measurement (11,642 palette images round-tripped with 0 mismatches; seekmap regeneration reproduces the original byte-for-byte) plus boot tests |
 | Character expression-swap overlays (mouth/eye parts) | Shown as separate raw parts, not composited onto the base sprite; also excluded from image reinsertion (no builder yet for their container format) |
-| Re-importing unedited images | `Import images...` re-encodes every PNG present in the folder, not just ones you actually changed — harmless now that format/size are preserved, but still wasted work (not fixed yet, see FORMAT_NOTES.md §23 "Still open") |
+| Re-importing unedited images | `Import images...` re-encodes every PNG present in the folder, not just ones you actually changed — harmless now that format/size are preserved, but still wasted work (see `FORMAT_NOTES.md` §23 "Still open") |
+| Compiling image edits on Windows | Blocked on `mkisofs` not being bundled yet — see Requirements |
 
-The `.obj`/`GPDA`/ISO-patch pipeline underneath has been validated
-end-to-end with real playtests (PPSSPP), including special characters,
-line-length changes, and multi-scene rebuilds — see the sibling research
-project's `documentation/FORMAT_NOTES.md` for the full technical history,
-including how a couple of nasty bugs (a silent ISO-rebuild corruption, a
-stale block-length header causing crashes on resize) were tracked down
-and fixed.
+## Things to know before you start
+
+- **There is no project file, and no "save".** Every edit lives in memory
+  until you export or compile, and **closing the window discards them
+  without asking**. Export early, export often — a CSV/TSV export *is*
+  your save file, and importing it back restores your work.
+- **Reopening an ISO resets everything**, including pending image edits.
+- The `.obj`/`GPDA`/ISO-patch pipeline underneath has been validated
+  end-to-end with real playtests (PPSSPP), including special characters,
+  line-length changes, and multi-scene rebuilds — see the sibling
+  research project's `documentation/FORMAT_NOTES.md` for the full
+  technical history, including how a couple of nasty bugs (a silent
+  ISO-rebuild corruption, a stale block-length header causing crashes on
+  resize) were tracked down and fixed.
 
 ## Contributing
 
