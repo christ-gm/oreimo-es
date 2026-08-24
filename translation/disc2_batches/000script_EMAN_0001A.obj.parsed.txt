@@ -1,0 +1,186 @@
+﻿###IDX:0###CHAR:###
+Prologue・Manami Route
+###IDX:1###CHAR:Kyousuke###
+Hey, Manami!
+###IDX:2###CHAR:###
+I decided to ask Manami out. Well, we're pretty 
+much dating at this point, so this shouldn't be weird, 
+right?
+###IDX:3###CHAR:Manami###
+Eh? What's wrong, Kyou-chan?
+###IDX:4###CHAR:Kyousuke###
+Nothing much, I just haven't seen you for a while 
+now. Am I bothering you?
+###IDX:5###CHAR:Manami###
+No, not at all! In fact, it's rare for you to come all 
+the way to my house, isn't it?
+###IDX:6###CHAR:Kyousuke###
+Is that so?
+###IDX:7###CHAR:Manami###
+Yeah, it is.
+###IDX:8###CHAR:Kyousuke###
+For starters, let’s go out!
+###IDX:9###CHAR:###
+Hanging around Manami's house was cozy, but... It 
+wasn't the right atmosphere for a pair of lovers...
+###IDX:10###CHAR:Manami###
+Okay... Ah, Kyou-chan? Since we're going out, can 
+we drop by the bookstore along the way?
+###IDX:11###CHAR:Kyousuke###
+I don't mind. What are you buying?
+###IDX:12###CHAR:Manami###
+Reference books.
+###IDX:13###CHAR:Kyousuke###
+As expected...
+###IDX:14###CHAR:Manami###
+Someone recommended some books to me 
+recently. I'll lend them to you next time?
+###IDX:15###CHAR:Kyousuke###
+Yeah, yeah... I am indebted.
+###IDX:16###CHAR:Manami###
+Geez, you're the one who's going to be bothered 
+later though~? Punpun~
+###IDX:17###CHAR:Kyousuke###
+Stop that "Punpun~" ...I get it already.
+###IDX:18###CHAR:Kyousuke###
+Hey, Manami? Got any plans for Summer Vacation 
+this year?
+###IDX:19###CHAR:Manami###
+The entrance exams are right around the corner, so 
+there's only time for studying.
+###IDX:20###CHAR:Kyousuke###
+｛120：M｝｛115：a｝｛110：n｝｛105：n｝｛100：.｝｛95：.｝｛90：.｝
+###IDX:21###CHAR:Manami###
+Kyou-chan? No! Bad!
+###IDX:22###CHAR:Manami###
+Summer is an important phase in exam 
+preparations.
+###IDX:23###CHAR:Kyousuke###
+Feels like I've heard that somewhere before...
+###IDX:24###CHAR:Manami###
+So, let's just spend the time studying together, 
+okay?
+###IDX:25###CHAR:Kyousuke###
+...That's right, such is the life of an examinee, huh...
+###IDX:26###CHAR:Manami###
+Mhm! We have to put in some effort to study. After 
+all, I want to get into the same university as you...
+###IDX:27###CHAR:Kyousuke###
+Yeah...
+###IDX:28###CHAR:Kyousuke###
+Alright! Let's study together this summer holiday!
+###IDX:29###CHAR:Manami###
+Yeah, that's the spirit! Well done.
+###IDX:30###CHAR:Kyousuke###
+Heck yeah, now I'm motivated!
+###IDX:31###CHAR:###
+And so a year passed, our studies paid off. Both 
+Manami and I ended up at the same university.
+###IDX:32###CHAR:Manami###
+Hmm? What's wrong, Kyou-chan?
+###IDX:33###CHAR:Kyousuke###
+Nothing really. I was just reminiscing a bit...
+###IDX:34###CHAR:Manami###
+...Kyou-chan, you sound just like an old man.
+###IDX:35###CHAR:Kyousuke###
+I don’t want to hear that, especially from you!
+###IDX:36###CHAR:###
+I mean, you behave more like a granny in everyday 
+life. I guarantee it.
+###IDX:37###CHAR:Manami###
+...Or maybe, were you thinking about me?
+###IDX:38###CHAR:Kyousuke###
+A-Ah...
+###IDX:39###CHAR:Manami###
+Oh, I see...
+###IDX:40###CHAR:Manami###
+...A lot has happened. Just by closing my eyes, I 
+can recall so much that we've done together 
+already.
+###IDX:41###CHAR:Kyousuke###
+What are you saying? We aren’t old enough to 
+reminisce so much.
+###IDX:42###CHAR:Manami###
+But you're the one who started doing that, you 
+know.
+###IDX:43###CHAR:Kyousuke###
+Yeah, yeah. But still, after attending university, you 
+have changed so much... Even though the mood 
+remained the same, somehow...
+###IDX:44###CHAR:###
+I don't know if she even realizes it herself, but after 
+becoming a university student, Manami's 
+preferences have indeed changed.
+###IDX:45###CHAR:###
+What's the word for it... She kinda turned out... 
+fashionable?
+###IDX:46###CHAR:Manami###
+Ehehe, I got praised by Kyou-chan~
+###IDX:47###CHAR:Manami###
+Actually, it's Kirino-chan and Ayase-chan that taught 
+me all about fashion.
+###IDX:48###CHAR:Kyousuke###
+Kirino and Ayase, eh...
+###IDX:49###CHAR:Manami###
+They said Kyou-chan wouldn't know a thing about 
+girly stuff, so they decided to teach me instead~
+###IDX:50###CHAR:Manami###
+Kirino told me "It's better to be more fashionable 
+after getting into university..."
+###IDX:51###CHAR:Manami###
+Also, “You two are so dull and old-fashioned, that 
+idiot doesn't even know what trendy means! You 
+should work on that, at least.”
+###IDX:52###CHAR:Kyousuke###
+Does that brat have to be that harsh!? Damn!
+###IDX:53###CHAR:Manami###
+Hehehe- Kirino-chan's such a good kid though, don't 
+you think?
+###IDX:54###CHAR:Kyousuke###
+By the way, Manami... Are you free in the 
+afternoon?
+###IDX:55###CHAR:Manami###
+Yup, I've already finished all my lectures for the 
+day. What about you, Kyou-chan?
+###IDX:56###CHAR:Kyousuke###
+There's no part-time work so I have nothing on. 
+Wanna go somewhere together?
+###IDX:57###CHAR:Manami###
+Sure~ Well then, the usual cafeteria? I believe 
+today’s daily special is Teriyaki Amberjack...
+###IDX:58###CHAR:Kyousuke###
+Nah, the weather seems good, how about heading 
+out of school?
+###IDX:59###CHAR:Manami###
+Eh? Are you sure?
+###IDX:60###CHAR:Kyousuke###
+Yeah, of course!
+###IDX:61###CHAR:Manami###
+Wow, a date with Kyou-chan, I can't wait!
+###IDX:62###CHAR:Manami###
+Okay, where shall we go~
+###IDX:63###CHAR:Kyousuke###
+Let’s see... How about Odaiba?
+###IDX:64###CHAR:Manami###
+Hmmmm...
+###IDX:65###CHAR:Kyousuke###
+Eh, you don’t want to?
+###IDX:66###CHAR:Manami###
+No. As long as I'm with Kyou-chan, anywhere's 
+good.
+###IDX:67###CHAR:Kyousuke###
+Alright, it's decided then. Let's get going!
+###IDX:68###CHAR:Kyousuke###
+Let's have lunch along the way!
+###IDX:69###CHAR:Manami###
+Yeah! ...Ah, but not something that is too 
+expensive...
+###IDX:70###CHAR:###
+Manami looked at me with a troubled expression. 
+She probably didn’t bring much money today.
+###IDX:71###CHAR:###
+Perfect timing. It’s been a while since we went out 
+together, so it probably wouldn’t hurt if I flaunt my 
+wealth a little. Alright...!
+
+

@@ -1,0 +1,381 @@
+﻿###IDX:0###CHAR:###
+Arriving at the Inn
+###IDX:1###CHAR:Kyousuke###
+We're finally here...
+###IDX:2###CHAR:Manami###
+Kyou-chan! We actually made it! This navigation 
+app is really convenient~
+###IDX:3###CHAR:###
+Holding the smartphone, her gleaming eyes were 
+glued to the spinning map we used.
+###IDX:4###CHAR:Kyousuke###
+How long are you going to stand there like that? 
+People are going to laugh at us...
+###IDX:5###CHAR:Manami###
+But, I am extremely impressed!
+###IDX:6###CHAR:Kyousuke###
+You just never change...
+###IDX:7###CHAR:###
+Well, that's another side of her that's cute. I guess I 
+need to get my act together to make up for her 
+goofiness.
+###IDX:8###CHAR:Manami###
+Oh, right. Can you take out your card?
+###IDX:9###CHAR:Kyousuke###
+Oh, this?
+###IDX:10###CHAR:Manami###
+Thank you for your patronage①
+###IDX:11###CHAR:Kyousuke###
+Hey now, are you sure you can just give me points 
+so easily, just like that?
+###IDX:12###CHAR:Manami###
+Yeah. It's thanks to you that we actually made it to 
+the inn. You helped a lot.
+###IDX:13###CHAR:Kyousuke###
+Although most of the work was done by your 
+smartphone...
+###IDX:14###CHAR:Manami###
+You taught me how to use the map. I'll try my best 
+to guide you next time.
+###IDX:15###CHAR:Kyousuke###
+Hahaha, I'm looking forward to it.
+###IDX:16###CHAR:###
+Manami returns the point card to me... At the 
+moment I reached for it, our hands touched 
+unexpectedly.
+###IDX:17###CHAR:Kyousuke###
+Whoops...
+###IDX:18###CHAR:Manami###
+Ah...
+###IDX:19###CHAR:###
+Just as our hands touched, our eyes met. I could 
+feel myself getting embarrassed somehow.
+###IDX:20###CHAR:Manami###
+Ehehe...
+###IDX:21###CHAR:###
+To avoid further embarrassment, I avert my gaze 
+towards the point card. Oh? After getting a close 
+look, I have enough points for a reward.
+###IDX:22###CHAR:Manami###
+Kyou-chan, I guess we should enter the inn...
+###IDX:23###CHAR:Kyousuke###
+Y-Yeah...
+###IDX:24###CHAR:###
+Better not get ahead of myself. Letting her get 
+some rest is more important than any reward. If 
+something bad happens, I'll live to regret it.
+###IDX:25###CHAR:###
+Then again, Manami's the one who stamped the 
+point card, so she must have noticed this reward 
+milestone.
+###IDX:26###CHAR:###
+Manami's shy smile steals my gaze. Man, she sure 
+has become beautiful.
+###IDX:27###CHAR:Manami###
+Kyou-chan, I guess we should enter the inn...
+###IDX:28###CHAR:Kyousuke###
+Y-Yeah...
+###IDX:29###CHAR:###
+Better not get ahead of myself. Letting Manami get 
+some rest is more important. If something were to 
+happen... I'll live to regret it.
+###IDX:30###CHAR:Kyousuke###
+Uhh, so we gotta check in first, right?
+###IDX:31###CHAR:###
+We enter the inn and make our way to the front 
+desk.
+###IDX:32###CHAR:Employee###
+Hello and welcome. Do you have a reservation?
+###IDX:33###CHAR:Kyousuke###
+Yeah. Uhh...
+###IDX:34###CHAR:Manami###
+Tamura.
+###IDX:35###CHAR:Employee###
+Ahh yes, Miss Tamura. We have been expecting you.
+###IDX:36###CHAR:###
+She finishes the check-in process without any issues 
+and hands us our key.
+###IDX:37###CHAR:Employee###
+Okay, I will show you to your room. Let me take 
+your luggage.
+###IDX:38###CHAR:Kyousuke###
+No, it's fine.
+###IDX:39###CHAR:Manami###
+It's fine.
+###IDX:40###CHAR:###
+It seems like we got synchronized.
+###IDX:41###CHAR:Employee###
+Hehe, you two sure are close. Are you on your 
+honeymoon?
+###IDX:42###CHAR:Kyousuke###
+Eh?
+###IDX:43###CHAR:Manami###
+Hue?
+###IDX:44###CHAR:Employee###
+My apologies. You both just look so natural 
+together... So I thought...
+###IDX:45###CHAR:Kyousuke###
+Ah, no...
+###IDX:46###CHAR:###
+Might've been because of how I spent more time 
+with Manami, compared to with my family.
+###IDX:47###CHAR:###
+I suddenly started feeling haughty and took 
+Manami's hand.
+###IDX:48###CHAR:Manami###
+Ah, Kyo... Kyou-chan?
+###IDX:49###CHAR:Kyousuke###
+Come on, let's go.
+###IDX:50###CHAR:Manami###
+Ah, yeah...
+###IDX:51###CHAR:Kyousuke###
+Let's take a break at the room. I'm looking forward 
+to what's inside.
+###IDX:52###CHAR:Manami###
+Yeah, me too. I hope it's rather spacious.
+###IDX:53###CHAR:Employee###
+This is your room. The landlady will be around to 
+greet you later.
+###IDX:54###CHAR:Manami###
+This room sure is big.
+###IDX:55###CHAR:Landlady###
+Please excuse me.
+###IDX:56###CHAR:###
+A woman in a kimono appears before us as we 
+admire the room. The landlady, I presume.
+###IDX:57###CHAR:Landlady###
+Please forgive my interruption. I am the landlady of 
+this inn. I welcome you both.
+###IDX:58###CHAR:Manami###
+We will be in your care for the next two days.
+###IDX:59###CHAR:Landlady###
+Yes, please make yourselves at home... Are you on 
+your honeymoon?
+###IDX:60###CHAR:Kyousuke###
+Eh?
+###IDX:61###CHAR:###
+Not again. Just how much do we look like a 
+married couple?
+###IDX:62###CHAR:Manami###
+Eeh? Kyo-Kyou-chan!
+###IDX:63###CHAR:###
+And why are you asking me?
+###IDX:64###CHAR:Kyousuke###
+N... No, we're not. We're still just...
+###IDX:65###CHAR:Landlady###
+Oh dear, please excuse me. Both of you looked 
+well-matched together, so I thought...
+###IDX:66###CHAR:Kyousuke###
+Haha, thank you.
+###IDX:67###CHAR:Landlady###
+My apologies. Now then, please let me briefly 
+explain to you the facilities we have here.
+###IDX:68###CHAR:###
+As the landlady tells us about the spa and the shop 
+and such; I had a thought.
+###IDX:69###CHAR:###
+Manami and I are going to just grow old together 
+like this... and that's perfectly fine with me.
+###IDX:70###CHAR:Manami###
+Hey, Kyou-chan. Do you think we look like a married 
+couple?
+###IDX:71###CHAR:Kyousuke###
+It sure seems that way, doesn't it.
+###IDX:72###CHAR:Manami###
+I see... Ehehe...
+###IDX:73###CHAR:###
+Even after the landlady left, Manami was still in such 
+a good mood.
+###IDX:74###CHAR:###
+Seeing her like that made me happy as well.
+###IDX:75###CHAR:Kyousuke###
+We're finally here...
+###IDX:76###CHAR:Manami###
+Kyou-chan! We actually made it! This navigation 
+app is really convenient~
+###IDX:77###CHAR:###
+Holding the smartphone, her gleaming eyes were 
+glued to the spinning map we used.
+###IDX:78###CHAR:Kyousuke###
+How long are you going to stand there like that?  
+People are going to laugh at us...
+###IDX:79###CHAR:Manami###
+But, I am extremely impressed!
+###IDX:80###CHAR:Kyousuke###
+You just never change...
+###IDX:81###CHAR:###
+Well, that's another side of her that's cute. I guess I 
+need to get my act together to make up for her 
+goofiness.
+###IDX:82###CHAR:Manami###
+Oh, right. Can you take out your card?
+###IDX:83###CHAR:Kyousuke###
+Oh, this?
+###IDX:84###CHAR:Manami###
+Thank you for your patronage①
+###IDX:85###CHAR:Kyousuke###
+Hey now, are you sure you can just give me points 
+so easily, just like that?
+###IDX:86###CHAR:Manami###
+Yeah. It's thanks to you that we actually made it to 
+the inn. You helped a lot.
+###IDX:87###CHAR:Kyousuke###
+Although most of the work was done by your 
+smartphone...
+###IDX:88###CHAR:Manami###
+You taught me how to use the map. I'll try my best 
+to guide you next time.
+###IDX:89###CHAR:Kyousuke###
+Hahaha, I'm looking forward to it.
+###IDX:90###CHAR:###
+Manami returns the point card to me... At the 
+moment I reached for it, our hands touched 
+unexpectedly.
+###IDX:91###CHAR:Kyousuke###
+Whoops...
+###IDX:92###CHAR:Manami###
+Ah...
+###IDX:93###CHAR:###
+Just as our hands touched, our eyes met. I could 
+feel myself getting embarrassed somehow.
+###IDX:94###CHAR:Manami###
+Ehehe...
+###IDX:95###CHAR:###
+To avoid further embarrassment, I avert my gaze 
+towards the point card. Oh? After getting a close 
+look, I have enough points for a reward.
+###IDX:96###CHAR:Manami###
+Kyou-chan, I guess we should enter the inn...
+###IDX:97###CHAR:Kyousuke###
+Y-Yeah...
+###IDX:98###CHAR:###
+Better not get ahead of myself. Letting her get 
+some rest is more important than any reward. If 
+something bad happens, I'll live to regret it.
+###IDX:99###CHAR:###
+Then again, Manami's the one who stamped the 
+point card, so she must have noticed this reward 
+milestone.
+###IDX:100###CHAR:###
+Manami's shy smile steals my gaze. Man, she sure 
+has become beautiful.
+###IDX:101###CHAR:Manami###
+Kyou-chan, I guess we should enter the inn...
+###IDX:102###CHAR:Kyousuke###
+Y-Yeah...
+###IDX:103###CHAR:###
+Better not get ahead of myself. Letting Manami get 
+some rest is more important. If something were to 
+happen... I'll live to regret it.
+###IDX:104###CHAR:Kyousuke###
+Uhh, so we gotta check in first, right?
+###IDX:105###CHAR:###
+We enter the inn and make our way to the front 
+desk.
+###IDX:106###CHAR:Employee###
+Hello and welcome. Do you have a reservation?
+###IDX:107###CHAR:Kyousuke###
+Yeah. Uhh...
+###IDX:108###CHAR:Manami###
+Tamura.
+###IDX:109###CHAR:Employee###
+Ahh, yes, Miss Tamura. We have been expecting 
+you.
+###IDX:110###CHAR:###
+She finishes the check-in process without any issues 
+and hands us our key.
+###IDX:111###CHAR:Employee###
+Okay, I will show you to your room. Let me take 
+your luggage.
+###IDX:112###CHAR:Kyousuke###
+No, it's fine.
+###IDX:113###CHAR:Manami###
+It's fine.
+###IDX:114###CHAR:###
+It seems like we got synchronized.
+###IDX:115###CHAR:Employee###
+Hehe, you two sure are close. Are you on your 
+honeymoon?
+###IDX:116###CHAR:Kyousuke###
+Eh?
+###IDX:117###CHAR:Manami###
+Hue?
+###IDX:118###CHAR:Employee###
+My apologies. You both just look so natural 
+together... So I thought...
+###IDX:119###CHAR:Kyousuke###
+Ah, no...
+###IDX:120###CHAR:###
+Might've been because of how I spent more time 
+with Manami, compared to with my family.
+###IDX:121###CHAR:###
+I suddenly started feeling haughty and took 
+Manami's hand.
+###IDX:122###CHAR:Manami###
+Ah, Kyo... Kyou-chan?
+###IDX:123###CHAR:Kyousuke###
+Come on, let's go.
+###IDX:124###CHAR:Manami###
+Ah, yeah...
+###IDX:125###CHAR:Kyousuke###
+Let's take a break at the room. I'm looking forward 
+to what's inside.
+###IDX:126###CHAR:Manami###
+Yeah, me too. I hope it's rather spacious.
+###IDX:127###CHAR:Employee###
+This is your room. The landlady will be around to 
+greet you later.
+###IDX:128###CHAR:Manami###
+This room sure is big.
+###IDX:129###CHAR:Landlady###
+Please excuse me.
+###IDX:130###CHAR:###
+A woman in a kimono appears before us as we 
+admire the room. The landlady, I presume.
+###IDX:131###CHAR:Landlady###
+Please forgive my interruption. I am the landlady of 
+this establishment. I welcome you both.
+###IDX:132###CHAR:Manami###
+We will be in your care for the next two days.
+###IDX:133###CHAR:Landlady###
+Yes, please make yourselves at home... Are you on 
+your honeymoon?
+###IDX:134###CHAR:Kyousuke###
+Eh?
+###IDX:135###CHAR:###
+Not again. Just how much do we look like a 
+married couple?
+###IDX:136###CHAR:Manami###
+Eeh? Kyo-Kyou-chan!
+###IDX:137###CHAR:###
+And why are you asking me?
+###IDX:138###CHAR:Kyousuke###
+N... No, we're not. We're still just...
+###IDX:139###CHAR:Landlady###
+Oh dear, please excuse me. Both of you looked 
+well-matched together, so I thought...
+###IDX:140###CHAR:Kyousuke###
+Haha, thank you.
+###IDX:141###CHAR:Landlady###
+My apologies. Now then, please let me briefly 
+explain to you the facilities we have here.
+###IDX:142###CHAR:###
+As the landlady tells us about the spa and the shop 
+and such; I had a thought.
+###IDX:143###CHAR:###
+Manami and I are going to just grow old together 
+like this... and that's perfectly fine with me.
+###IDX:144###CHAR:Manami###
+Hey, Kyou-chan. Do you think we look like a married 
+couple?
+###IDX:145###CHAR:Kyousuke###
+It sure seems that way, doesn't it.
+###IDX:146###CHAR:Manami###
+I see... Ehehe...
+###IDX:147###CHAR:###
+Even after the landlady left, Manami was still in such 
+a good mood.
+###IDX:148###CHAR:###
+Seeing her like that made me happy as well.
+
+

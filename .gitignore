@@ -13,3 +13,9 @@ work/
 toolchain/
 EN/
 JP/
+
+# Backups temporales y artifacts de traduccion
+*.bak
+*.prewrap.bak
+__pycache__/
+.claude/

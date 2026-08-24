@@ -1,0 +1,189 @@
+0		Visiting the Tamura Residence
+1	Kyousuke	Alright, I'll see you tomorrow then, at the usual 
+spot in the school cafeteria.
+2	Manami	Ah, Kyou-chan. Do you want some tea before you 
+go?
+3	Kyousuke	I always end up having tea after escorting you 
+home, so I'll pass this time.
+4	Manami	But, but... Grandpa and Grandma and Dad and Mom 
+would be happy to see you, you know?
+5	Kyousuke	...
+6	Manami	*stare*
+7	Kyousuke	Haa...
+8	Kyousuke	Well, just for a while then.
+9	Manami	...Okay!
+10		I knew my way around here, so I went straight to 
+the living room upon entering.
+11	Kyousuke	I have no sense of restraint, even if I say so myself.
+12	Manami	There's some steamed buns, so feel free to have 
+some.
+13	Kyousuke	Thanks. Huh? These buns...
+14	Manami	New products that we'll be selling soon. How are 
+they?
+15	Kyousuke	I figured as much. These are really good. Your 
+father is amazing, as expected.
+16	Manami	Huh? You're exaggerating～
+17		The steam probably fogged up her glasses, since 
+she took them off to wipe while she replied.
+18		Sometimes I wonder... no really, but she does look 
+rather adorable without her glasses.
+19		Well, such occasions are rare since she can barely 
+see anything without them.
+20	Grandpa	Ooh, Kyou-chan. It's been a while.
+21	Kyousuke	"It's been a while"? It's only been like a week.
+22	Grandpa	No need to take this so seriously, it's just a casual 
+greeting. I've still got a long way to go before I'm 
+senile. Hahahaha!
+23		Laughing so heartily, he sure is energetic. This old 
+geezer could probably live for about two hundred 
+years, I bet.
+24	Kyousuke	Where do you get your vitality from, Grandpa?
+25	Grandpa	Oh, I'm still in the game, Kyou-chan. I wouldn't even 
+lose to you.
+26	Kyousuke	I appreciate the enthusiasm, but you really should 
+consider your age.
+27	Grandpa	So, how far have you gone with Manami? Hmm?
+28	Kyousuke	Wha-? I'm pretty sure you ask that whenever we 
+meet? It's not like it's your business anyway...
+29	Manami	We went to Odaiba today.
+30	Grandpa	Manami, I didn't ask about a location. I'm talking 
+about... you know... between a man and a woman.
+31	Manami	H-Huh?!
+32	Kyousuke	｛125：Hey Gramps, that’s not something that 
+you should be asking!｝
+33	Manami	...
+34	Kyousuke	See! You're just making things awkward for her!
+35	Grandpa	What? You two are still in the "platonic" phase?  
+Well, that's boring. I would like to see my 
+great-grandchild’s face soon.
+36	Kyousuke	Just how impatient are you? Especially at your age.
+37	Grandpa	No need to get upset, Kyou-chan. Fufufufufu...
+38	Kyousuke	What's with that laugh? You're not thinking of 
+anything bad, right?
+39	Grandpa	No, no, absolutely not.
+40	Manami	Grandpa, you sure are enjoying yourself more than 
+usual today. Are you happy?
+41	Kyousuke	Definitely, he is more giggly than usual. This 
+happens when the store earns 20% extra profit.
+42	Grandpa	Hmph, so you figured it out? And I tried so hard to 
+keep it hidden...
+43	Grandpa	Fufufufu, well actually, there's something I'd like to 
+show you both.
+44	Manami	What? What is it?
+45	Kyousuke	So, what is it, Gramps?
+46	Grandpa	Haaah, whatever should I do...?
+47	Kyousuke	Stop acting so smug. If you keep us in suspense 
+like that, then we HAVE to see it!
+48	Manami	Yeah. Come on, Grandpa.
+49	Grandpa	No, well, you see, I have to ham it up for something 
+so good. Otherwise, you won't appreciate it.
+50		*sigh*... Well, guess we'll have to play along.
+51	Kyousuke	Gramps, I'm begging you, just show it to us 
+already.
+52	Grandpa	No matter what?
+53	Kyousuke	No matter what!
+54		Ugh! Seriously, this old fart is such a pain!
+55	Grandpa	Mmm, okay then...
+56	Grandpa	Ta-dah~~! I won a three-day, two-night trip to 
+Kyoto for two from the town lottery!
+57	Manami	Wow! That's amazing, Grandpa!
+58	Kyousuke	You have some absurd luck, Gramps!
+59	Grandpa	Hahaha. It's because of my little daily routines. Even 
+God understands...
+60		Man... I sure want to be a smart-ass right now...
+61	Kyousuke	Well, this is great, Gramps. Hey, why don't you go 
+on the trip with Granny, then?
+62	Grandpa	No, no, I had that idea, but...
+63	Grandpa	If I were to go on this kind of trip, it'd be better to 
+be accompanied by a lively gal instead.
+64	Kyousuke	Hey now, if Granny hears you, she’ll pull out what's 
+left of your hair.
+65	Grandpa	That wouldn't end well. So then, I thought about it...
+66	Grandpa	I'll just give this prize to you two.
+67	Manami	Eh?!
+68		Whoa, that sure is generous of him...
+69	Grandpa	It's almost your summer vacation, right? It'll be a 
+pleasant memory for me in the afterlife.
+70		Hey old geezer. Don't say stuff like that.
+71	Manami	Are you sure, Grandpa?
+72	Grandpa	I don't mind. I got it by pure chance anyway... 
+Besides, this is so I can see my great-grandchild 
+sooner.
+73	Manami	Thank you, Grandpa!
+74		Hey, Miss Manami. Are you just going to ignore that 
+ridiculous statement?
+75	Grandpa	Well, we are too old for long trips. Our bodies can’t 
+take it.
+76	Kyousuke	You sure don't look that way to me...
+77	Manami	Kyou-chan, Kyou-chan, it’s a vacation! A three-day, 
+two-night vacation!
+78	Kyousuke	Yeah. We haven't been to Kyoto since our school 
+trip.
+79		Speaking of which, we went to Kiyomizu temple 
+that time, too.
+80	Manami	｛85：And this time, it's just the two of us...｝
+81		Do you realize what you're saying, Manami? Can I 
+treat this as a flag?
+82	Kyousuke	Y-Yeah... just the two of us.
+83	Kyousuke	H-Hey! Are you okay with this, Gramps!?
+84	Grandpa	Of course. Don't you worry about a thing, just 
+enjoy yourselves to the fullest.
+85	Manami	Yup. We'll bring back lots of souvenirs~
+86	Manami	I hope we have a great vacation, Kyou-chan.
+87	Kyousuke	Manami's old-hag personality and Kyoto. What a 
+nice combination.
+88	Manami	What did you say~? That's not very nice, 
+Kyou-chan.
+89		Even though I'm just teasing her as usual... Crap, 
+my heart is beating so fast.
+90	Manami	Since we're going on a vacation, maybe I should 
+put more effort in dressing myself up?
+91	Kyousuke	Hm? I think you're pretty just the way you are, 
+though?
+92	Manami	But, sometimes I just want to know your opinion.
+93	Kyousuke	If you think it'll help, then sure...
+94	Manami	So...
+95	Manami	Like, for example, what if I just started using 
+contacts all the time?
+96	Kyousuke	I don't think you have to force yourself, right?
+97	Manami	Eh? But... but... I'll be able to see even better 
+compared to my glasses.
+98	Kyousuke	You gotta put them directly onto your eyes, you 
+know? You're not used to it, yet you're gonna wear 
+them on vacation?
+99	Manami	I guess... it wouldn't work.
+100	Kyousuke	If that's the case, you should just stick to your 
+glasses.
+101	Manami	Speaking of which, you really like girls with glasses, 
+huh? All your dirty magazines have them.
+102		WHA--!! She even remembers that?!
+103	Kyousuke	That was a misunderstanding... no need to bring that 
+up, okay?
+104	Manami	I’d be just happy to fit your "type", I guess.
+105	Kyousuke	...
+106	Manami	Kyou-chan... you're not... embarrassed, are you?
+107	Kyousuke	No, I'm not...
+108	Manami	Fufufu...
+109	Manami	Should I try to use contact lenses?
+110	Kyousuke	That doesn't sound bad. I wanna see you without 
+glasses too.
+111	Manami	Really? But... don't you like girls with glasses more?
+112	Kyousuke	Huh? What do you mean?
+113	Manami	Well, all the girls in your dirty magazines wore 
+them.
+114	Kyousuke	You sure remember some ancient stuff, huh?!
+115		Just forget them! Please forget them immediately!
+116	Manami	Hmm, I see. Well, I'll put in contacts for our trip, so 
+look forward to it.
+117	Kyousuke	S-Sure...
+118	Manami	Which do you like better, me with glasses, or 
+without?
+119	Kyousuke	Umm, well... if I must answer... I guess I like them 
+both.
+120	Manami	Kyou-chan, y-your honesty is just...
+121	Kyousuke	Anyway, why don't you just be your usual self?
+122	Manami	...Yeah, okay.
+123	Kyousuke	Mmm.
+124	Grandpa	Heh heh heh, what an interesting development. I'm 
+looking forward to this...
+125	Grandpa	It's time to pay the piper, Kyou-chan――
