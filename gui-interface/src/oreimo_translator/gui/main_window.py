@@ -398,7 +398,12 @@ class MainWindow(QMainWindow):
                 f"Líneas aplicadas: {report['matched_lines']}\n"
                 f"Nombres traducidos: {report['names_applied']}"
             )
-            if skipped:
+            if report["matched_scenes"] == 0 and report["scenes"] > 0:
+                summary += (
+                    "\n\nNinguna escena coincidió. ¿Seguro que este JSON es de "
+                    f"este disco? ({'Disco 2 -> Translation_disc2.json' if self.project.disc_serial == 'NPJH-50569' else 'Disco 1 -> Translation.json'})"
+                )
+            elif skipped:
                 preview = "\n".join(f"  {n}: {r}" for n, r in skipped[:15])
                 if len(skipped) > 15:
                     preview += f"\n  ... y {len(skipped) - 15} más"

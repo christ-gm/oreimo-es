@@ -152,8 +152,18 @@ def _mkisofs_executable() -> str | None:
     names = ("mkisofs", "mkisofs.exe") if os.name != "nt" else ("mkisofs.exe", "mkisofs")
     starts = [Path(__file__).resolve()]
     if getattr(sys, "frozen", False):
+        # onedir/onefile builds: PyInstaller unpacks bundled binaries here
+        meipass = getattr(sys, "_MEIPASS", None)
+        if meipass:
+            starts.append(Path(meipass) / "tool-bin")  # sentinel: exact match below
         starts.append(Path(sys.executable).resolve())
     for start in starts:
+        if start.name == "tool-bin":
+            for name in names:
+                cand = start / name
+                if cand.is_file():
+                    return str(cand)
+            continue
         d = start.parent
         for _ in range(8):
             for name in names:

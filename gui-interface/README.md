@@ -28,7 +28,7 @@ ISO  →  extract RES.DAT  →  decompress every scene  →  parse blocks
 
 1. **Open ISO** — reads `RES.DAT` directly out of the raw ISO file (no
    mounting, no OS-specific tools) and indexes every translatable line
-   across all 300 scenes in a few seconds.
+   across every scene of the opened disc (either one) in a few seconds.
 2. **Browse & search** — scenes are listed on the left; the table on the
    right shows character, original text, and translation side by side.
    The search box filters across every scene at once, matching either
@@ -45,7 +45,7 @@ ISO  →  extract RES.DAT  →  decompress every scene  →  parse blocks
 5. **Compile ISO** — rebuilds only the scenes that were actually edited,
    re-nests every archive level, and binary-patches the result into a
    fresh copy of the ISO (the original file is never modified). Typically
-   finishes in well under a second, even for a full 300-scene project.
+   finishes in well under a second, even for a full-disc project.
 6. **View, export and import scene images** — the "Images" tab (its own
    full view, with its own scene list) shows every background, event/CG,
    character and cutin/tukkomi texture (`MIG.00.1PSP`/`.gim`, PSP's
@@ -102,8 +102,30 @@ silently produces a disc the PSP won't boot correctly, see
 - macOS: `brew install cdrtools`
 - Linux: `sudo apt install genisoimage` (provides `mkisofs`) or your
   distro's `cdrtools`/`cdrkit` package
-- Windows: not yet wired up in this app; a Windows `mkisofs.exe` exists
-  in `tool-bin/` from the sibling toolchain project but isn't bundled here yet
+- Windows: nothing to install — the app finds the standalone
+  `tool-bin/mkisofs.exe` shipped in this repo automatically (prebuilt
+  Windows binaries even bundle it inside)
+
+## Load the Spanish translation (oreimo-es)
+
+This repo ships a complete Spanish translation of both discs. To apply
+it with the GUI instead of translating from scratch:
+
+1. Open the **English v1** ISO of the disc you want — the title bar
+   shows which disc was detected (`NPJH-50568` = Disc 1, `NPJH-50569`
+   = Disc 2).
+2. `File > Import ES translation (oreimo-es JSON)...` and pick:
+   - `translation/Translation.json` for Disc 1
+   - `translation/Translation_disc2.json` for Disc 2
+
+   The file dialog suggests the right one based on the detected disc.
+3. Every scene loads pre-translated (speaker names included); edit
+   anything you like on top of it, then `File > Compile ISO...`.
+
+Scenes whose line counts don't match the ISO parse are skipped and
+reported rather than mis-applied. The compiled ISO needs a full rebuild
+when `RES.DAT` changes size (importing a whole translation always does),
+which is why the bundled `mkisofs` matters here.
 
 ## Current scope
 
