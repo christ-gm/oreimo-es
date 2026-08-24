@@ -26,3 +26,7 @@ __pycache__/
 # PyInstaller build output
 gui-interface/build/
 gui-interface/dist/
+
+# Builds locales de PyInstaller
+gui-interface/dist-win/
+gui-interface/build-win/
