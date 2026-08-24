@@ -399,6 +399,58 @@ The report at the end tells you: scenes changed, lines changed, images
 changed, which method was used, any Character image edits that couldn't
 be applied, and any texture-memory warnings.
 
+## Translating into another language
+
+Nothing here is specific to Spanish. Two things decide whether a given
+language works, and both turned out to be permissive.
+
+**Encoding is not a constraint.** The script is stored as UTF-16LE, so
+any Unicode character encodes. There is no codepage to extend, and
+because the archive's block headers are rewritten on compile, your text
+is free to be longer than the original.
+
+**The font is the real gatekeeper**, and it is a generous one. The game
+ships `FTT-NewRodin Pro DB`, a professional Japanese face, and those
+carry large non-Japanese sets. Checking its metrics for what each
+language needs:
+
+| Language | Glyphs present | |
+|---|---|---|
+| Portuguese | 15/15 | ✅ |
+| French | 18/18 | ✅ |
+| German | 7/7 | ✅ |
+| Italian | 8/8 | ✅ |
+| Catalan | 12/12 | ✅ |
+| Polish | 12/12 | ✅ |
+| Turkish | 10/10 | ✅ |
+| Russian (Cyrillic) | 32/32 | ✅ |
+| Greek | 24/24 | ✅ |
+| Vietnamese | 5/11 | ❌ missing `ơưạảấầ` |
+
+Only Vietnamese falls short, on its stacked diacritics. Line breaking
+also works at full precision for all of these, because the width table
+carries their real advances.
+
+**How you'd do it:** use the CSV/TSV route rather than the Spanish JSON
+importer, which is specific to this repo's translation. `Export all
+scenes...` → translate in a spreadsheet → `Import file(s)...` →
+`Compile ISO...`. Line breaks and speaker names are handled for you.
+
+### Two honest caveats
+
+**The table above says the font declares metrics for those characters,
+which is strong evidence they exist - not proof they render.** For
+Latin-1 it is settled in practice: the Spanish translation uses `á ñ ¿ ¡`
+and they display correctly in-game. Cyrillic and Greek have never
+actually been put on screen by anyone. Compile one line and look at it
+before committing to a whole script.
+
+**Menus and choice buttons are not text.** Their labels are baked into
+image pixels, not stored as strings (`FORMAT_NOTES.md` §20), so no amount
+of script translation touches them. They have to be redrawn as images -
+which this app supports, under Exporting and importing images, but it is
+separate work and the same work for every language.
+
 ## Current scope
 
 | Content | Status |
