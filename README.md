@@ -1,8 +1,8 @@
 # Oreimo Portable — Traducción al Español (ES)
 
 [![Progreso Disco 1](https://img.shields.io/badge/Progreso%20Disco%201-100%25-green)](translation/Translation.json)
-[![Progreso Disco 2](https://img.shields.io/badge/Progreso%20Disco%202-0%25-red)](translation/Translation.json)
-[![Estado](https://img.shields.io/badge/Estado-Traducci%C3%B3n%2050%25%20%7C%20Falta%20pruebas-yellow)]()
+[![Progreso Disco 2](https://img.shields.io/badge/Progreso%20Disco%202-100%25-green)](translation/Translation_disc2.json)
+[![Estado](https://img.shields.io/badge/Estado-Traducci%C3%B3n%20100%25%20%7C%20Falta%20pruebas-yellow)]()
 [![Licencia](https://img.shields.io/badge/Licencia-CC%20BY--NC--SA%204.0-lightgrey)](LICENSE)
 
 Traducción **no oficial** al español latinoamericano de la novela visual PSP **_Oreimo Portable ga Tsuzuku Wake ga Nai_** (Discos 1 y 2), partiendo de la versión en inglés v1.
@@ -16,10 +16,12 @@ Traducción **no oficial** al español latinoamericano de la novela visual PSP *
 | Disco | Progreso |
 |---|---|
 | **Disco 1** (historia) | 18.805 / 18.805 líneas — **100%** (299 escenas) (faltan las desiciones)|
-| Disco 2 (historia) | pendiente |
+| **Disco 2** (historia) | 18.949 / 18.949 líneas — **100%** (268 escenas) |
 | envpsp.dat (texto del sistema) | pendiente |
 
-Los **nombres** de personajes (38) ya están traducidos y aplicados en todas las escenas.
+Los **nombres** de personajes ya están traducidos y aplicados en ambos discos (38 en el disco 1, 75 en el disco 2).
+
+Todos los diálogos fueron re-ajustados con la métrica real del juego: cada línea cabe en la caja de diálogo (~570 px medidos glifo a glifo con el fontmap), así que ya no hay texto cortado.
 
 ---
 
@@ -48,6 +50,7 @@ https://github.com/user-attachments/assets/89a1ea8c-f36d-41dd-9895-dd198a5309c8
 Este repositorio **no incluye ISOs ni el código de la toolchain original** (ver [Herramientas usadas](#herramientas-usadas)). Incluye dos asistentes que hacen todo por ti: **`build_iso.bat`** (Windows) y **`build_iso.sh`** (Linux/WSL).
 
 > El único requisito de entrada es tu **ISO con el parche EN v1 de dizzyziddy ya aplicado** (link en [Créditos](#créditos)).
+> Funciona con **cualquiera de los dos discos**: el asistente detecta automáticamente cuál es por el serial UMD (`NPJH-50568` = Disco 1, `NPJH-50569` = Disco 2) y aplica la traducción correspondiente.
 
 ### Windows (fácil) — `build_iso.bat`
 
@@ -98,8 +101,11 @@ export BASE=$(pwd)/work
 
 dotnet "$DLL" extract-iso /ruta/a/tu.iso --base "$BASE"        # 1) Extrae tu ISO
 dotnet "$DLL" extract-game --base "$BASE"                      # 2) Extrae los datos del juego
+# Disco 1:
 cp ../oreimo-es/translation/Translation.json "$BASE"/Data/Translation.json
-dotnet "$DLL" insert-linebreaks --base "$BASE"                 # 3) Aplica la traducción
+# Disco 2:
+cp ../oreimo-es/translation/Translation_disc2.json "$BASE"/Data/Translation.json
+dotnet "$DLL" insert-linebreaks 0 570 --base "$BASE"           # 3) Aplica la traducción (ancho de caja: 570px)
 dotnet "$DLL" repack-game --base "$BASE"                       # 4) Reempaqueta los datos
 dotnet "$DLL" repack-iso "$BASE"/oreimo_es.iso --base "$BASE"  # 5) Reempaqueta la ISO
 ```
@@ -120,23 +126,27 @@ Los iré revisando **a mi ritmo** (después de todo esto es un proyecto personal
 
 ```
 ├── translation/
-│   ├── Translation.json      # Progreso de traducción (fichero principal)
-│   ├── corpus/               # Texto EN extraído de las escenas (299 .tsv + names.txt)
-│   └── review/               # Hojas XLSX de revisión (EN → ES)
-├── scripts/                  # Scripts de traducción por lotes
-├── tool/OreimoAutomation/    # Driver de automatización (C#, propio)
-├── tool-bin/                 # Utilidades para el repaqueado de la ISO (mkisofs)
-├── toolchain-patches/        # Parches propios para la toolchain de zapan
-├── build_iso.bat             # Asistente para Windows (arrastra tu ISO)
-└── build_iso.sh              # Asistente para Linux / WSL
+│   ├── Translation.json        # Disco 1: traducción consolidada (fichero principal)
+│   ├── Translation_disc2.json  # Disco 2: traducción consolidada (fichero principal)
+│   ├── corpus/                 # Texto EN extraído del disco 1 (299 .tsv + names.txt)
+│   ├── corpus_disc2/           # Texto EN extraído del disco 2 (268 .tsv)
+│   ├── disc2_batches/          # Lotes de traducción del disco 2 (batch_00..19.json)
+│   └── review/                 # Hojas XLSX de revisión (EN → ES)
+├── retorts/                    # Imágenes de "retorts" (mensajes rápidos) traducidas
+├── scripts/                    # Scripts de traducción por lotes y del pipeline
+├── tool/OreimoAutomation/      # Driver de automatización (C#, propio)
+├── tool-bin/                   # Utilidades para el repaqueado de la ISO (mkisofs)
+├── toolchain-patches/          # Parches propios para la toolchain de zapan
+├── build_iso.bat               # Asistente para Windows (arrastra tu ISO)
+└── build_iso.sh                # Asistente para Linux / WSL
 ```
 
 ### ¿Cómo funciona el flujo?
 
 1. **Extracción**: la ISO EN v1 se desempaca en escenas (`.obj`) y se vuelca el corpus.
 2. **Traducción**: las escenas se traducen por lotes (10 escenas por lote).
-3. **Revisión**: cada lote se exporta a XLSX (`EN | ES`) para su revisión.
-4. **Rempacado**: las traducciones se inyectan, se reinsertan los saltos de línea automáticos y se reconstruye la ISO con la fuente latina (soporta acentos).
+3. **Revisión**: cada lote se valida automáticamente (paridad de saltos de línea, strings vacíos) y se exporta para su revisión.
+4. **Rempacado**: las traducciones se inyectan, se reinsertan los saltos de línea validados contra el ancho real de la caja de diálogo (~570 px, medido glifo a glifo con el fontmap del juego) y se reconstruye la ISO con la fuente latina (soporta acentos).
 
 > Los `Translation.json` y el corpus contienen únicamente **texto**, nunca assets ni código del juego.
 

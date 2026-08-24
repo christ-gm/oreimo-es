@@ -1,0 +1,237 @@
+0		Raging Akagi x Almost-crying Makabe
+1		Akagi stood there with bloodshot eyes and heavy 
+breathing.
+2	Akagi	Huff... huff...
+3	Kyousuke	W-What are you doing, Akagi...
+4	Sena	O-Onii-chan? Why are you here?
+5	Makabe	Ahh, Akagi-san's big brother. What's the matter? Are 
+you here to join the-
+6	Akagi	...｛150：Huuuuh!??｝
+7	Makabe	Eek!?
+8		That bloodlust filled glare is just taking things too 
+far. Look, Makabe is about to cry.
+9	Makabe	｛80：U-Um... Why are you glaring so intently at me...?｝
+10	Akagi	Grrrr!!
+11	Makabe	Eeeek!?
+12		He's too far gone... This beast can't understand 
+human language anymore.
+13	Kuroneko	*sigh* This is why I told you to end your lover's 
+quarrel outside...
+14	Kyousuke	I-It's not my fault!
+15	Akagi	Yeah. This has nothing to do with him.
+16	Sena	Geez, why did you come here, Onii-chan? If you 
+came to interfere with club activities, then go 
+home!
+17	Akagi	I'm not here to cause trouble...
+18		Giving the crowded room a cursory glance, Akagi 
+continued.
+19	Akagi	Everyone... Thank you for taking care of my sister all 
+this time. I'm Sena's older brother, Kouhei Akagi.
+20	President	Y-Yeah. We should be thanking you. Your sister is 
+always helping us. I'm the club president, Miura.
+21	Akagi	Hello.
+22	Kuroneko	I'm Gokou.
+23	Akagi	It's a pleasure.
+24	Makabe	｛80：I-I'm Makabe.｝
+25	Akagi	｛150：HUUUUHHHH!???｝
+26	Makabe	Eeek!?
+27	Kyousuke	Hey, cut it out! If you don't have any reason to be 
+here, then leave!
+28	Akagi	So if I have a reason, I can stay? Then this is 
+observational study!
+29	Akagi	I'm here because I'm interested in the Game 
+Research Club! I love games so much; I always 
+carry one around, see?!
+30	Sena	Isn't this... the game I gave you recently?! Why did 
+you bring it to school?
+31	Akagi	I carry most things my dear Sena-chan gives me, 
+or stash them in my safe① I've saved your 
+Valentine's chocolate from every year there①
+32	Sena	Wha... I-I'm never giving you chocolates ever again!
+33	Akagi	No please, Sena-chan! That kind of mental 
+punishment won't make me happy, you know?
+34	Sena	I didn't say it to please you! You're too creepy!
+35		Hey now, it took so much effort just to get on good 
+terms, but sparks are already flying between you 
+two.
+36	President	...Hmm. You've actually played this soccer game, 
+how interesting.
+37		...This time, someone unexpected spoke up.
+38	President	There were some horrible stories about how this 
+game was rushed to meet the deadline...
+39	President	Players sinking into the ground, the ball veering in 
+random directions, the clock going backward, even 
+save data corruption...
+40	President	The ｛125：legendary game｝ that sends the 
+player to hell!
+41	Akagi	I'm not one to brag, but I managed to 
+raise all the players to ｛125：max stats.｝
+42	President	｛150：What!?｝ You spent that much time on the mother of 
+all shitty soccer games? What madness drove you to 
+do that!?
+43	Akagi	The moment I made the player's name "The Angel 
+Sena-chan", my victory was guaranteed.
+44	Sena	Don't go raising me up in a soccer game! Did you 
+name all the players after me!?
+45	Akagi	But of course~ Sena-chan on defense, Sena-chan on 
+offense, starting member Sena-chan, and Sena-chan 
+on reserve! There is no better formation than this!
+46	Akagi	And the team's coach is none other than me...! This is 
+truly Akagi Japan...!
+47	President	I see, I see... Hey listen, I have a proposition to make.
+48	President	If it's alright with you, can you lend your talents to 
+our game development team?
+49	Kyousuke	｛150：Huh!?? What are you saying, 
+President?!｝
+50	President	But don't you see? He has good taste in games. If 
+he's interested in game creation, it would be a 
+waste for him just to look.
+51	Makabe	He struck a nerve with your preference for shitty 
+games, didn't he...
+52	Both	｛135：W｝｛150：H｝｛115：A｝｛150：A｝｛135：!??｝
+53	Makabe	Eeeeek!?
+54		This time they both yelled in unison. The president 
+and Akagi make for a good combination.
+55	President	Let's get back to the topic at hand. Will you assist 
+us in the production of our game?
+56	Sena	I am completely against this! I definitely don't want 
+him staring at me throughout club activities!
+57	Akagi	I am in complete agreement! Being able to stare at 
+Sena-chan while working on club activities, is this 
+heaven on Earth?
+58	Sena	Ah geez, Onii-chan... you're the absolute worst...!
+59	President	Calm down. Don't argue, you two. You both have 
+your reasons, but let's look at the problem at hand 
+here.
+60	President	Our club is severely lacking in members now. Ain't 
+that right, Kousaka?
+61	Kyousuke	Ah, yeah... That's for certain.
+62	President	According to your schedule, there's a possibility 
+that we'll miss the deadline for the festival with this 
+amount of people, right?
+63	President	We can't use the club members who don't even 
+show up, so why don't we make use of that guy 
+here?
+64	Sena	I'm agains--
+65	Kuroneko	I approve.
+66	Kyousuke	Eh?
+67		Kuroneko interrupted Sena and raised her hand. 
+Lots of things I didn't expect are happening on this 
+very day.
+68	Kuroneko	Lately, it feels that we are short-handed. Akagi-san 
+has been handling more work than usual, but 
+there's no guarantee she can keep this up.
+69	Kuroneko	And besides that, our work is at a standstill now 
+thanks to this dispute. We don't have the time to 
+waste.
+70	Kuroneko	Either a debugger staring at the screen till he vomits 
+blood, or a masseur for his cute sister, we ought to give 
+him a suitable task. Don't you think so?
+71		Kuroneko looked my way. Well... both the president 
+and Kuroneko are right.
+72	Kyousuke	Y-Yeah... that's right. Our bickering over Akagi is just 
+a waste of precious time. Since our club president 
+said to include him, let's go with that for now.
+73	Akagi	Okay, then it's settled? I'll come in here as I please 
+then!
+74	Sena	Whaaa-!
+75	Makabe	｛75：...Eh...｝
+76		Makabe... You're screwed one way or another this 
+time. H-Hang in there, okay?
+77		With that out of the way, work began...
+78	Kuroneko	Akagi-san. Is this CG okay with you?
+79	Sena	Hmm... Can you increase the amount of juices? 
+There should be so much that it's collecting on his 
+collarbone.
+80		...The two girls are having an unbelievable 
+conversation. I'm so engrossed with the screen over 
+here that I can't make a remark though.
+81	Kuroneko	...How about this?
+82	Sena	Ummm, I think something similar to an oily texture 
+would look captivating... Get it?
+83	Kuroneko	It's hard to understand the nuance.
+84	Sena	Sorry to be a bother, but can the President and 
+Makabe try this out?
+85	Makabe	｛125：No way!?｝
+86	President	...Hey, if Makabe's the model for the game, why'd 
+you call me too?
+87	Sena	Isn't it obvious?! It won't work if we don't have the 
+side that's shooting and the side that's shot on, for 
+the President's Bukka--
+88	Kyousuke	｛150：Stop whatever you're saying, right 
+now!｝
+89	Akagi	Hey Kousaka, my little Sena's knows a thing or two, 
+huh? She's so cool, almost like a pro.
+90	Kyousuke	What kind of pro?! It's cause you pampered her so 
+much that she turned out this way!
+91	Akagi	Hey Sena-chan, if you need some more materials, 
+Onii-chan can pitch in and help, you know?
+92	Sena	Shut up, Onii-chan.
+93	Akagi	Kay.
+94		...Such a noble, good-looking man reduced to nothing 
+with just a single phrase from his sister.
+95	Sena	Ah, but... Kousaka-senpai is here too, so you can use 
+his face for bukka--
+96	Kyousuke	｛150：Heeeey! Give me a break!!｝
+97		Watching us arguing back and forth, Kuroneko 
+sighed and interjected.
+98	Kuroneko	...Akagi-san... You...
+99	Kuroneko	I've been wondering for a while now but... Even in 
+this game, do you not plan on holding back on your 
+precious love of BL?
+100	Sena	O-Of course... Of course I do.
+101	Kuroneko	In fact, with your brother's presence, it's obvious 
+that your delusions have been getting increasingly 
+worse.
+102	Sena	Onii-chan has nothing to do with this!
+103	Makabe	Hey hey, don't quarrel, you two...
+104	Akagi	Hey you bastard, acting like you're trying to 
+mediate, but you're just trying to sneak a feel of 
+Sena-chan!? Huuuuhhhh!?
+105	Makabe	Eeeeek!?
+106		Makabe scowled at by Akagi caused him to curl 
+himself up again. He's having a real bad day...
+107	Sena	That's enough, Onii-chan! You said you would help, 
+but you aren't even doing anything! You're just in 
+the way!
+108	Sena	We're short on time, so go help out with something, 
+got it?
+109	Akagi	S-Sorry Sena-chan. Of course I'll help, yeah?
+110	Akagi	Ummmm...? Hey Kousaka, how do you do this 
+"double click" thing?
+111	Kyousuke	...Wow, you're more useless than I am...
+112	President	Hey, if you can't help out, wanna face me in that 
+soccer game?
+113	Akagi	Ah, sounds good!
+114	Sena	Sound good? Get real!
+115	Kyousuke	Why the heck are you even trying to play, 
+President!?
+116		...Utter chaos. I mean, it was chaotic before, but 
+Akagi just made it more chaotic...
+117		At this rate, we won't make it in time for the school 
+festival.
+118	Kyousuke	For the time being, stop playing at once, President. 
+What are you even planning, inviting Akagi along 
+with this charade?
+119	Sena	Yeah! You're the club's president for goodness 
+sake!
+120	President	Geez, I was just helping the new member break 
+the ice. Even I of all people do consider the needs 
+of others.
+121		Well, it is true that he does things in his own way 
+for the club.
+122	Kyousuke	But now's not the time for that. He joined us to 
+alleviate our work and to keep to the schedule, but 
+playing games will ruin everything.
+123	President	Hahaha, You really hit where it hurts. Let's call it 
+quits with the game then.
+124	Sena	*sigh* ...Thank goodness.
+125		The President kept the game console while Akagi 
+just looked on enviously while contributing nothing.
+126	Akagi	I wanted to show him my Akagi Japan save data...
+127	Sena	You don't have to show him something so 
+embarrassing! Good grief, I've told you that if you 
+can't help then get out!
+128		The usually calm Sena finally lost her temper.
+129		This is bad, we're already behind schedule to begin 
+with, but if this keeps up...

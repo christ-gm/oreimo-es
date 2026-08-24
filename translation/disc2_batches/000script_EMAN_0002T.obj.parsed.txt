@@ -1,0 +1,189 @@
+﻿###IDX:0###CHAR:###
+What's For Lunch?
+###IDX:1###CHAR:Kyousuke###
+Brace yourself. Lunch is on me today.
+###IDX:2###CHAR:Manami###
+Eh??
+###IDX:3###CHAR:###
+It's not a secret or anything, but I've been working 
+part-time lately. Not only that, but it was also 
+payday yesterday!
+###IDX:4###CHAR:Kyousuke###
+Okay then, what do you want to eat? Anything's 
+fine, so don't hold back.
+###IDX:5###CHAR:Manami###
+A-Anything's fine with you?
+###IDX:6###CHAR:Kyousuke###
+Yep, anything!
+###IDX:7###CHAR:Manami###
+Hmmm... I wonder? Kyou-chan, are you sure?
+###IDX:8###CHAR:Kyousuke###
+Leave it to me! Just ask and ye shall receive!
+###IDX:9###CHAR:Manami###
+...Anything's fine?
+###IDX:10###CHAR:Kyousuke###
+Of course! It's not like I can do this all the time, you 
+know. I gotta act the part of a good boyfriend 
+from time to time, right?
+###IDX:11###CHAR:Manami###
+Wow~ Kyou-chan, you seem more reliable than 
+ever today~
+###IDX:12###CHAR:Kyousuke###
+You mean today “as usual", right?
+###IDX:13###CHAR:Manami###
+Ehehe, that’s right!
+###IDX:14###CHAR:Kyousuke###
+......
+###IDX:15###CHAR:Manami###
+Kyou-chan, it's not too late for you to reconsider, 
+you know? I don't mind...
+###IDX:16###CHAR:Kyousuke###
+Well, er, I mean... I was wondering what I should say 
+to get you to take up my offer.
+###IDX:17###CHAR:Manami###
+Is that so?
+###IDX:18###CHAR:Kyousuke###
+Yeah. Don't worry about it. Come on, just tell me 
+what food's on your mind?
+###IDX:19###CHAR:Manami###
+...Is it really okay?
+###IDX:20###CHAR:Kyousuke###
+Yeah, it's all good.
+###IDX:21###CHAR:Manami###
+Hmm...
+###IDX:22###CHAR:Manami###
+Then, maybe I will take up your offer?
+###IDX:23###CHAR:Kyousuke###
+In any case, don't hold back. Because――
+###IDX:24###CHAR:Manami###
+――Because what?
+###IDX:25###CHAR:Kyousuke###
+I just got my pay, and that means this is the only 
+time to indulge in luxury.
+###IDX:26###CHAR:Manami###
+That's amazing, Kyou-chan~ You're so rich now, 
+aren't you?
+###IDX:27###CHAR:Kyousuke###
+Yeah, I'm practically loaded now! Hahahaha!
+###IDX:28###CHAR:Manami###
+But this is the fruit of your hard work, surely you 
+have something you want to get for yourself...
+###IDX:29###CHAR:Kyousuke###
+Something I want, huh...
+###IDX:30###CHAR:Kyousuke###
+That'd be Manami!
+###IDX:31###CHAR:Manami###
+Eh? EH? Kyou-chan, what are you saying?
+###IDX:32###CHAR:Kyousuke###
+All I want is you, you heard me! ...I'm not repeating 
+that again.
+###IDX:33###CHAR:Manami###
+But... I'm already attached to Kyou-chan, aren’t I...?
+###IDX:34###CHAR:Kyousuke###
+Huh?
+###IDX:35###CHAR:Manami###
+I would stay with you even if you didn't give me 
+any money, you know?
+###IDX:36###CHAR:Kyousuke###
+No no, I didn't mean it like that!
+###IDX:37###CHAR:Kyousuke###
+I'm only working part-time in order to afford these 
+experiences together.
+###IDX:38###CHAR:Manami###
+I see...
+###IDX:39###CHAR:Kyousuke###
+...
+###IDX:40###CHAR:Kyousuke###
+As of now, there is nothing I really want.
+###IDX:41###CHAR:Manami###
+Really? Then why are you working part time?
+###IDX:42###CHAR:Kyousuke###
+I don't have any special reason, but if anything I'd 
+say it's more to enjoy our time together.
+###IDX:43###CHAR:Manami###
+Thank you, Kyou-chan. But you know, you don't 
+need to force yourself to get a job just for that...
+###IDX:44###CHAR:Kyousuke###
+I don't think I'm forcing myself too much. I'm doing 
+this because I want to.
+###IDX:45###CHAR:Kyousuke###
+So, you don't have to worry about that.
+###IDX:46###CHAR:Manami###
+Mm~ In that case, I would be happier if you save 
+up a bit for the future.
+###IDX:47###CHAR:Kyousuke###
+Hahaha, that's just like you, Manami.
+###IDX:48###CHAR:Manami###
+Retirement is very important, Kyou-chan!
+###IDX:49###CHAR:Kyousuke###
+More like utility bills.
+###IDX:50###CHAR:Kyousuke###
+So, have you decided on what you want to eat?
+###IDX:51###CHAR:Manami###
+Hmmmm~ Nothing comes to mind for me.
+###IDX:52###CHAR:Kyousuke###
+Yeah, we probably got side-tracked for too long, 
+huh?
+###IDX:53###CHAR:Manami###
+Really though, I wonder what's good? Kyou-chan, 
+can you decide for me?
+###IDX:54###CHAR:Kyousuke###
+I don't have anything in mind either.
+###IDX:55###CHAR:Manami###
+In that case, I will just have whatever you're 
+having!
+###IDX:56###CHAR:Kyousuke###
+Manami... It's my treat, so there would be no point if 
+I made the decision, right?
+###IDX:57###CHAR:Manami###
+That's true. Still, I can’t just decide on such short 
+notice.
+###IDX:58###CHAR:Kyousuke###
+It'll be tough on me if you don't decide...
+###IDX:59###CHAR:Manami###
+Mm~ I will just go with Kyou-chan’s 
+recommendation.
+###IDX:60###CHAR:Kyousuke###
+...
+###IDX:61###CHAR:Manami###
+I guess Kyou-chan doesn't have anything in mind 
+either?
+###IDX:62###CHAR:Kyousuke###
+Come on... What's the point in me choosing?
+###IDX:63###CHAR:Manami###
+But I want to have what you're having too, you 
+know?
+###IDX:64###CHAR:Kyousuke###
+Even if you say that...
+###IDX:65###CHAR:Manami###
+I'm not particular about food... I just like watching 
+Kyou-chan eating happily.
+###IDX:66###CHAR:Kyousuke###
+You sure you're okay with that? No need to hold 
+back at this point.
+###IDX:67###CHAR:Manami###
+Yup, I'm fine, really.
+###IDX:68###CHAR:###
+She's definitely being considerate here. I won't 
+force it, but let her take some time to decide.
+###IDX:69###CHAR:Kyousuke###
+Then, let's think about it together while we walk.
+###IDX:70###CHAR:Manami###
+Um... Kyou-chan, you took the time to listen to me, 
+and I... Sorry.
+###IDX:71###CHAR:Kyousuke###
+No need to apologize. I should've planned 
+something before heading out.
+###IDX:72###CHAR:Manami###
+Then again, such a sudden invitation does feel 
+exciting and fun.
+###IDX:73###CHAR:Kyousuke###
+That's good to hear. It's a rare experience for us, 
+so let's have a bit of fun?
+###IDX:74###CHAR:Manami###
+Okay~
+###IDX:75###CHAR:###
+I took Manami's hand in mine and walked towards 
+the train station.
+
+

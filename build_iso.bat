@@ -149,11 +149,21 @@ exit /b 1
 REM ----------------------------------------------------------
 REM Pipeline
 REM ----------------------------------------------------------
-set "BUILD=%SELF%work\disc1"
-rmdir /s /q "%BUILD%" 2>nul
+REM Se extrae a un directorio temporal y se detecta el disco
+REM por su serial (UMD_DATA.BIN: disc1=NPJH-50568, disc2=NPJH-50569)
+set "STAGE=%SELF%work\_incoming"
+rmdir /s /q "%STAGE%" 2>nul
 
 echo [5/7] Extrayendo tu ISO...
-"%DOTNET%" "%DLL%" extract-iso "%ISO_IN%" --base "%BUILD%"
+"%DOTNET%" "%DLL%" extract-iso "%ISO_IN%" --base "%STAGE%"
+if errorlevel 1 goto :error
+
+set "DISC=disc1"
+findstr /c:"NPJH-50569" "%STAGE%\Data\Iso\UMD_DATA.BIN" >nul 2>nul && set "DISC=disc2"
+echo    Disco detectado: %DISC%
+set "BUILD=%SELF%work\%DISC%"
+rmdir /s /q "%BUILD%" 2>nul
+move "%STAGE%" "%BUILD%" >nul
 if errorlevel 1 goto :error
 
 echo    Extrayendo datos del juego...
@@ -161,8 +171,11 @@ echo    Extrayendo datos del juego...
 if errorlevel 1 goto :error
 
 echo [6/7] Aplicando la traduccion al espanol...
-copy /y "%SELF%translation\Translation.json" "%BUILD%\Data\Translation.json" >nul
-"%DOTNET%" "%DLL%" insert-linebreaks --base "%BUILD%"
+set "TRAD=%SELF%translation\Translation.json"
+if "%DISC%"=="disc2" set "TRAD=%SELF%translation\Translation_disc2.json"
+copy /y "%TRAD%" "%BUILD%\Data\Translation.json" >nul
+REM 0 = placeholder obligatorio del parser; 570 px = ancho real de la caja
+"%DOTNET%" "%DLL%" insert-linebreaks 0 570 --base "%BUILD%"
 if errorlevel 1 goto :error
 
 echo    Reempaquetando datos del juego...
