@@ -36,6 +36,7 @@ emulation mode has no `-xa` equivalent at all (checked: absent from its
 disc the PSP firmware's module loader couldn't read correctly.
 """
 import io
+import os
 import platform
 import shutil
 import struct
@@ -136,8 +137,21 @@ def patch_res_dat_into_iso(source_iso_path: str, new_res_dat: bytes, output_iso_
         f.write(new_res_dat)
 
 
+def _mkisofs_executable() -> str | None:
+    """Locates mkisofs: first on PATH, then the oreimo-es repo's own
+    tool-bin shim (a WSL wrapper around the bundled cygwin mkisofs.exe,
+    used by build_iso.sh) when running from a repo checkout."""
+    found = shutil.which("mkisofs")
+    if found:
+        return found
+    shim = Path(__file__).resolve().parents[4] / "tool-bin" / "mkisofs"
+    if shim.is_file() and os.access(shim, os.X_OK):
+        return str(shim)
+    return None
+
+
 def mkisofs_available() -> bool:
-    return shutil.which("mkisofs") is not None
+    return _mkisofs_executable() is not None
 
 
 def _locate_file_offset(iso_path: str, inner_path: str) -> tuple[int, int]:
@@ -261,7 +275,8 @@ def rebuild_iso_with_files(source_iso_path: str, replacements: dict[str, bytes],
     Raises IsoError if mkisofs isn't installed - this is an external
     dependency (cdrtools), unlike the same-size patch path which needs
     nothing beyond the stdlib."""
-    if not mkisofs_available():
+    mkisofs = _mkisofs_executable()
+    if not mkisofs:
         raise IsoError(
             "mkisofs not found on PATH. Rebuilding the ISO (needed for this "
             "compile, because a rebuilt file changed size) requires real "
@@ -281,7 +296,6 @@ def rebuild_iso_with_files(source_iso_path: str, replacements: dict[str, bytes],
                 raise IsoError(f"could not locate {inner_path} in the extracted ISO tree")
             staged.write_bytes(new_bytes)
 
-        mkisofs = shutil.which("mkisofs")
         subprocess.run(
             [
                 mkisofs,
