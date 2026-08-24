@@ -25,6 +25,8 @@ def canonical_scene(name: str) -> str:
     n = name.strip()
     n = re.sub(r"\.obj$", "", n, flags=re.IGNORECASE)
     n = re.sub(r"^000script_?", "", n, flags=re.IGNORECASE)
+    # GPDA entry names carry a leading underscore ('_AKYO_0000A')
+    n = n.strip("_")
     return n
 
 
