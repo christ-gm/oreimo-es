@@ -20,8 +20,9 @@ jobs:
     # GUI change never gets skipped just because it arrived in a later
     # push than the one that will be compared.
     #
-    # Tag pushes and manual runs are explicit publish requests, so they
-    # always proceed.
+    # Manual runs are explicit publish requests and always proceed. Tag
+    # pushes usually are too - except for the tag this workflow pushes
+    # itself, see the tag branch below.
     runs-on: ubuntu-latest
     outputs:
       release: ${{ steps.decide.outputs.release }}
@@ -33,6 +34,8 @@ jobs:
 
       - name: Decide whether to release, and under which version
         id: decide
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           LAST=$(git tag -l 'v*.*.*' | sed 's/^v//' | sort -t. -k1,1n -k2,2n -k3,3n | tail -1)
           if [ -z "$LAST" ]; then
@@ -43,9 +46,29 @@ jobs:
           fi
           echo "version=v$NEXT" >> "$GITHUB_OUTPUT"
 
-          if [ "${{ github.event_name }}" != "push" ] || [ "${{ github.ref }}" != "refs/heads/main" ]; then
-            echo "Tag push or manual run - releasing unconditionally."
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual run - releasing unconditionally."
             echo "release=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            # The auto-release path publishes with a PAT, and unlike the
+            # default GITHUB_TOKEN a PAT's pushes DO trigger workflows -
+            # so the tag this workflow creates fires this workflow again
+            # and rebuilds the same bundles. The release is created in
+            # the same API call that creates the tag, so a tag that
+            # already has a release is this workflow hearing its own
+            # echo. A human publishing a tag by hand pushes a tag with
+            # no release attached yet, and still gets built.
+            TAG="${{ github.ref_name }}"
+            if gh release view "$TAG" --json tagName >/dev/null 2>&1; then
+              echo "$TAG already has a release - this is the auto-release's own tag, skipping."
+              echo "release=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "$TAG has no release yet - hand-published tag, building it."
+              echo "release=true" >> "$GITHUB_OUTPUT"
+            fi
             exit 0
           fi
 
@@ -55,14 +78,12 @@ jobs:
             exit 0
           fi
 
-          # Anything the built artifact is made of: the app itself, and
-          # the workflow that packages it.
-          if git diff --quiet "v$LAST" HEAD -- gui-interface .github/workflows/release.yml; then
+          if git diff --quiet "v$LAST" HEAD -- gui-interface; then
             echo "No GUI changes since v$LAST - skipping the release."
             echo "release=false" >> "$GITHUB_OUTPUT"
           else
             echo "GUI changed since v$LAST - releasing $NEXT:"
-            git diff --stat "v$LAST" HEAD -- gui-interface .github/workflows/release.yml
+            git diff --stat "v$LAST" HEAD -- gui-interface
             echo "release=true" >> "$GITHUB_OUTPUT"
           fi
 
