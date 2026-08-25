@@ -20,7 +20,7 @@ ICON_ICNS = ASSETS / 'icon.icns'  # embedded in the macOS .app bundle
 a = Analysis(
     ['app_entry.py'],
     pathex=['src'],
-    binaries=[],
+    binaries=MKISOFS_BUNDLES,
     datas=[(str(ICON_PNG), 'assets')] if ICON_PNG.exists() else [],
     hiddenimports=[],
     hookspath=[],
