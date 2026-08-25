@@ -15,7 +15,7 @@ from ..core import image_io
 from ..core import es_bridge
 from ..core import text_wrap
 
-APP_VERSION = "0.1.0"
+from .._version import __version__ as APP_VERSION
 AUTHOR_NAME = "Choviics"
 AUTHOR_GITHUB = "https://github.com/Choviics"
 
