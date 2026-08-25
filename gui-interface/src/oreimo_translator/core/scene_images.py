@@ -222,6 +222,27 @@ def _build_rgba_palette_image(im: Image.Image, max_colors: int = 256) -> Image.I
     return im_p
 
 
+def _quantize_to_palette(im: Image.Image, max_colors: int = 256) -> Image.Image | None:
+    """Reduces an image to at most max_colors distinct (R,G,B,A) values so
+    it can be stored in the palette format its original used.
+
+    Only Pillow's Fast Octree quantizer handles RGBA - median cut refuses
+    outright - and it keeps per-pixel alpha rather than collapsing it to a
+    single transparent index, which this game's textures need (§23: at
+    least one uses a genuine alpha gradient built from per-color alpha).
+
+    Returns a 'P'-mode image with a full RGBA palette, or None if the
+    quantizer couldn't produce one."""
+    try:
+        reduced = im.quantize(colors=max_colors, method=Image.Quantize.FASTOCTREE)
+    except Exception:
+        return None
+    # Round-trip through the exact builder: after quantizing there are at
+    # most max_colors distinct values, so it now succeeds, and the palette
+    # is built the same way as in the lossless path.
+    return _build_rgba_palette_image(reduced.convert("RGBA"), max_colors)
+
+
 def encode_to_gim(png_bytes: bytes, target_format: int = FORMAT_RGBA8888) -> tuple[bytes, list[str]]:
     """Encodes PNG bytes to a raw MIG.00.1PSP GIM texture, tiled, matching
     target_format when possible.
@@ -259,10 +280,28 @@ def encode_to_gim(png_bytes: bytes, target_format: int = FORMAT_RGBA8888) -> tup
         im = Image.open(io.BytesIO(png_bytes)).convert("RGBA")
         paletted = _build_rgba_palette_image(im)
         if paletted is None:
+            # Too many colours to store exactly. Reducing them costs some
+            # fidelity; keeping them costs the format, which quadruples
+            # the texture's memory and is what actually broke the game in
+            # §23 - the texture doesn't load, so the edit appears not to
+            # have been applied at all. Fidelity is the cheaper thing to
+            # spend, so quantize and keep the format.
+            original_colors = len(im.getcolors(maxcolors=1 << 24) or ())
+            paletted = _quantize_to_palette(im)
+            if paletted is not None:
+                warnings.append(
+                    f"had {original_colors:,} distinct color+transparency "
+                    f"combinations but the original texture here is a 256-color "
+                    f"palette format, so it was reduced to 256 to keep that "
+                    f"format (small colour shift; encoding it at full colour "
+                    f"instead would quadruple its texture memory and the game "
+                    f"would fail to load it)"
+                )
+        if paletted is None:
             warnings.append(
-                "uses more than 256 distinct color+transparency combinations, but "
-                "the original texture here is a 256-color palette format - using "
-                "RGBA8888 instead (uses more texture memory than the original; "
+                "could not be stored in the original texture's 256-color "
+                "palette format - using RGBA8888 instead (uses more texture "
+                "memory than the original and the game may fail to load it; "
                 "verify in-game)"
             )
         else:

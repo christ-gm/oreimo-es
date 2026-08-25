@@ -98,28 +98,18 @@ PYTHONPATH=src python3 -m oreimo_translator.main
 
 ## Requirements
 
-| What you want to do | What you need |
-|---|---|
-| Open an ISO, browse, translate, export/import CSV/TSV | Nothing beyond the app itself |
-| View, export and import images | Nothing beyond the app itself |
-| Compile **dialogue-only** edits into an ISO | Nothing beyond the app itself |
-| Compile **image** edits into an ISO | `mkisofs`, see below |
+**Nothing beyond the app itself**, for everything it does: opening an
+ISO, browsing, translating, exporting and importing CSV/TSV, viewing and
+replacing images, and compiling a playable ISO. No installs, no external
+programs, on Windows, macOS or Linux alike.
 
-Image edits usually change `RES.DAT`'s size, which forces a full ISO
-rebuild instead of the fast in-place patch, and that rebuild shells out
-to **`mkisofs` from cdrtools**. It has to be real cdrtools `mkisofs`, not
-`xorriso` — `xorriso` silently produces a disc the PSP won't boot
-correctly (`FORMAT_NOTES.md` §13/§22).
-
-- **Windows**: nothing to install — the app finds `tool-bin/mkisofs.exe`
-  (shipped in this repo) automatically, and prebuilt Windows binaries
-  bundle their own copy inside.
-- **macOS**: `brew install cdrtools`
-- **Linux**: `sudo apt install genisoimage` (provides `mkisofs`), or your
-  distro's `cdrtools`/`cdrkit` package
-
-On macOS/Linux this is an external program, so it can't be baked into
-those prebuilt binaries.
+This used to be different. Compiling an edit that changed `RES.DAT`'s
+size once required `mkisofs` from cdrtools, an external program with no
+one-step install on Windows. The app now resizes files inside the ISO
+directly instead of re-mastering the disc, so that requirement is gone
+(`FORMAT_NOTES.md` §25). As a bonus, compiling got dramatically faster
+and the ISO it writes usually comes out the exact same size as the one
+you opened.
 
 ## Load the Spanish translation (oreimo-es)
 
@@ -138,8 +128,10 @@ it with the GUI instead of translating from scratch:
    anything you like on top of it, then `File > Compile ISO...`.
 
 Scenes whose line counts don't match the ISO parse are skipped and
-reported rather than mis-applied. Importing a whole translation always
-grows `RES.DAT`, which is why the `mkisofs` note above matters here.
+reported rather than mis-applied. Importing a whole translation grows
+`RES.DAT` past the padding that normally absorbs edits — on disc 1, by
+seven sectors — which the app handles by resizing the file inside the
+ISO. Nothing to install, and the disc comes out the same size.
 
 ## The File menu
 
@@ -197,6 +189,48 @@ character   original          translation
 Kirino      Yup!              ¡Sí!              ← correct
 Kirino      Yup!              Kirino「¡Sí!」     ← wrong, the name gets doubled
 ```
+
+### Line breaks are added for you — and how to choose them yourself
+
+The game does **no word wrapping**. It draws a line straight past the
+edge of the textbox unless the script tells it where to break, which it
+does with a single character: `＿` (a fullwidth underscore). Roughly a
+third of the game's original lines carry one, placed by hand.
+
+**You don't have to think about this.** Write your translation normally,
+and the app measures every line against the real textbox width using the
+game's own font metrics, inserting the breaks when you compile. The
+compile summary tells you how many lines it had to break.
+
+The `translation` cell tells you where a line stands:
+
+| cell colour | meaning | do you need to do anything? |
+|---|---|---|
+| default | fits | no |
+| **yellow** | you edited it | no |
+| **blue** | wider than the textbox — will be broken up when you compile | **no** |
+| **red** | will overflow in-game, and compiling will *not* fix it | **yes** |
+
+Hover any flagged cell for an explanation.
+
+**To choose where a break falls yourself**, put this character in your
+text where you want the line to end:
+
+```
+＿
+```
+
+Copy it from here, or from any original line that already has one — it
+is U+FF3F FULLWIDTH LOW LINE, not the ordinary `_` on your keyboard, and
+the two are not interchangeable. It is invisible in-game; it only marks
+the break.
+
+> **The one thing to watch.** As soon as a line contains a `＿`, the
+> automatic breaking leaves that whole line alone — the assumption being
+> that you placed it deliberately and know better. So if you add one and
+> the rest of the line is still too long, nothing will fix it for you.
+> That is the only case that turns a cell **red**: move the `＿`, add
+> another, or delete it to hand the line back to the automatic pass.
 
 ### How import matches rows back
 
@@ -336,14 +370,23 @@ entry up by `scene` + `category` + `label`. Consequences worth knowing:
 `File > Compile ISO...` asks where to write, defaulting to
 `<original>_ES.iso`. **The source ISO is never modified.**
 
-The app picks the method automatically:
+The app picks the method automatically, and neither needs anything
+installed:
 
-- **Fast patch** — when the rebuilt `RES.DAT` is the same size as the
+- **Patch in place** — when the rebuilt `RES.DAT` is the same size as the
   original (the normal case for dialogue-only edits, because the archive
   format's padding absorbs text-length changes). Clones the ISO and
-  patches the bytes in place. No external tools, well under a second.
-- **Full rebuild** — when an image edit changes `RES.DAT`'s size. Needs
-  `mkisofs` (see Requirements) and takes noticeably longer.
+  writes the bytes over the old ones.
+- **Resize in place** — when the file grew, which image edits and a whole
+  imported translation both do. Rather than re-mastering the disc, the
+  app edits the ISO's own filesystem: it reclaims the 61 MB of zero-filled
+  padding the disc ships with, moves whatever is in the way into it, and
+  lets the grown file expand into the space that frees up
+  (`FORMAT_NOTES.md` §25). The result is usually byte-for-byte the same
+  size as the ISO you opened.
+
+Both finish in seconds. Every file is read back and checked against the
+source afterwards.
 
 Either way it also regenerates `RES.DAT`'s **seekmap** — a table of
 absolute file offsets, stored inside `first.dat`, that the game seeks
@@ -355,6 +398,58 @@ nothing extra happens.
 The report at the end tells you: scenes changed, lines changed, images
 changed, which method was used, any Character image edits that couldn't
 be applied, and any texture-memory warnings.
+
+## Translating into another language
+
+Nothing here is specific to Spanish. Two things decide whether a given
+language works, and both turned out to be permissive.
+
+**Encoding is not a constraint.** The script is stored as UTF-16LE, so
+any Unicode character encodes. There is no codepage to extend, and
+because the archive's block headers are rewritten on compile, your text
+is free to be longer than the original.
+
+**The font is the real gatekeeper**, and it is a generous one. The game
+ships `FTT-NewRodin Pro DB`, a professional Japanese face, and those
+carry large non-Japanese sets. Checking its metrics for what each
+language needs:
+
+| Language | Glyphs present | |
+|---|---|---|
+| Portuguese | 15/15 | ✅ |
+| French | 18/18 | ✅ |
+| German | 7/7 | ✅ |
+| Italian | 8/8 | ✅ |
+| Catalan | 12/12 | ✅ |
+| Polish | 12/12 | ✅ |
+| Turkish | 10/10 | ✅ |
+| Russian (Cyrillic) | 32/32 | ✅ |
+| Greek | 24/24 | ✅ |
+| Vietnamese | 5/11 | ❌ missing `ơưạảấầ` |
+
+Only Vietnamese falls short, on its stacked diacritics. Line breaking
+also works at full precision for all of these, because the width table
+carries their real advances.
+
+**How you'd do it:** use the CSV/TSV route rather than the Spanish JSON
+importer, which is specific to this repo's translation. `Export all
+scenes...` → translate in a spreadsheet → `Import file(s)...` →
+`Compile ISO...`. Line breaks and speaker names are handled for you.
+
+### Two honest caveats
+
+**The table above says the font declares metrics for those characters,
+which is strong evidence they exist - not proof they render.** For
+Latin-1 it is settled in practice: the Spanish translation uses `á ñ ¿ ¡`
+and they display correctly in-game. Cyrillic and Greek have never
+actually been put on screen by anyone. Compile one line and look at it
+before committing to a whole script.
+
+**Menus and choice buttons are not text.** Their labels are baked into
+image pixels, not stored as strings (`FORMAT_NOTES.md` §20), so no amount
+of script translation touches them. They have to be redrawn as images -
+which this app supports, under Exporting and importing images, but it is
+separate work and the same work for every language.
 
 ## Current scope
 
@@ -368,7 +463,6 @@ be applied, and any texture-memory warnings.
 | Compiling image edits into the ISO | Works. Two real in-game failures were root-caused and fixed along the way: re-encoding in the wrong pixel format blew past the game's texture memory budget (`FORMAT_NOTES.md` §23), and `RES.DAT`'s seekmap went stale whenever anything changed size, hanging the game on load (§24). Both validated by measurement (11,642 palette images round-tripped with 0 mismatches; seekmap regeneration reproduces the original byte-for-byte) plus boot tests |
 | Character expression-swap overlays (mouth/eye parts) | Shown as separate raw parts, not composited onto the base sprite; also excluded from image reinsertion (no builder yet for their container format) |
 | Re-importing unedited images | `Import images...` re-encodes every PNG present in the folder, not just ones you actually changed — harmless now that format/size are preserved, but still wasted work (see `FORMAT_NOTES.md` §23 "Still open") |
-| Compiling image edits on Windows | Blocked on `mkisofs` not being bundled yet — see Requirements |
 
 ## Things to know before you start
 

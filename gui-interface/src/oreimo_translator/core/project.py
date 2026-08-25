@@ -10,7 +10,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import gpda, iso_tools, obj_blocks, scene_images, image_io, seekmap
+from . import gpda, iso_grow, iso_tools, obj_blocks, scene_images, image_io, seekmap, text_wrap
 
 
 def split_speaker(text: str) -> tuple[str | None, str]:
@@ -320,14 +320,31 @@ class Project:
 
     # ---- compiling -------------------------------------------------------
 
-    def compile(self, output_iso_path: str):
+    def compile(self, output_iso_path: str, progress_callback=None):
+        self._wrapped_lines = 0
         changed_dialogue = {name: entries for name, entries in self.scenes.items() if any(e.is_edited for e in entries)}
         image_edits_by_scene: dict[str, dict[tuple[str, str, str], image_io.ImportedImage]] = defaultdict(dict)
         for key, item in self.image_edits.items():
             image_edits_by_scene[key[0]][key] = item
 
+        # An image edit whose scene isn't on this disc can never be
+        # applied - the compile loop below simply never meets it. Left
+        # uncounted it inflates the "images changed" total, which is how
+        # a cross-disc import came to report success while writing
+        # nothing at all.
+        orphan_image_edits = [k for k in self.image_edits if k[0] not in self.scenes]
+
         changed_scene_names = set(changed_dialogue) | set(image_edits_by_scene)
+        changed_scene_names &= set(self.scenes) | set(changed_dialogue)
         if not changed_scene_names:
+            if orphan_image_edits:
+                scenes = sorted({k[0] for k in orphan_image_edits})
+                raise ValueError(
+                    "Nothing to compile: none of the imported images belong "
+                    "to a scene on this disc (" + ", ".join(scenes[:6]) +
+                    "). An export from the other disc won't match - the two "
+                    "discs have different scenes."
+                )
             raise ValueError("no edited lines or images to compile")
 
         script_off, script_size = gpda.find_path(self.res_dat, ["script"])
@@ -339,12 +356,13 @@ class Project:
         for e in self.script_entries:
             if e.name in changed_scene_names:
                 scene_blob = script_blob[e.data_offset:e.data_offset + e.data_size]
-                new_scene_blob, unsupported, scene_warnings = self._rebuild_scene(
+                new_scene_blob, unsupported, scene_warnings, scene_wrapped = self._rebuild_scene(
                     scene_blob,
                     changed_dialogue.get(e.name, []),
                     image_edits_by_scene.get(e.name, {}),
                 )
                 unsupported_image_edits.extend(unsupported)
+                self._wrapped_lines += scene_wrapped
                 encoding_warnings.extend(f"{e.name}/{w}" for w in scene_warnings)
                 new_script_entries.append((e.name, new_scene_blob))
             else:
@@ -378,30 +396,35 @@ class Project:
             iso_tools.FIRST_DAT_ISO_PATH: new_first_dat,
         }
         # Both files keep their size whenever GPDA's 0x800 padding absorbs
-        # the change (the usual dialogue-only case), which lets us patch
-        # them in place - fast, and needs no external tools. Image edits
-        # routinely grow RES.DAT past its padding (our re-encoder is
-        # pixel-perfect but compresses a bit less tightly than whatever
-        # originally packed these textures - see FORMAT_NOTES.md §22), and
-        # only then do we fall back to a full rebuild (pycdlib extract +
-        # real mkisofs -iso-level 4 -xa), validated by a PPSSPP boot test.
-        needs_full_rebuild = (
+        # the change (the usual dialogue-only case). Image edits, and a
+        # whole imported translation, routinely push RES.DAT past that
+        # padding - importing all of disc 1's Spanish grows it by 14,336
+        # bytes, seven sectors. Either way the write goes through
+        # iso_grow, which edits the ISO9660 filesystem in place and needs
+        # nothing installed; the old mkisofs rebuild path is gone.
+        needs_resize = (
             len(new_res_dat) != len(self.res_dat)
             or len(new_first_dat) != len(original_first_dat)
         )
-        if needs_full_rebuild:
-            iso_tools.rebuild_iso_with_files(self.iso_path, replacements, output_iso_path)
-        else:
-            iso_tools.patch_files_into_iso(self.iso_path, replacements, output_iso_path)
+        iso_report = iso_grow.write_files_into_iso(
+            self.iso_path, replacements, output_iso_path,
+            progress_callback=progress_callback,
+        )
         return {
             "scenes_changed": list(changed_scene_names),
             "lines_changed": sum(1 for entries in changed_dialogue.values() for e in entries if e.is_edited),
-            "images_changed": len(self.image_edits) - len(unsupported_image_edits),
+            "images_changed": (len(self.image_edits) - len(unsupported_image_edits)
+                               - len(orphan_image_edits)),
+            "orphan_image_edits": orphan_image_edits,
             "unsupported_image_edits": unsupported_image_edits,
             "encoding_warnings": encoding_warnings,
             "res_dat_size": len(new_res_dat),
-            "full_iso_rebuild": needs_full_rebuild,
+            "res_dat_resized": needs_resize,
             "seekmap_updated": new_first_dat != original_first_dat,
+            "files_moved": iso_report["moved"],
+            "filler_reclaimed": iso_report["reclaimed"],
+            "iso_grew_by": iso_report["image_grew_by"],
+            "lines_wrapped": self._wrapped_lines,
         }
 
     @staticmethod
@@ -465,6 +488,7 @@ class Project:
         (new_scene_blob, unsupported_image_edit_keys, encoding_warnings)."""
         unsupported: list[tuple[str, str, str]] = []
         encoding_warnings: list[str] = []
+        wrapped_count = 0
         edits_by_category: dict[str, dict[str, image_io.ImportedImage]] = defaultdict(dict)
         for (_scene, category, gim_name), item in image_edits.items():
             edits_by_category[category][gim_name] = item
@@ -495,7 +519,20 @@ class Project:
             objgz_entry = next(x for x in inner_entries if "obj.gz" in x.name)
             objgz_bytes = folder000_blob[objgz_entry.data_offset:objgz_entry.data_offset + objgz_entry.data_size]
             obj_bytes = gzip.decompress(objgz_bytes)
-            edits = {e.block_offset: e.full_translation for e in dialogue_entries if e.is_edited}
+            # The engine draws a line straight past the edge of the box
+            # unless the script tells it where to break, so add the
+            # markers here - the same way, and with the same glyph
+            # widths, as the command-line pipeline's insert-linebreaks
+            # step, so both routes produce the same script. Only the
+            # dialogue is measured; the speaker is drawn in its own box.
+            edits = {}
+            for e in dialogue_entries:
+                if not e.is_edited:
+                    continue
+                wrapped = text_wrap.wrap(e.translation, is_speech=e.speaker is not None)
+                if wrapped != e.translation:
+                    wrapped_count += 1
+                edits[e.block_offset] = join_speaker(e.speaker, wrapped)
             if edits:
                 new_obj_bytes, _applied = obj_blocks.replace_strings_by_offset(obj_bytes, edits)
                 new_inner[objgz_entry.name] = gzip.compress(new_obj_bytes, compresslevel=9, mtime=0)
@@ -519,10 +556,10 @@ class Project:
 
         if not new_top:
             # every requested edit for this scene was unsupported (Character-only)
-            return scene_blob, unsupported, encoding_warnings
+            return scene_blob, unsupported, encoding_warnings, wrapped_count
 
         new_scene_entries = [
             (x.name, new_top.get(x.name, scene_blob[x.data_offset:x.data_offset + x.data_size]))
             for x in scene_entries
         ]
-        return gpda.build_gpda(new_scene_entries), unsupported, encoding_warnings
+        return gpda.build_gpda(new_scene_entries), unsupported, encoding_warnings, wrapped_count

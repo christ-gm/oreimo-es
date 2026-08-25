@@ -10,22 +10,17 @@ ICON_PNG = ASSETS / 'icon.png'    # loaded at runtime for the window icon
 ICON_ICO = ASSETS / 'icon.ico'    # embedded in the Windows executable
 ICON_ICNS = ASSETS / 'icon.icns'  # embedded in the macOS .app bundle
 
-# Ship the repo's own mkisofs so end users who only download the release
-# can compile ISOs whose RES.DAT changed size (full-rebuild path) without
-# installing cdrtools. Only the Windows binary exists in this repo; POSIX
-# builds just skip this and rely on a real mkisofs on PATH or the
-# checkout's tool-bin shim.
-TOOLBIN = Path(SPECPATH).parent / 'tool-bin'
-MKISOFS_BUNDLES = [
-    (str(p), 'tool-bin')
-    for p in (TOOLBIN / 'mkisofs.exe', TOOLBIN / 'cygwin1.dll')
-    if p.is_file()
-]
+# Nothing external is bundled any more. Compiling an ISO used to shell out
+# to cdrtools' mkisofs whenever RES.DAT changed size, so Windows builds
+# carried a cygwin mkisofs.exe (and its DLL) to spare users an install that
+# has no one-step version on that platform. core/iso_grow.py now resizes
+# files inside the ISO directly, so there is no external program left to
+# ship - on any platform.
 
 a = Analysis(
     ['app_entry.py'],
     pathex=['src'],
-    binaries=MKISOFS_BUNDLES,
+    binaries=[],
     datas=[(str(ICON_PNG), 'assets')] if ICON_PNG.exists() else [],
     hiddenimports=[],
     hookspath=[],

@@ -45,15 +45,28 @@ code: no file paths, no internal FORMAT_NOTES.md section references.
   on load). Both of these were real failures, found in-game and fixed.
   If an edit still ends up larger than the original, you get a warning at
   compile time instead of discovering it during a playthrough.
+- **Breaks long lines for you** — the game does no word wrapping of its
+  own: text just runs off the edge of the box unless the script says
+  where to break. Write naturally and the app measures every line against
+  the real textbox using the game's own font, adding the breaks when you
+  compile. Lines are flagged as you type — blue for "this will be split
+  for you", red for the rare case that needs your attention — and if you
+  want to pick the break point yourself, you can.
+- **Builds the disc without re-mastering it** — a translated or
+  image-edited file that outgrew its slot used to mean rebuilding the
+  whole 1.4 GB image. The app now resizes files inside the ISO itself, so
+  compiling takes seconds and the disc it writes is usually byte-for-byte
+  the same size as the one you opened. Every file is read back and checked
+  against the original afterwards.
 - **Stays responsive** — opening an ISO, compiling, and bulk image export
   all run in the background instead of freezing the window.
 
 ### Requirements
 
-Nothing beyond the download itself for dialogue translation. Compiling
-**image** edits additionally needs real `mkisofs` (from **cdrtools** —
-`brew install cdrtools` on macOS, `genisoimage`/`cdrtools` on Linux) on
-your `PATH`. Not yet wired up on Windows.
+**Nothing but the download.** Everything the app does — including
+compiling a playable ISO with image edits — works on Windows, macOS and
+Linux with no installs and no external tools. Earlier versions needed
+cdrtools for some compiles; that is no longer the case.
 
 ### Known limitations
 
