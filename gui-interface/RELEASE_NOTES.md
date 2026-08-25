@@ -6,90 +6,55 @@ as of the current state of main - keep it updated in the same PR that
 adds or changes a user-facing feature, since that PR's merge into main
 is what publishes the next release.
 
-Write it for someone downloading the app, not for someone reading the
-code: no file paths, no internal FORMAT_NOTES.md section references.
+Keep it short. It is the first thing most people read about the tool, not
+a manual - the README is the manual, and this should point at it rather
+than repeat it. Write it for someone downloading the app: no file paths,
+no internal FORMAT_NOTES.md section references.
 -->
 
-**Oreimo Translator** opens the game's disc image, shows you every line
-of dialogue and every image in it, lets you change them, and writes a
-disc you can play. Download it and it works — there is nothing else to
-install, on Windows, macOS or Linux.
+**Oreimo Translator** opens the game's disc image, shows you every line of
+dialogue and every image inside it, lets you change them, and writes a
+disc you can play.
 
-### What you can do with it
+Download it and it works. There is nothing else to install, on Windows,
+macOS or Linux.
 
-- **Open an ISO directly.** It reads the game's data straight out of the
-  raw `.iso` file — no mounting, no UMD tools, no setup. All ~19,000
-  dialogue lines across every scene of either disc are indexed in a few
-  seconds.
-- **Browse and search everything at once.** Scenes on the left, and a
-  table showing character, original text, and your translation side by
-  side. The search box filters across every scene simultaneously,
-  matching either the original or the translation.
-- **Translate in place.** Double-click any translation cell and type.
-  Accented and special characters work and have been verified in-game.
-- **Long lines are broken for you.** The game wraps nothing by itself —
-  text simply runs off the edge of the box unless the script says where
-  to break. Write naturally: the app measures every line against the real
-  textbox using the game's own font and inserts the breaks when you
-  compile. Lines are flagged as you type, and you can place a break
-  yourself when you want to choose where it falls.
-- **Hand the work to other people.** Export the whole project, one scene,
-  or every scene as separate files for Excel, Google Sheets or another
-  translator, then import the results back. Every row carries a stable ID,
-  so re-imported edits land on the right line even after closing and
-  reopening the ISO.
-- **View, export and replace the game's images.** The Images tab decodes
-  every background, event/CG, character and cutin texture attached to a
-  scene. Filters narrow the scene list to just the ones containing a given
-  kind of image, which makes finding baked-in Japanese text practical.
-  Export them as PNGs, edit them anywhere, and import the folder back.
-- **Compile a playable disc.** It rebuilds only what you actually edited
-  and writes a fresh copy; your original ISO is never modified. Most
-  builds finish in seconds, and the disc usually comes out byte-for-byte
-  the same size as the one you opened.
+### What you can do
 
-### The parts that quietly go wrong if nobody handles them
+- **Translate the dialogue.** All ~19,000 lines of either disc, indexed in
+  seconds, searchable across every scene at once. Accents and special
+  characters work.
+- **Let it handle the tricky parts.** Long lines are broken to fit the
+  textbox automatically, character names are reattached for you, and
+  edited images keep the format the game expects.
+- **Work with other people.** Export to CSV or TSV for a spreadsheet or
+  another translator, then import the results back where they belong.
+- **Replace the images.** View, export and reimport the backgrounds,
+  event CGs and cutins — useful for the text that is baked into the
+  artwork rather than stored as script.
+- **Build a playable disc.** Your original ISO is never modified, and most
+  builds finish in seconds.
 
-Each of these was a real failure, found by playing the game and fixed:
+### Good to know
 
-- An edited image is re-encoded in its **original pixel format**, and
-  reduced to fit it when necessary. Storing it at full colour instead
-  would multiply the texture's memory several times over, and the game
-  then fails to load it — so the edit looks like it simply never
-  happened.
-- The game's internal **table of file offsets** is regenerated whenever
-  anything shifts. A stale one freezes the game on load.
-- Making a file bigger **doesn't disturb anything else on the disc**.
-  Everything is read back and checked against the original after every
-  compile.
+- **The Spanish translation is not bundled.** The app can load it in one
+  step, but the translation files live in the repository — download them
+  from there first.
+- **Menu titles and choice buttons are images**, not text, so translating
+  the script doesn't change them.
+- **There is no save file.** Closing the window discards your edits, so
+  export or compile before you do.
 
-### Requirements
+### Full documentation
 
-Nothing but the download. Earlier versions needed `mkisofs` from cdrtools
-for some compiles; that requirement is gone.
+Everything above in detail — how each feature works, the export and import
+formats, what is and isn't supported, and how to translate the game into a
+language other than Spanish — is in the
+**[GUI documentation](https://github.com/christ-gm/oreimo-es/blob/main/gui-interface/README.md)**.
 
-### Known limitations
+### Credits
 
-- **The Spanish translation is not bundled.** The app can load this
-  project's finished Spanish translation for either disc in one step, but
-  the translation files themselves live in the source repository — if you
-  only downloaded the app, fetch them from there first.
-- **Menu titles and choice buttons are images, not text.** Their wording
-  is baked into the pixels, so translating the script doesn't touch them;
-  they have to be redrawn as images.
-- **Character expression overlays** (mouth and eye parts) are shown as
-  separate raw parts rather than composited onto the sprite, and cannot be
-  reinserted yet.
-- `Choice` / `Question` blocks are preserved intact but not editable here.
-- Scene ordering follows the order on the disc, which is not always the
-  in-game chronological order.
+Developed by **[Choviics](https://github.com/Choviics)** and
+**[christ-gm](https://github.com/christ-gm)**.
 
-### Translating into a language other than Spanish
-
-Nothing here is specific to Spanish. The script is stored as UTF-16, so
-any character encodes, and the game's font already carries complete sets
-for Portuguese, French, German, Italian, Catalan, Polish, Turkish,
-Russian and Greek — only Vietnamese falls short. Use the CSV export and
-import route. Note that Cyrillic and Greek have never actually been put
-on screen, so compile one line and look at it before committing to a
-whole script.
+Questions? Write to us on **[Facebook](FACEBOOK_LINK_HERE)**.

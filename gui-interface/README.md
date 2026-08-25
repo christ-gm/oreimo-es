@@ -507,7 +507,11 @@ the next one.
 
 ## Credits
 
-Developed by **[Choviics](https://github.com/Choviics)**.
+Developed by **[Choviics](https://github.com/Choviics)** and
+**[christ-gm](https://github.com/christ-gm)**.
+
+Questions about using the tool? Write to us on
+**[Facebook](FACEBOOK_LINK_HERE)**.
 
 This tool exists so the community can build and maintain their own
 translations of this game — into Spanish, or into any other language —
