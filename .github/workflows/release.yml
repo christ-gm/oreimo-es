@@ -38,7 +38,22 @@ jobs:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           LAST=$(git tag -l 'v*.*.*' | sed 's/^v//' | sort -t. -k1,1n -k2,2n -k3,3n | tail -1)
-          if [ -z "$LAST" ]; then
+
+          # The version the code declares wins, when it names one that has
+          # no tag yet. That makes a major or minor bump a reviewed code
+          # change instead of a hand-typed tag, and keeps the About dialog
+          # from disagreeing with the release it came from - it read 0.1.0
+          # through every release up to v0.1.6.
+          #
+          # Everything else - the routine "this fixed a bug" release - is
+          # still automatic: bump the patch of the newest tag.
+          DECLARED=$(sed -n 's/^__version__ = "\(.*\)"/\1/p' \
+            gui-interface/src/oreimo_translator/_version.py)
+
+          if [ -n "$DECLARED" ] && ! git rev-parse -q --verify "refs/tags/v$DECLARED" >/dev/null; then
+            echo "Code declares $DECLARED and no such tag exists - releasing that."
+            NEXT="$DECLARED"
+          elif [ -z "$LAST" ]; then
             NEXT="0.1.0"
           else
             IFS=. read -r MAJOR MINOR PATCH <<< "$LAST"

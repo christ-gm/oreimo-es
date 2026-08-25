@@ -49,7 +49,7 @@ ISO  →  extract RES.DAT  →  decompress every scene  →  parse blocks
 
 1. **Open ISO** — reads `RES.DAT` directly out of the raw ISO file (no
    mounting, no OS-specific tools) and indexes every translatable line
-   across all ~300 scenes in a few seconds.
+   across every scene of the opened disc in a few seconds.
 2. **Browse & search** — scenes are listed on the left; the table on the
    right shows character, original text, and translation side by side.
    The search box filters across every scene at once, matching either
@@ -115,6 +115,13 @@ you opened.
 
 This repo ships a complete Spanish translation of both discs. To apply
 it with the GUI instead of translating from scratch:
+
+> **If you downloaded the app rather than cloning the repo, you need the
+> translation files too — they are not bundled inside the binary.** Grab
+> `translation/Translation.json` and `translation/Translation_disc2.json`
+> from this repository first; they are the two files the step below asks
+> for.
+
 
 1. Open the **English v1** ISO of the disc you want — the title bar
    shows which disc was detected (`NPJH-50568` = Disc 1, `NPJH-50569`
@@ -349,11 +356,16 @@ entry up by `scene` + `category` + `label`. Consequences worth knowing:
 - **Character-category edits are not reinserted yet.** You can view and
   export them, but compiling reports them as not applied — the container
   format for expression-swap parts has no builder yet.
-- Each edited image is re-encoded in its **original pixel format**
-  (palette or RGBA8888), not always RGBA8888: that mismatch alone can
-  exceed the game's texture memory budget and crash it in-game
-  (`FORMAT_NOTES.md` §23). If an image still ends up costing more memory
-  than the original, compiling warns you and names it.
+- Each edited image is re-encoded in its **original pixel format**, and
+  **reduced to fit it when it doesn't**. Most of the game's textures are
+  256-colour palettes; a PNG with more colours than that is quantized down
+  rather than stored at full colour. That costs a little fidelity, and it
+  is the cheaper thing to spend: storing it at full colour multiplies the
+  texture's memory several times over, and the game then fails to load it
+  — so the replacement looks like it never happened
+  (`FORMAT_NOTES.md` §23). Compiling tells you which images were reduced.
+  Textures whose original is already full colour, such as Tukkomi, are
+  untouched by this and keep every colour you gave them.
 
 <!-- Screenshots: uncomment once the PNGs are in docs/screenshots/
 
@@ -459,8 +471,11 @@ separate work and the same work for every language.
 | `Chapter` blocks (scene/chapter titles) | Fully editable |
 | `Choice` / `Choice2` / `Question` blocks (player-facing menus) | Preserved byte-for-byte, not yet editable here |
 | Scene ordering | Reflects on-disk order, not always in-game chronological order |
+| Line breaks | Inserted automatically at compile time, measured against the game's own font; markers already in the text are never moved. Reproduces the command-line pipeline's own output on 99.95% of lines |
+| Compiling | No external tools on any platform. Files that outgrow their slot are resized inside the ISO instead of re-mastering the disc, which usually leaves it byte-for-byte the same size (`FORMAT_NOTES.md` §25) |
+| The bundled Spanish translation | **Not** included in the downloadable app — the JSON files live in this repository and have to be fetched separately |
 | Scene images (background/event/character/cutin/tukkomi) | Viewable, exportable to PNG, importable, and compilable into the ISO |
-| Compiling image edits into the ISO | Works. Two real in-game failures were root-caused and fixed along the way: re-encoding in the wrong pixel format blew past the game's texture memory budget (`FORMAT_NOTES.md` §23), and `RES.DAT`'s seekmap went stale whenever anything changed size, hanging the game on load (§24). Both validated by measurement (11,642 palette images round-tripped with 0 mismatches; seekmap regeneration reproduces the original byte-for-byte) plus boot tests |
+| Compiling image edits into the ISO | Works. Two real in-game failures were root-caused and fixed along the way: re-encoding in the wrong pixel format blew past the game's texture memory budget, so edits silently failed to appear (`FORMAT_NOTES.md` §23), and `RES.DAT`'s seekmap went stale whenever anything changed size, hanging the game on load (§24). Both validated by measurement (11,642 palette images round-tripped with 0 mismatches; seekmap regeneration reproduces the original byte-for-byte) plus boot tests |
 | Character expression-swap overlays (mouth/eye parts) | Shown as separate raw parts, not composited onto the base sprite; also excluded from image reinsertion (no builder yet for their container format) |
 | Re-importing unedited images | `Import images...` re-encodes every PNG present in the folder, not just ones you actually changed — harmless now that format/size are preserved, but still wasted work (see `FORMAT_NOTES.md` §23 "Still open") |
 
