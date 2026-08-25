@@ -91,7 +91,7 @@ class ImportedImage:
     source_path: str
 
 
-def import_images(input_dir: str) -> tuple[list[ImportedImage], list[str]]:
+def import_images(input_dir: str, project=None) -> tuple[list[ImportedImage], list[str]]:
     """Reads manifest.json from input_dir and, for every entry whose PNG
     file is present on disk, validates it (readable, dimensions match the
     manifest exactly) and returns it as an ImportedImage ready to hand to
@@ -111,7 +111,20 @@ def import_images(input_dir: str) -> tuple[list[ImportedImage], list[str]]:
 
     imported = []
     warnings = []
+    # Scene names differ between the two discs - disc 2 prefixes them with
+    # an underscore ('_AKYO_0000A' vs 'AKYO_0000A') and the two discs
+    # don't even share the same scenes. An export from one disc therefore
+    # matches nothing on the other, and without this check the mismatched
+    # edits are accepted here, silently skipped at compile time, and still
+    # counted in the "images changed" total - so the app reports having
+    # replaced images it never touched.
+    known_scenes = set(project.scenes) if project is not None else None
+    unknown_scenes: set[str] = set()
+
     for entry in entries:
+        if known_scenes is not None and entry["scene"] not in known_scenes:
+            unknown_scenes.add(entry["scene"])
+            continue
         png_path = root / entry["file"]
         if not png_path.exists():
             continue
@@ -133,4 +146,15 @@ def import_images(input_dir: str) -> tuple[list[ImportedImage], list[str]]:
             scene=entry["scene"], category=entry["category"], label=entry["label"],
             width=width, height=height, png_bytes=png_bytes, source_path=str(png_path),
         ))
+
+    if unknown_scenes:
+        listed = ", ".join(sorted(unknown_scenes)[:8])
+        if len(unknown_scenes) > 8:
+            listed += f", and {len(unknown_scenes) - 8} more"
+        warnings.append(
+            f"{len(unknown_scenes)} scene(s) in this folder are not on the "
+            f"ISO you have open, so their images were not loaded: {listed}. "
+            f"This usually means the folder was exported from the other "
+            f"disc - the two discs have different scenes."
+        )
     return imported, warnings
