@@ -69,6 +69,12 @@ fi
 rm -rf "$TOOLCHAIN/OreimoAutomation"
 cp -r "$REPO/tool/OreimoAutomation" "$TOOLCHAIN/OreimoAutomation"
 
+# OBJ.cs corregido: al partir un diálogo en dos bloques por un marcador de
+# página [ ], el exportador reajustaba los saltos (0x2BE) pero no la
+# referencia de bloque de las decisiones O.R.E. (0x515), así que la rama
+# "aceptar" caía en la línea equivocada. Ver tool/OBJEditor/README.md.
+cp "$REPO/tool/OBJEditor/OBJ.cs" "$TOOLCHAIN/OBJEditor/OBJ.cs"
+
 # Aplica un pequeño parche propio para soportar sistemas de archivos con
 # mayúsculas/minúsculas sensibles (ext4/Linux), donde el repack fallaría.
 if git -C "$TOOLCHAIN" apply --check "$REPO/toolchain-patches/repack-case.patch" >/dev/null 2>&1; then

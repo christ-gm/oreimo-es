@@ -129,6 +129,13 @@ echo [3/7] Preparando el driver OreimoAutomation...
 rmdir /s /q "%TC%\OreimoAutomation" 2>nul
 xcopy /e /y /q "%SELF%tool\OreimoAutomation" "%TC%\OreimoAutomation\" >nul
 
+REM OBJ.cs corregido: al partir un dialogo en dos bloques por un marcador de
+REM pagina [ ], el exportador reajustaba los saltos (0x2BE) pero no la
+REM referencia de bloque de las decisiones O.R.E. (0x515), asi que la rama
+REM "aceptar" caia en la linea equivocada. Ver tool\OBJEditor\README.md.
+copy /y "%SELF%tool\OBJEditor\OBJ.cs" "%TC%\OBJEditor\OBJ.cs" >nul
+if errorlevel 1 goto :error
+
 REM ----------------------------------------------------------
 REM [4/7] Compilar el driver
 REM ----------------------------------------------------------
